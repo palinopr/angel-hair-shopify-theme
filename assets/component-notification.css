@@ -81,6 +81,25 @@
   font-weight: bold;
 }
 
+.notification__close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  color: #999;
+  transition: color 0.2s ease;
+}
+
+.notification__close:hover {
+  color: #333;
+}
+
 @media (max-width: 480px) {
   .notification {
     left: 16px;

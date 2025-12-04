@@ -191,34 +191,52 @@ class ProductForm extends AngelHairElement {
 
   onSubmitHandler(event) {
     event.preventDefault();
-    if (this.submitButton.disabled) return;
+    
+    if (!this.submitButton || this.submitButton.disabled) return;
 
+    const originalText = this.submitButton.innerHTML;
     this.submitButton.classList.add('button--loading');
     this.submitButton.disabled = true;
-
-    const config = fetchConfig('javascript');
-    config.headers['X-Requested-With'] = 'XMLHttpRequest';
-    delete config.headers['Content-Type'];
+    this.submitButton.innerHTML = '<span>Adding...</span>';
 
     const formData = new FormData(this.form);
+    
+    // Convert FormData to URL encoded string for Shopify
+    const body = new URLSearchParams();
+    for (const [key, value] of formData) {
+      body.append(key, value);
+    }
 
-    config.body = formData;
-
-    fetch(`${window.routes.cart_add_url}`, config)
-      .then((response) => response.json())
+    fetch(window.routes?.cart_add_url || '/cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: body.toString()
+    })
       .then((response) => {
-        if (response.status) {
-          this.handleError(response.description);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((response) => {
+        if (response.status && response.status !== 200) {
+          this.handleError(response.description || 'Error adding to cart');
           return;
         }
         this.handleSuccess(response);
       })
       .catch((error) => {
-        this.handleError(error);
+        console.error('Add to cart error:', error);
+        this.handleError('Error adding to cart. Please try again.');
       })
       .finally(() => {
         this.submitButton.classList.remove('button--loading');
         this.submitButton.disabled = false;
+        this.submitButton.innerHTML = originalText;
       });
   }
 
@@ -227,56 +245,87 @@ class ProductForm extends AngelHairElement {
     this.updateCartCount();
     
     // Show success notification
-    this.showNotification('Product added to cart!', 'success');
+    this.showNotification('✓ Added to cart!', 'success');
     
     // Trigger Meta Pixel event
     if (typeof fbq !== 'undefined') {
-      fbq('track', 'AddToCart', {
-        content_ids: [response.variant_id],
-        content_type: 'product',
-        value: response.price / 100,
-        currency: 'USD'
-      });
+      try {
+        fbq('track', 'AddToCart', {
+          content_ids: [response.variant_id || response.id],
+          content_type: 'product',
+          value: (response.price || response.final_price || 0) / 100,
+          currency: 'USD'
+        });
+      } catch (e) {
+        console.warn('Meta Pixel error:', e);
+      }
     }
 
     // Add success state to button temporarily
-    this.submitButton.classList.add('is-added');
-    setTimeout(() => {
-      this.submitButton.classList.remove('is-added');
-    }, 2000);
+    if (this.submitButton) {
+      this.submitButton.classList.add('is-added');
+      setTimeout(() => {
+        this.submitButton.classList.remove('is-added');
+      }, 2000);
+    }
+    
+    // Open cart drawer - dispatch event for cart drawer to listen
+    document.dispatchEvent(new CustomEvent('cart:add'));
+    
+    // Also try the global function
+    if (typeof window.openCartDrawer === 'function') {
+      window.openCartDrawer();
+    }
   }
 
   handleError(message) {
+    console.error('Cart error:', message);
     this.showNotification(message || 'Error adding to cart', 'error');
   }
 
   showNotification(message, type = 'success') {
+    // Remove any existing notifications first
+    document.querySelectorAll('.notification').forEach(n => n.remove());
+    
     // Create notification element
     const notification = document.createElement('div');
     notification.className = `notification notification--${type}`;
-    notification.textContent = message;
+    notification.innerHTML = `
+      <span>${message}</span>
+      <button class="notification__close" onclick="this.parentElement.remove()">×</button>
+    `;
     document.body.appendChild(notification);
 
     // Trigger animation
-    setTimeout(() => notification.classList.add('is-active'), 10);
+    requestAnimationFrame(() => {
+      notification.classList.add('is-active');
+    });
 
     // Remove after delay
     setTimeout(() => {
       notification.classList.remove('is-active');
       setTimeout(() => notification.remove(), 300);
-    }, 3000);
+    }, 4000);
   }
 
   updateCartCount() {
     fetch('/cart.js')
       .then(response => response.json())
       .then(cart => {
+        // Update all cart count elements
         const cartCounts = document.querySelectorAll('[data-cart-count]');
         cartCounts.forEach(el => {
           el.textContent = cart.item_count;
           el.classList.toggle('hidden', cart.item_count === 0);
         });
-      });
+        
+        // Update cart total if element exists
+        const cartTotals = document.querySelectorAll('[data-cart-total]');
+        cartTotals.forEach(el => {
+          el.textContent = '$' + (cart.total_price / 100).toFixed(2);
+        });
+      })
+      .catch(err => console.warn('Error updating cart count:', err));
   }
 }
 customElements.define('product-form', ProductForm);
