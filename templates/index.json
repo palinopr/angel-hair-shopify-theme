@@ -7,9 +7,9 @@
         "title": "Welcome to Angel Hair",
         "description": "Discover our professional-grade hair care products enriched with amino acids and natural extracts for healthier, more beautiful hair.",
         "button_1_label": "Shop Products",
-        "button_1_link": "/collections/all",
+        "button_1_link": "shopify://collections/all",
         "button_2_label": "About Us",
-        "button_2_link": "/pages/about-us"
+        "button_2_link": "shopify://pages/about-us"
       }
     }
   },
