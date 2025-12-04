@@ -284,7 +284,13 @@
   }
 </style>
 
-{%- if section.settings.product_list != blank or recommendations.products.size > 0 -%}
+{%- assign has_products = section.settings.product_list != blank -%}
+{%- unless has_products -%}
+  {%- if recommendations and recommendations.products -%}
+    {%- assign has_products = recommendations.products.size > 0 -%}
+  {%- endif -%}
+{%- endunless -%}
+{%- if has_products -%}
 <section class="related-products" data-section-id="{{ section.id }}">
   <div class="related-products__container">
     <div class="related-products__header">
@@ -306,7 +312,7 @@
                 {% render 'related-product-card', product: product %}
               </div>
             {%- endfor -%}
-          {%- else -%}
+          {%- elsif recommendations and recommendations.products -%}
             {%- for product in recommendations.products limit: 8 -%}
               <div class="swiper-slide">
                 {% render 'related-product-card', product: product %}
