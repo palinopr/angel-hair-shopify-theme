@@ -200,24 +200,24 @@
       "type": "faq-accordion",
       "blocks": {
         "faq_1": {
-          "type": "faq",
+          "type": "question",
           "settings": {
             "question": "Are Angel Hair products safe for color-treated hair?",
-            "answer": "Yes! All of our products are formulated to be safe for color-treated hair. Our sulfate-free formulas help preserve your color while nourishing your hair."
+            "answer": "<p>Yes! All of our products are formulated to be safe for color-treated hair. Our sulfate-free formulas help preserve your color while nourishing your hair.</p>"
           }
         },
         "faq_2": {
-          "type": "faq",
+          "type": "question",
           "settings": {
             "question": "How often should I use the treatment products?",
-            "answer": "For best results, we recommend using our treatment products 1-2 times per week. However, if your hair is severely damaged, you can use them more frequently."
+            "answer": "<p>For best results, we recommend using our treatment products 1-2 times per week. However, if your hair is severely damaged, you can use them more frequently.</p>"
           }
         },
         "faq_3": {
-          "type": "faq",
+          "type": "question",
           "settings": {
             "question": "What makes amino acid formulas special?",
-            "answer": "Amino acids are the building blocks of protein, and hair is primarily made of keratin protein. Our amino acid formulas help repair and strengthen hair from within, filling in gaps in the hair cuticle for smoother, healthier hair."
+            "answer": "<p>Amino acids are the building blocks of protein, and hair is primarily made of keratin protein. Our amino acid formulas help repair and strengthen hair from within, filling in gaps in the hair cuticle for smoother, healthier hair.</p>"
           }
         }
       },
@@ -225,7 +225,7 @@
       "settings": {
         "title": "Frequently Asked Questions",
         "subtitle": "Got questions? We've got answers.",
-        "show_contact_link": true
+        "show_contact": true
       }
     }
   },
