@@ -230,11 +230,7 @@
 
       <div class="mobile-menu" data-menu>
         <div class="mobile-menu__header">
-          {%- if settings.logo != blank -%}
-            <img src="{{ settings.logo | image_url: width: 150 }}" alt="{{ shop.name }}" style="max-height: 40px;">
-          {%- else -%}
-            <span class="header__logo-text">{{ shop.name }}</span>
-          {%- endif -%}
+          <img src="{{ 'logo.svg' | asset_url }}" alt="{{ shop.name }}" style="max-height: 40px; width: auto;">
           <button class="button--close" data-menu-close aria-label="Close menu">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -269,15 +265,12 @@
     </mobile-menu>
 
     <a href="/" class="header__logo">
-      {%- if settings.logo != blank -%}
-        <img src="{{ settings.logo | image_url: width: 300 }}" 
-             alt="{{ shop.name }}"
-             width="{{ settings.logo_width }}"
-             height="{{ settings.logo_width | divided_by: settings.logo.aspect_ratio }}"
-             loading="lazy">
-      {%- else -%}
-        <span class="header__logo-text">{{ shop.name }}</span>
-      {%- endif -%}
+      <img src="{{ 'logo.svg' | asset_url }}" 
+           alt="{{ shop.name }}"
+           width="{{ section.settings.logo_height | times: 3 }}"
+           height="{{ section.settings.logo_height }}"
+           loading="eager"
+           style="max-height: {{ section.settings.logo_height }}px; width: auto;">
     </a>
 
     <nav class="header__nav">
