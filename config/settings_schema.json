@@ -198,6 +198,32 @@
     ]
   },
   {
+    "name": "Email Popup",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_email_popup",
+        "label": "Enable Email Popup",
+        "default": true,
+        "info": "Shows a popup to capture emails with discount offer"
+      },
+      {
+        "type": "text",
+        "id": "popup_discount_code",
+        "label": "Discount Code",
+        "default": "WELCOME10",
+        "info": "Discount code to show after signup"
+      },
+      {
+        "type": "text",
+        "id": "popup_discount_amount",
+        "label": "Discount Amount Text",
+        "default": "10%",
+        "info": "Amount shown in the popup (e.g., 10%, $5, etc.)"
+      }
+    ]
+  },
+  {
     "name": "Cart",
     "settings": [
       {

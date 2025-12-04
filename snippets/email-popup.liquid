@@ -1,0 +1,445 @@
+{% comment %}
+  Email Popup Modal - Captures emails with discount offer
+  Appears after 3 seconds for first-time visitors
+{% endcomment %}
+
+<div id="email-popup-overlay" class="popup-overlay" style="display: none;">
+  <div class="popup-modal">
+    <button class="popup-close" aria-label="Close popup">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    
+    <div class="popup-content">
+      <div class="popup-image">
+        <img src="{{ 'popup-bg.jpg' | asset_url }}" alt="Angel Hair Products" onerror="this.style.display='none'">
+        <div class="popup-image-overlay"></div>
+      </div>
+      
+      <div class="popup-form-container">
+        <div class="popup-badge">EXCLUSIVE OFFER</div>
+        <h2 class="popup-title">Get 10% Off</h2>
+        <p class="popup-subtitle">Your First Order</p>
+        <p class="popup-description">Subscribe to our newsletter and receive exclusive offers, hair care tips, and be the first to know about new products.</p>
+        
+        <form id="email-popup-form" class="popup-form">
+          <div class="form-group">
+            <input type="email" name="email" placeholder="Enter your email" required class="popup-input">
+          </div>
+          <button type="submit" class="popup-submit">
+            <span>GET MY 10% OFF</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+        </form>
+        
+        <p class="popup-terms">By subscribing, you agree to our Privacy Policy and consent to receive marketing emails.</p>
+        
+        <button class="popup-decline">No thanks, I'll pay full price</button>
+      </div>
+    </div>
+    
+    <div class="popup-success" style="display: none;">
+      <div class="success-icon">
+        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+      </div>
+      <h2>Welcome to Angel Hair!</h2>
+      <p>Check your email for your exclusive 10% discount code.</p>
+      <p class="discount-code">Use code: <strong>WELCOME10</strong></p>
+      <button class="popup-shop-now" onclick="window.location.href='/collections/all'">SHOP NOW</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    animation: fadeIn 0.3s ease forwards;
+  }
+  
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+  
+  .popup-modal {
+    background: #fff;
+    border-radius: 16px;
+    max-width: 800px;
+    width: 100%;
+    max-height: 90vh;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    animation: slideUp 0.4s ease;
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  .popup-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.2s ease;
+    color: #333;
+  }
+  
+  .popup-close:hover {
+    background: #fff;
+    transform: scale(1.1);
+  }
+  
+  .popup-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 500px;
+  }
+  
+  .popup-image {
+    position: relative;
+    background: linear-gradient(135deg, #d4a574 0%, #c9956c 50%, #a67c52 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  
+  .popup-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .popup-image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(212, 165, 116, 0.8) 0%, rgba(166, 124, 82, 0.6) 100%);
+  }
+  
+  .popup-image::after {
+    content: '✨';
+    position: absolute;
+    font-size: 80px;
+    z-index: 1;
+    animation: sparkle 2s ease-in-out infinite;
+  }
+  
+  @keyframes sparkle {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
+  }
+  
+  .popup-form-container {
+    padding: 48px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .popup-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #d4a574, #c9956c);
+    color: #fff;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+    width: fit-content;
+  }
+  
+  .popup-title {
+    font-family: var(--font-heading-family, 'Playfair Display', serif);
+    font-size: 42px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+    line-height: 1.1;
+  }
+  
+  .popup-subtitle {
+    font-family: var(--font-heading-family, 'Playfair Display', serif);
+    font-size: 28px;
+    color: #d4a574;
+    margin: 4px 0 16px;
+    font-weight: 500;
+  }
+  
+  .popup-description {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+  
+  .popup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .popup-input {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px solid #e5e5e5;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    background: #fafafa;
+  }
+  
+  .popup-input:focus {
+    outline: none;
+    border-color: #d4a574;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(212, 165, 116, 0.1);
+  }
+  
+  .popup-submit {
+    width: 100%;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #d4a574 0%, #c9956c 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+  }
+  
+  .popup-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(212, 165, 116, 0.3);
+  }
+  
+  .popup-terms {
+    font-size: 11px;
+    color: #999;
+    margin-top: 16px;
+    line-height: 1.5;
+  }
+  
+  .popup-decline {
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: 12px;
+    text-decoration: underline;
+    transition: color 0.2s;
+  }
+  
+  .popup-decline:hover {
+    color: #666;
+  }
+  
+  /* Success State */
+  .popup-success {
+    padding: 60px 40px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 500px;
+  }
+  
+  .success-icon {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #d4a574, #c9956c);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    color: #fff;
+    animation: scaleIn 0.5s ease;
+  }
+  
+  @keyframes scaleIn {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+  }
+  
+  .popup-success h2 {
+    font-family: var(--font-heading-family, 'Playfair Display', serif);
+    font-size: 32px;
+    margin: 0 0 12px;
+    color: #1a1a1a;
+  }
+  
+  .popup-success p {
+    color: #666;
+    margin: 0 0 8px;
+  }
+  
+  .discount-code {
+    background: #f5f5f5;
+    padding: 16px 32px;
+    border-radius: 8px;
+    margin: 20px 0 !important;
+    font-size: 18px;
+  }
+  
+  .discount-code strong {
+    color: #d4a574;
+    font-size: 24px;
+    letter-spacing: 2px;
+  }
+  
+  .popup-shop-now {
+    padding: 16px 48px;
+    background: linear-gradient(135deg, #d4a574, #c9956c);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 16px;
+  }
+  
+  .popup-shop-now:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(212, 165, 116, 0.3);
+  }
+  
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .popup-content {
+      grid-template-columns: 1fr;
+    }
+    
+    .popup-image {
+      display: none;
+    }
+    
+    .popup-form-container {
+      padding: 40px 24px;
+    }
+    
+    .popup-title {
+      font-size: 32px;
+    }
+    
+    .popup-subtitle {
+      font-size: 22px;
+    }
+    
+    .popup-success {
+      padding: 40px 24px;
+      min-height: auto;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const popup = document.getElementById('email-popup-overlay');
+    const closeBtn = popup.querySelector('.popup-close');
+    const declineBtn = popup.querySelector('.popup-decline');
+    const form = document.getElementById('email-popup-form');
+    const content = popup.querySelector('.popup-content');
+    const success = popup.querySelector('.popup-success');
+    
+    // Check if popup was already shown
+    const popupShown = localStorage.getItem('angelHairPopupShown');
+    
+    if (!popupShown) {
+      // Show popup after 3 seconds
+      setTimeout(function() {
+        popup.style.display = 'flex';
+      }, 3000);
+    }
+    
+    // Close popup
+    function closePopup() {
+      popup.style.opacity = '0';
+      setTimeout(function() {
+        popup.style.display = 'none';
+      }, 300);
+      localStorage.setItem('angelHairPopupShown', 'true');
+    }
+    
+    closeBtn.addEventListener('click', closePopup);
+    declineBtn.addEventListener('click', closePopup);
+    
+    // Close on overlay click
+    popup.addEventListener('click', function(e) {
+      if (e.target === popup) {
+        closePopup();
+      }
+    });
+    
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && popup.style.display === 'flex') {
+        closePopup();
+      }
+    });
+    
+    // Form submission
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = form.querySelector('input[name="email"]').value;
+      
+      // Here you would typically send to your email service (Klaviyo, Mailchimp, etc.)
+      console.log('Email captured:', email);
+      
+      // Show success state
+      content.style.display = 'none';
+      success.style.display = 'flex';
+      
+      // Close after 5 seconds
+      setTimeout(closePopup, 5000);
+    });
+  });
+</script>
+

@@ -1,0 +1,532 @@
+{% comment %}
+  Premium Hero Banner Section
+  Full-width hero with gradient overlay, animated text, and multiple CTAs
+{% endcomment %}
+
+<section class="hero-premium" id="hero-{{ section.id }}">
+  <div class="hero-premium__background">
+    {% if section.settings.background_image != blank %}
+      <img 
+        src="{{ section.settings.background_image | image_url: width: 1920 }}"
+        alt="{{ section.settings.title | escape }}"
+        class="hero-premium__image"
+        loading="eager"
+        fetchpriority="high"
+      >
+    {% else %}
+      <div class="hero-premium__gradient-bg"></div>
+    {% endif %}
+    <div class="hero-premium__overlay"></div>
+  </div>
+  
+  <div class="hero-premium__container">
+    <div class="hero-premium__content {{ section.settings.text_alignment }}">
+      {% if section.settings.badge != blank %}
+        <span class="hero-premium__badge animate-fade-up">
+          {{ section.settings.badge }}
+        </span>
+      {% endif %}
+      
+      {% if section.settings.title != blank %}
+        <h1 class="hero-premium__title animate-fade-up delay-1">
+          {{ section.settings.title }}
+        </h1>
+      {% endif %}
+      
+      {% if section.settings.subtitle != blank %}
+        <p class="hero-premium__subtitle animate-fade-up delay-2">
+          {{ section.settings.subtitle }}
+        </p>
+      {% endif %}
+      
+      {% if section.settings.description != blank %}
+        <p class="hero-premium__description animate-fade-up delay-3">
+          {{ section.settings.description }}
+        </p>
+      {% endif %}
+      
+      <div class="hero-premium__buttons animate-fade-up delay-4">
+        {% if section.settings.button_1_label != blank %}
+          <a href="{{ section.settings.button_1_link }}" class="hero-premium__button hero-premium__button--primary">
+            <span>{{ section.settings.button_1_label }}</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        {% endif %}
+        
+        {% if section.settings.button_2_label != blank %}
+          <a href="{{ section.settings.button_2_link }}" class="hero-premium__button hero-premium__button--secondary">
+            {{ section.settings.button_2_label }}
+          </a>
+        {% endif %}
+      </div>
+      
+      {% if section.settings.show_trust_badges %}
+        <div class="hero-premium__trust animate-fade-up delay-5">
+          <div class="trust-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5zm-2 15l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
+            </svg>
+            <span>Professional Grade</span>
+          </div>
+          <div class="trust-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+            <span>Clean Ingredients</span>
+          </div>
+          <div class="trust-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm4.24 16L12 15.45 7.77 18l1.12-4.81-3.73-3.23 4.92-.42L12 5l1.92 4.53 4.92.42-3.73 3.23L16.23 18z"/>
+            </svg>
+            <span>Award Winning</span>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+    
+    {% if section.settings.show_scroll_indicator %}
+      <div class="hero-premium__scroll">
+        <span>Scroll to explore</span>
+        <div class="scroll-indicator">
+          <div class="scroll-indicator__dot"></div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  #hero-{{ section.id }} {
+    --hero-height: {{ section.settings.hero_height }}vh;
+    --overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    --text-color: {{ section.settings.text_color }};
+  }
+  
+  .hero-premium {
+    position: relative;
+    min-height: var(--hero-height, 90vh);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  
+  .hero-premium__background {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  
+  .hero-premium__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: slowZoom 20s ease-in-out infinite alternate;
+  }
+  
+  @keyframes slowZoom {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+  }
+  
+  .hero-premium__gradient-bg {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, 
+      #f8f4f0 0%, 
+      #f0e6da 25%, 
+      #e8d5c4 50%,
+      #d4a574 100%
+    );
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+  }
+  
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  
+  .hero-premium__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(0, 0, 0, var(--overlay-opacity, 0.3)) 0%,
+      rgba(0, 0, 0, calc(var(--overlay-opacity, 0.3) * 0.5)) 50%,
+      rgba(0, 0, 0, var(--overlay-opacity, 0.3)) 100%
+    );
+  }
+  
+  .hero-premium__container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    min-height: var(--hero-height, 90vh);
+  }
+  
+  .hero-premium__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 700px;
+  }
+  
+  .hero-premium__content.center {
+    align-items: center;
+    text-align: center;
+    margin: 0 auto;
+  }
+  
+  .hero-premium__content.right {
+    margin-left: auto;
+    text-align: right;
+    align-items: flex-end;
+  }
+  
+  .hero-premium__badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #d4a574, #c9956c);
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  
+  .hero-premium__title {
+    font-family: var(--font-heading-family, 'Playfair Display', serif);
+    font-size: clamp(40px, 8vw, 72px);
+    font-weight: 700;
+    color: var(--text-color, #fff);
+    margin: 0 0 16px;
+    line-height: 1.1;
+    letter-spacing: -1px;
+  }
+  
+  .hero-premium__subtitle {
+    font-family: var(--font-heading-family, 'Playfair Display', serif);
+    font-size: clamp(20px, 4vw, 32px);
+    color: var(--text-color, #fff);
+    opacity: 0.9;
+    margin: 0 0 20px;
+    font-weight: 400;
+    font-style: italic;
+  }
+  
+  .hero-premium__description {
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--text-color, #fff);
+    opacity: 0.85;
+    margin: 0 0 32px;
+    max-width: 500px;
+  }
+  
+  .hero-premium__buttons {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  
+  .hero-premium__button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 36px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  
+  .hero-premium__button--primary {
+    background: #fff;
+    color: #1a1a1a;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .hero-premium__button--primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  }
+  
+  .hero-premium__button--primary svg {
+    transition: transform 0.3s ease;
+  }
+  
+  .hero-premium__button--primary:hover svg {
+    transform: translateX(5px);
+  }
+  
+  .hero-premium__button--secondary {
+    background: transparent;
+    color: var(--text-color, #fff);
+    border: 2px solid currentColor;
+  }
+  
+  .hero-premium__button--secondary:hover {
+    background: var(--text-color, #fff);
+    color: #1a1a1a;
+  }
+  
+  .hero-premium__trust {
+    display: flex;
+    gap: 32px;
+    margin-top: 48px;
+    flex-wrap: wrap;
+  }
+  
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-color, #fff);
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.9;
+  }
+  
+  .trust-item svg {
+    opacity: 0.8;
+  }
+  
+  .hero-premium__scroll {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 20px;
+    color: var(--text-color, #fff);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  
+  .scroll-indicator {
+    width: 24px;
+    height: 40px;
+    border: 2px solid currentColor;
+    border-radius: 12px;
+    position: relative;
+    opacity: 0.5;
+  }
+  
+  .scroll-indicator__dot {
+    width: 4px;
+    height: 8px;
+    background: currentColor;
+    border-radius: 2px;
+    position: absolute;
+    left: 50%;
+    top: 8px;
+    transform: translateX(-50%);
+    animation: scrollBounce 1.5s ease-in-out infinite;
+  }
+  
+  @keyframes scrollBounce {
+    0%, 100% { top: 8px; opacity: 1; }
+    50% { top: 20px; opacity: 0.5; }
+  }
+  
+  /* Animations */
+  .animate-fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUp 0.8s ease forwards;
+  }
+  
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+  .delay-4 { animation-delay: 0.4s; }
+  .delay-5 { animation-delay: 0.5s; }
+  
+  @keyframes fadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Mobile */
+  @media (max-width: 768px) {
+    .hero-premium {
+      min-height: 80vh;
+    }
+    
+    .hero-premium__container {
+      padding: 40px 20px;
+    }
+    
+    .hero-premium__content {
+      text-align: center;
+      align-items: center;
+    }
+    
+    .hero-premium__content.right {
+      margin-left: 0;
+      text-align: center;
+      align-items: center;
+    }
+    
+    .hero-premium__description {
+      font-size: 16px;
+    }
+    
+    .hero-premium__buttons {
+      flex-direction: column;
+      width: 100%;
+    }
+    
+    .hero-premium__button {
+      width: 100%;
+      justify-content: center;
+      padding: 16px 24px;
+    }
+    
+    .hero-premium__trust {
+      justify-content: center;
+      gap: 20px;
+    }
+    
+    .trust-item {
+      font-size: 12px;
+    }
+    
+    .hero-premium__scroll {
+      display: none;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Hero Premium",
+  "tag": "section",
+  "class": "section-hero-premium",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "range",
+      "id": "hero_height",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "default": 90,
+      "unit": "vh",
+      "label": "Hero Height"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "default": 30,
+      "unit": "%",
+      "label": "Overlay Darkness"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "default": "#ffffff",
+      "label": "Text Color"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "text",
+      "id": "badge",
+      "label": "Badge Text",
+      "default": "Premium Hair Care"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Transform Your Hair"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "With Amino Acid Technology"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Discover professional-grade hair care products that repair, strengthen, and beautify your hair from the inside out."
+    },
+    {
+      "type": "text",
+      "id": "button_1_label",
+      "label": "Button 1 Label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_1_link",
+      "label": "Button 1 Link"
+    },
+    {
+      "type": "text",
+      "id": "button_2_label",
+      "label": "Button 2 Label",
+      "default": "Learn More"
+    },
+    {
+      "type": "url",
+      "id": "button_2_link",
+      "label": "Button 2 Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_badges",
+      "label": "Show Trust Badges",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scroll_indicator",
+      "label": "Show Scroll Indicator",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Premium"
+    }
+  ]
+}
+{% endschema %}
+

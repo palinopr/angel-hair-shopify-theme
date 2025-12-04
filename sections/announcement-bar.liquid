@@ -1,112 +1,596 @@
-{%- style -%}
-  .announcement-bar {
-    background: {{ section.settings.background_color }};
-    color: {{ section.settings.text_color }};
-    padding: 10px 16px;
-    text-align: center;
-    font-size: 0.875rem;
-    font-weight: 500;
-  }
+{% comment %}
+  Animated Announcement Bar
+  Marquee-style scrolling announcements
+{% endcomment %}
 
+{%- unless section.settings.hidden -%}
+<div class="announcement-bar" id="announcement-{{ section.id }}" role="region" aria-label="Announcement">
+  <div class="announcement-bar__container">
+    {% if section.settings.style == 'marquee' %}
+      <div class="announcement-bar__marquee">
+        <div class="announcement-bar__track">
+          {% for i in (1..3) %}
+            {% for block in section.blocks %}
+              <div class="announcement-bar__item" {{ block.shopify_attributes }}>
+                {% if block.settings.icon != 'none' %}
+                  <span class="announcement-bar__icon">
+                    {% case block.settings.icon %}
+                      {% when 'truck' %}
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <rect x="1" y="3" width="15" height="13"></rect>
+                          <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                          <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                          <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                        </svg>
+                      {% when 'percent' %}
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <line x1="19" y1="5" x2="5" y2="19"></line>
+                          <circle cx="6.5" cy="6.5" r="2.5"></circle>
+                          <circle cx="17.5" cy="17.5" r="2.5"></circle>
+                        </svg>
+                      {% when 'gift' %}
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <polyline points="20 12 20 22 4 22 4 12"></polyline>
+                          <rect x="2" y="7" width="20" height="5"></rect>
+                          <line x1="12" y1="22" x2="12" y2="7"></line>
+                          <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+                          <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+                        </svg>
+                      {% when 'star' %}
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                      {% when 'heart' %}
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                      {% when 'sparkle' %}
+                        ✨
+                    {% endcase %}
+                  </span>
+                {% endif %}
+                
+                {% if block.settings.link != blank %}
+                  <a href="{{ block.settings.link }}" class="announcement-bar__link">
+                    {{ block.settings.text }}
+                  </a>
+                {% else %}
+                  <span>{{ block.settings.text }}</span>
+                {% endif %}
+              </div>
+              
+              <span class="announcement-bar__separator">{{ section.settings.separator }}</span>
+            {% endfor %}
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      <div class="announcement-bar__slider">
+        <button class="announcement-bar__nav announcement-bar__nav--prev" aria-label="Previous announcement">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        
+        <div class="announcement-bar__slides">
+          {% for block in section.blocks %}
+            <div class="announcement-bar__slide {% if forloop.first %}active{% endif %}" {{ block.shopify_attributes }}>
+              {% if block.settings.icon != 'none' %}
+                <span class="announcement-bar__icon">
+                  {% case block.settings.icon %}
+                    {% when 'truck' %}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="1" y="3" width="15" height="13"></rect>
+                        <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                        <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                        <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                      </svg>
+                    {% when 'percent' %}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="19" y1="5" x2="5" y2="19"></line>
+                        <circle cx="6.5" cy="6.5" r="2.5"></circle>
+                        <circle cx="17.5" cy="17.5" r="2.5"></circle>
+                      </svg>
+                    {% when 'gift' %}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 12 20 22 4 22 4 12"></polyline>
+                        <rect x="2" y="7" width="20" height="5"></rect>
+                        <line x1="12" y1="22" x2="12" y2="7"></line>
+                        <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+                        <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+                      </svg>
+                    {% when 'star' %}
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                      </svg>
+                    {% when 'heart' %}
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                      </svg>
+                    {% when 'sparkle' %}
+                      ✨
+                  {% endcase %}
+                </span>
+              {% endif %}
+              
+              {% if block.settings.link != blank %}
+                <a href="{{ block.settings.link }}" class="announcement-bar__link">
+                  {{ block.settings.text }}
+                </a>
+              {% else %}
+                <span>{{ block.settings.text }}</span>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+        
+        <button class="announcement-bar__nav announcement-bar__nav--next" aria-label="Next announcement">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+    {% endif %}
+    
+    {% if section.settings.show_close %}
+      <button class="announcement-bar__close" aria-label="Close announcement">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    {% endif %}
+  </div>
+</div>
+{%- endunless -%}
+
+<style>
+  #announcement-{{ section.id }} {
+    --announcement-bg: {{ section.settings.background_color }};
+    --announcement-text: {{ section.settings.text_color }};
+    --announcement-height: {{ section.settings.height }}px;
+  }
+  
+  .announcement-bar {
+    background: var(--announcement-bg, linear-gradient(90deg, #d4a574, #c9956c));
+    color: var(--announcement-text, #fff);
+    height: var(--announcement-height, 44px);
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 100;
+    overflow: hidden;
+  }
+  
   .announcement-bar__container {
-    max-width: var(--page-width);
-    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  /* Marquee Style */
+  .announcement-bar__marquee {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  
+  .announcement-bar__track {
+    display: inline-flex;
+    align-items: center;
+    animation: marquee {{ section.settings.speed }}s linear infinite;
+  }
+  
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-33.333%); }
+  }
+  
+  .announcement-bar__marquee:hover .announcement-bar__track {
+    animation-play-state: paused;
+  }
+  
+  .announcement-bar__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 20px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+  
+  .announcement-bar__separator {
+    color: currentColor;
+    opacity: 0.5;
+    padding: 0 10px;
+  }
+  
+  .announcement-bar__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .announcement-bar__icon svg {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .announcement-bar__link {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+  }
+  
+  .announcement-bar__link:hover {
+    border-bottom-color: currentColor;
+  }
+  
+  /* Slider Style */
+  .announcement-bar__slider {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 0 60px;
+  }
+  
+  .announcement-bar__slides {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+  }
+  
+  .announcement-bar__slide {
+    display: none;
+    align-items: center;
+    justify-content: center;
     gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-align: center;
+    animation: fadeIn 0.3s ease;
   }
-
-  .announcement-bar a {
+  
+  .announcement-bar__slide.active {
+    display: flex;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .announcement-bar__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: inherit;
-    text-decoration: underline;
-    text-underline-offset: 2px;
+    transition: background 0.2s ease;
+    z-index: 2;
   }
-
-  .announcement-bar a:hover {
-    opacity: 0.8;
+  
+  .announcement-bar__nav:hover {
+    background: rgba(255, 255, 255, 0.3);
   }
-
-  .announcement-bar__icon {
-    font-size: 1rem;
+  
+  .announcement-bar__nav svg {
+    width: 16px;
+    height: 16px;
   }
-
-  /* Scrolling animation for long text */
+  
+  .announcement-bar__nav--prev {
+    left: 16px;
+  }
+  
+  .announcement-bar__nav--next {
+    right: 16px;
+  }
+  
+  /* Close Button */
+  .announcement-bar__close {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+  }
+  
+  .announcement-bar__close:hover {
+    opacity: 1;
+  }
+  
+  .announcement-bar__close svg {
+    width: 16px;
+    height: 16px;
+  }
+  
   @media (max-width: 768px) {
-    .announcement-bar__text {
-      animation: announcement-scroll 15s linear infinite;
+    .announcement-bar__item {
+      font-size: 12px;
+      padding: 0 15px;
     }
-
-    @keyframes announcement-scroll {
-      0%, 20% { transform: translateX(0); }
-      80%, 100% { transform: translateX(-100%); }
+    
+    .announcement-bar__slide {
+      font-size: 12px;
+    }
+    
+    .announcement-bar__slider {
+      padding: 0 40px;
+    }
+    
+    .announcement-bar__nav--prev {
+      left: 8px;
+    }
+    
+    .announcement-bar__nav--next {
+      right: 8px;
     }
   }
-{%- endstyle -%}
+</style>
 
-{%- if section.settings.show_announcement -%}
-  <div class="announcement-bar" role="region" aria-label="Announcement">
-    <div class="announcement-bar__container">
-      {%- if section.settings.icon != blank -%}
-        <span class="announcement-bar__icon">{{ section.settings.icon }}</span>
-      {%- endif -%}
+{% if section.settings.style == 'slider' %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const bar = document.getElementById('announcement-{{ section.id }}');
+    if (!bar) return;
+    
+    const slides = bar.querySelectorAll('.announcement-bar__slide');
+    const prevBtn = bar.querySelector('.announcement-bar__nav--prev');
+    const nextBtn = bar.querySelector('.announcement-bar__nav--next');
+    let currentIndex = 0;
+    let interval;
+    
+    function showSlide(index) {
+      slides.forEach(s => s.classList.remove('active'));
+      slides[index].classList.add('active');
+    }
+    
+    function nextSlide() {
+      currentIndex = (currentIndex + 1) % slides.length;
+      showSlide(currentIndex);
+    }
+    
+    function prevSlide() {
+      currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+      showSlide(currentIndex);
+    }
+    
+    function startAutoplay() {
+      interval = setInterval(nextSlide, {{ section.settings.autoplay_speed }}000);
+    }
+    
+    function stopAutoplay() {
+      clearInterval(interval);
+    }
+    
+    if (slides.length > 1) {
+      prevBtn?.addEventListener('click', () => {
+        stopAutoplay();
+        prevSlide();
+        startAutoplay();
+      });
       
-      {%- if section.settings.link != blank -%}
-        <a href="{{ section.settings.link }}" class="announcement-bar__text">
-          {{ section.settings.text }}
-        </a>
-      {%- else -%}
-        <span class="announcement-bar__text">{{ section.settings.text }}</span>
-      {%- endif -%}
-    </div>
-  </div>
-{%- endif -%}
+      nextBtn?.addEventListener('click', () => {
+        stopAutoplay();
+        nextSlide();
+        startAutoplay();
+      });
+      
+      {% if section.settings.autoplay %}
+        startAutoplay();
+      {% endif %}
+    } else {
+      prevBtn?.style.display = 'none';
+      nextBtn?.style.display = 'none';
+    }
+  });
+</script>
+{% endif %}
+
+{% if section.settings.show_close %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const bar = document.getElementById('announcement-{{ section.id }}');
+    const closeBtn = bar?.querySelector('.announcement-bar__close');
+    
+    closeBtn?.addEventListener('click', function() {
+      bar.style.display = 'none';
+      sessionStorage.setItem('announcement-{{ section.id }}-closed', 'true');
+    });
+    
+    // Check if already closed in session
+    if (sessionStorage.getItem('announcement-{{ section.id }}-closed') === 'true') {
+      bar.style.display = 'none';
+    }
+  });
+</script>
+{% endif %}
 
 {% schema %}
 {
-  "name": "Announcement bar",
+  "name": "Announcement Bar",
+  "tag": "section",
+  "class": "section-announcement-bar",
   "settings": [
     {
       "type": "checkbox",
-      "id": "show_announcement",
-      "label": "Show announcement",
-      "default": true
+      "id": "hidden",
+      "label": "Hide Announcement Bar",
+      "default": false
     },
     {
-      "type": "text",
-      "id": "text",
-      "label": "Text",
-      "default": "🌟 Free shipping on orders over $50! 🌟"
-    },
-    {
-      "type": "text",
-      "id": "icon",
-      "label": "Icon (emoji)",
-      "default": ""
-    },
-    {
-      "type": "url",
-      "id": "link",
-      "label": "Link"
+      "type": "select",
+      "id": "style",
+      "label": "Style",
+      "options": [
+        { "value": "marquee", "label": "Scrolling Marquee" },
+        { "value": "slider", "label": "Rotating Slider" }
+      ],
+      "default": "marquee"
     },
     {
       "type": "color",
       "id": "background_color",
-      "label": "Background color",
-      "default": "#C9A962"
+      "label": "Background Color",
+      "default": "#d4a574"
     },
     {
       "type": "color",
       "id": "text_color",
-      "label": "Text color",
-      "default": "#FFFFFF"
+      "label": "Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "min": 36,
+      "max": 60,
+      "step": 2,
+      "default": 44,
+      "unit": "px",
+      "label": "Height"
+    },
+    {
+      "type": "header",
+      "content": "Marquee Settings"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "default": 30,
+      "unit": "s",
+      "label": "Scroll Speed"
+    },
+    {
+      "type": "text",
+      "id": "separator",
+      "label": "Separator",
+      "default": "•"
+    },
+    {
+      "type": "header",
+      "content": "Slider Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "default": 5,
+      "unit": "s",
+      "label": "Autoplay Speed"
+    },
+    {
+      "type": "header",
+      "content": "Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_close",
+      "label": "Show Close Button",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "Announcement",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "truck", "label": "Truck (Shipping)" },
+            { "value": "percent", "label": "Percent (Sale)" },
+            { "value": "gift", "label": "Gift" },
+            { "value": "star", "label": "Star" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "sparkle", "label": "Sparkle" }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Free shipping on orders over $50"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (optional)"
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "Announcement bar"
+      "name": "Announcement Bar",
+      "blocks": [
+        {
+          "type": "announcement",
+          "settings": {
+            "icon": "truck",
+            "text": "Free shipping on orders over $50"
+          }
+        },
+        {
+          "type": "announcement",
+          "settings": {
+            "icon": "sparkle",
+            "text": "Professional-grade hair care for everyone"
+          }
+        },
+        {
+          "type": "announcement",
+          "settings": {
+            "icon": "gift",
+            "text": "Get 10% off your first order with code WELCOME10"
+          }
+        }
+      ]
     }
   ]
 }
 {% endschema %}
-

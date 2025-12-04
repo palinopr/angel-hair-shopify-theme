@@ -149,6 +149,14 @@
       {% render 'whatsapp-button' %}
     {%- endif -%}
 
+    {% comment %} Cart Drawer - Always included {% endcomment %}
+    {% render 'cart-drawer' %}
+    
+    {% comment %} Email Popup - Shown to first-time visitors {% endcomment %}
+    {%- if settings.enable_email_popup -%}
+      {% render 'email-popup' %}
+    {%- endif -%}
+
     <ul hidden>
       <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>
     </ul>

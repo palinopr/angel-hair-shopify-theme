@@ -1,17 +1,241 @@
 {
   "sections": {
-    "welcome": {
-      "type": "welcome",
+    "announcement": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement_1": {
+          "type": "announcement",
+          "settings": {
+            "icon": "truck",
+            "text": "Free shipping on orders over $50"
+          }
+        },
+        "announcement_2": {
+          "type": "announcement",
+          "settings": {
+            "icon": "sparkle",
+            "text": "Professional-grade hair care for everyone"
+          }
+        },
+        "announcement_3": {
+          "type": "announcement",
+          "settings": {
+            "icon": "gift",
+            "text": "Get 10% off your first order with code WELCOME10"
+          }
+        }
+      },
+      "block_order": ["announcement_1", "announcement_2", "announcement_3"],
       "settings": {
-        "subtitle": "Premium Hair Care",
-        "title": "Welcome to Angel Hair",
-        "description": "Discover our professional-grade hair care products enriched with amino acids and natural extracts for healthier, more beautiful hair.",
+        "hidden": false,
+        "style": "marquee",
+        "background_color": "#d4a574",
+        "text_color": "#ffffff",
+        "height": 44,
+        "speed": 30
+      }
+    },
+    "hero": {
+      "type": "hero-premium",
+      "settings": {
+        "hero_height": 85,
+        "overlay_opacity": 25,
+        "text_color": "#ffffff",
+        "text_alignment": "center",
+        "badge": "Premium Hair Care",
+        "title": "Transform Your Hair",
+        "subtitle": "With Amino Acid Technology",
+        "description": "Discover professional-grade hair care products that repair, strengthen, and beautify your hair from the inside out.",
         "button_1_label": "Shop Products",
         "button_1_link": "shopify://collections/all",
-        "button_2_label": "About Us",
-        "button_2_link": "shopify://pages/about-us"
+        "button_2_label": "Learn More",
+        "button_2_link": "shopify://pages/about-us",
+        "show_trust_badges": true,
+        "show_scroll_indicator": true
+      }
+    },
+    "trust_badges": {
+      "type": "trust-badges",
+      "blocks": {
+        "badge_1": {
+          "type": "badge",
+          "settings": {
+            "icon": "shield",
+            "heading": "Professional Grade",
+            "text": "Salon-quality formulas trusted by stylists worldwide."
+          }
+        },
+        "badge_2": {
+          "type": "badge",
+          "settings": {
+            "icon": "leaf",
+            "heading": "Clean Ingredients",
+            "text": "Free from harsh sulfates, parabens, and silicones."
+          }
+        },
+        "badge_3": {
+          "type": "badge",
+          "settings": {
+            "icon": "droplet",
+            "heading": "Amino Acid Technology",
+            "text": "Advanced formulas that repair and strengthen from within."
+          }
+        },
+        "badge_4": {
+          "type": "badge",
+          "settings": {
+            "icon": "heart",
+            "heading": "Cruelty Free",
+            "text": "Never tested on animals. Always kind to nature."
+          }
+        }
+      },
+      "block_order": ["badge_1", "badge_2", "badge_3", "badge_4"],
+      "settings": {
+        "title": "Why Choose Angel Hair?",
+        "icon_color": "#d4a574",
+        "background_color": "#faf8f5"
+      }
+    },
+    "featured_collection": {
+      "type": "featured-products",
+      "settings": {
+        "title": "Our Bestsellers",
+        "subtitle": "Discover our most loved products",
+        "collection": "all",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "show_view_all": true,
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true
+      }
+    },
+    "category_grid": {
+      "type": "category-grid",
+      "blocks": {
+        "category_1": {
+          "type": "category",
+          "settings": {
+            "title": "Shampoos",
+            "product_count": "4"
+          }
+        },
+        "category_2": {
+          "type": "category",
+          "settings": {
+            "title": "Conditioners",
+            "product_count": "3"
+          }
+        },
+        "category_3": {
+          "type": "category",
+          "settings": {
+            "title": "Treatments",
+            "product_count": "5"
+          }
+        },
+        "category_4": {
+          "type": "category",
+          "settings": {
+            "title": "Bundles",
+            "product_count": "3"
+          }
+        }
+      },
+      "block_order": ["category_1", "category_2", "category_3", "category_4"],
+      "settings": {
+        "title": "Shop by Category",
+        "subtitle": "Find the perfect products for your hair care routine",
+        "background_color": "#ffffff",
+        "show_view_all": true,
+        "view_all_link": "shopify://collections"
+      }
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "blocks": {
+        "testimonial_1": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "quote": "My hair has never looked better! The amino acid shampoo has completely transformed my dry, damaged hair into silky smooth locks.",
+            "name": "Maria G.",
+            "verified": true,
+            "product": "Amino Acid Shampoo"
+          }
+        },
+        "testimonial_2": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "quote": "I've tried so many products but nothing compares to Angel Hair. My stylist even asked what I've been using!",
+            "name": "Jennifer L.",
+            "verified": true,
+            "product": "Deep Repair Treatment"
+          }
+        },
+        "testimonial_3": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "quote": "Professional quality at an affordable price. The serum leaves my hair so shiny and healthy. I'm officially a lifelong customer.",
+            "name": "Ashley P.",
+            "verified": true,
+            "product": "Hair Serum"
+          }
+        }
+      },
+      "block_order": ["testimonial_1", "testimonial_2", "testimonial_3"],
+      "settings": {
+        "badge": "Customer Love",
+        "title": "What Our Customers Say",
+        "subtitle": "Real reviews from real customers",
+        "background_color": "#faf8f5",
+        "accent_color": "#d4a574",
+        "show_reviews_link": false
+      }
+    },
+    "faq": {
+      "type": "faq-accordion",
+      "blocks": {
+        "faq_1": {
+          "type": "faq",
+          "settings": {
+            "question": "Are Angel Hair products safe for color-treated hair?",
+            "answer": "Yes! All of our products are formulated to be safe for color-treated hair. Our sulfate-free formulas help preserve your color while nourishing your hair."
+          }
+        },
+        "faq_2": {
+          "type": "faq",
+          "settings": {
+            "question": "How often should I use the treatment products?",
+            "answer": "For best results, we recommend using our treatment products 1-2 times per week. However, if your hair is severely damaged, you can use them more frequently."
+          }
+        },
+        "faq_3": {
+          "type": "faq",
+          "settings": {
+            "question": "What makes amino acid formulas special?",
+            "answer": "Amino acids are the building blocks of protein, and hair is primarily made of keratin protein. Our amino acid formulas help repair and strengthen hair from within, filling in gaps in the hair cuticle for smoother, healthier hair."
+          }
+        }
+      },
+      "block_order": ["faq_1", "faq_2", "faq_3"],
+      "settings": {
+        "title": "Frequently Asked Questions",
+        "subtitle": "Got questions? We've got answers.",
+        "show_contact_link": true
       }
     }
   },
-  "order": ["welcome"]
+  "order": [
+    "announcement",
+    "hero",
+    "trust_badges",
+    "featured_collection",
+    "category_grid",
+    "testimonials",
+    "faq"
+  ]
 }

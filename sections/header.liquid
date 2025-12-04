@@ -303,16 +303,16 @@
         </svg>
       </a>
 
-      <a href="/cart" class="header__action" aria-label="Cart" data-cart-toggle>
+      <button type="button" class="header__action" aria-label="Cart" onclick="openCartDrawer()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
           <path d="M3 6h18"></path>
           <path d="M16 10a4 4 0 0 1-8 0"></path>
         </svg>
-        <span class="header__cart-count {% if cart.item_count == 0 %}hidden{% endif %}" data-cart-count>
+        <span class="header__cart-count cart-count {% if cart.item_count == 0 %}hidden{% endif %}" data-cart-count>
           {{ cart.item_count }}
         </span>
-      </a>
+      </button>
     </div>
   </div>
 </sticky-header>
