@@ -1,5 +1,5 @@
 {% comment %}
-  Angel Hair Theme - Main Collection Section
+  Angel Hair Theme - Main Collection Section (Matching Store Design)
 {% endcomment %}
 
 <style>
@@ -11,87 +11,186 @@
     max-width: var(--page-width);
     margin: 0 auto;
     padding: 0 var(--spacing-lg);
-  }
-
-  .collection-main__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-lg);
-    padding-bottom: var(--spacing-md);
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .collection-main__count {
-    color: var(--color-text-light);
-    font-size: 0.875rem;
-  }
-
-  .collection-main__sort {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-  }
-
-  .collection-main__sort-label {
-    font-size: 0.875rem;
-    font-weight: 500;
-  }
-
-  .collection-main__sort-select {
-    padding: 0.5rem 2rem 0.5rem 0.75rem;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    font-family: inherit;
-    font-size: 0.875rem;
-    background: white;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232C2C2C' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.5rem center;
-    cursor: pointer;
-  }
-
-  .collection-main__grid {
     display: grid;
-    grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
-    gap: var(--spacing-lg);
+    grid-template-columns: 240px 1fr;
+    gap: var(--spacing-xl);
   }
 
   @media (max-width: 1024px) {
-    .collection-main__grid {
+    .collection-main__container {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Sidebar */
+  .collection-sidebar {
+    position: sticky;
+    top: 120px;
+    align-self: start;
+  }
+
+  @media (max-width: 1024px) {
+    .collection-sidebar {
+      position: static;
+      display: none;
+    }
+  }
+
+  .collection-sidebar__title {
+    font-family: var(--font-heading-family);
+    font-size: 28px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #1a1a1a;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #1a1a1a;
+  }
+
+  .collection-sidebar__section-title {
+    font-family: var(--font-heading-family);
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+  }
+
+  .collection-sidebar__categories {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .collection-sidebar__category {
+    display: block;
+    padding: 10px 16px;
+    background: #e8e4df;
+    color: #1a1a1a;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .collection-sidebar__category:hover,
+  .collection-sidebar__category.is-active {
+    background: #1a1a1a;
+    color: #fff;
+  }
+
+  /* Product Grid */
+  .collection-products {
+    min-width: 0;
+  }
+
+  .collection-products__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  @media (max-width: 1024px) {
+    .collection-products__grid {
       grid-template-columns: repeat(3, 1fr);
     }
   }
 
   @media (max-width: 768px) {
-    .collection-main__grid {
+    .collection-products__grid {
       grid-template-columns: repeat(2, 1fr);
-      gap: var(--spacing-md);
+      gap: 16px;
     }
   }
 
   @media (max-width: 480px) {
-    .collection-main__grid {
+    .collection-products__grid {
       grid-template-columns: 1fr;
     }
   }
 
-  .collection-main__empty {
+  .collection-products__empty {
     grid-column: 1 / -1;
     text-align: center;
     padding: var(--spacing-xxl);
   }
 
-  .collection-main__empty-title {
-    margin-bottom: var(--spacing-sm);
+  /* Mobile Filters */
+  .collection-mobile-filters {
+    display: none;
+    margin-bottom: 20px;
   }
 
-  .collection-main__empty-text {
-    color: var(--color-text-light);
-    margin-bottom: var(--spacing-lg);
+  @media (max-width: 1024px) {
+    .collection-mobile-filters {
+      display: block;
+    }
+  }
+
+  .collection-mobile-filters__title {
+    font-family: var(--font-heading-family);
+    font-size: 24px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+  }
+
+  .collection-mobile-filters__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 14px 16px;
+    background: #e8e4df;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a1a;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .collection-mobile-filters__toggle svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.2s ease;
+  }
+
+  .collection-mobile-filters__toggle.is-open svg {
+    transform: rotate(180deg);
+  }
+
+  .collection-mobile-filters__dropdown {
+    display: none;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-top: none;
+  }
+
+  .collection-mobile-filters__dropdown.is-open {
+    display: block;
+  }
+
+  .collection-mobile-filters__link {
+    display: block;
+    padding: 12px 16px;
+    color: #1a1a1a;
+    font-size: 14px;
+    text-decoration: none;
+    border-bottom: 1px solid #f5f5f5;
+  }
+
+  .collection-mobile-filters__link:hover,
+  .collection-mobile-filters__link.is-active {
+    background: #f9f9f9;
+    color: #666;
   }
 
   /* Pagination */
@@ -99,29 +198,31 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: var(--spacing-xs);
-    margin-top: var(--spacing-xl);
+    gap: 8px;
+    margin-top: 40px;
+    grid-column: 1 / -1;
   }
 
   .collection-pagination__link {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 44px;
-    height: 44px;
-    padding: 0 var(--spacing-sm);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    color: var(--color-text);
+    min-width: 40px;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid #e5e5e5;
+    color: #1a1a1a;
+    font-size: 14px;
     font-weight: 500;
-    transition: all var(--transition-fast);
+    text-decoration: none;
+    transition: all 0.2s ease;
   }
 
   .collection-pagination__link:hover,
   .collection-pagination__link.is-current {
-    background: var(--color-gold);
-    border-color: var(--color-gold);
-    color: white;
+    background: #1a1a1a;
+    border-color: #1a1a1a;
+    color: #fff;
   }
 
   .collection-pagination__link.is-disabled {
@@ -130,179 +231,138 @@
   }
 
   .collection-pagination__link svg {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
   }
 </style>
 
-<section class="collection-main" data-section-id="{{ section.id }}">
+<section class="collection-main">
   <div class="collection-main__container">
-    <header class="collection-main__header">
-      <span class="collection-main__count">
-        {{ collection.products_count }} 
-        {%- if collection.products_count == 1 -%}product{%- else -%}products{%- endif -%}
-      </span>
+    <!-- Sidebar -->
+    <aside class="collection-sidebar">
+      <h1 class="collection-sidebar__title">STORE</h1>
+      
+      <h2 class="collection-sidebar__section-title">Categories</h2>
+      <nav class="collection-sidebar__categories">
+        <a href="/collections/all" class="collection-sidebar__category {% if collection.handle == 'all' %}is-active{% endif %}">
+          All
+        </a>
+        {%- for link in linklists.main-menu.links -%}
+          {%- if link.url contains '/collections/' -%}
+            <a href="{{ link.url }}" class="collection-sidebar__category {% if link.active %}is-active{% endif %}">
+              {{ link.title }}
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+        
+        {%- comment %} Fallback categories if no menu {% endcomment -%}
+        {%- if linklists.main-menu.links.size == 0 -%}
+          <a href="/collections/clarifying-shampoo" class="collection-sidebar__category">CLARIFYING-SHAMPOO</a>
+          <a href="/collections/keratina" class="collection-sidebar__category">KERATINA</a>
+          <a href="/collections/mask" class="collection-sidebar__category">MASK</a>
+          <a href="/collections/conditioner" class="collection-sidebar__category">CONDITIONER</a>
+          <a href="/collections/shampoo-post-care" class="collection-sidebar__category">SHAMPOO POST-CARE</a>
+          <a href="/collections/serum" class="collection-sidebar__category">SERUM</a>
+        {%- endif -%}
+      </nav>
+    </aside>
 
-      {%- if section.settings.enable_sorting -%}
-        <div class="collection-main__sort">
-          <label for="SortBy" class="collection-main__sort-label">Sort by:</label>
-          <select id="SortBy" class="collection-main__sort-select" data-sort-by>
-            {%- for option in collection.sort_options -%}
-              <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>
-                {{ option.name }}
-              </option>
+    <!-- Products -->
+    <div class="collection-products">
+      <!-- Mobile Filters -->
+      <div class="collection-mobile-filters">
+        <h1 class="collection-mobile-filters__title">STORE</h1>
+        <button class="collection-mobile-filters__toggle" data-filter-toggle>
+          <span>Categories</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="collection-mobile-filters__dropdown" data-filter-dropdown>
+          <a href="/collections/all" class="collection-mobile-filters__link {% if collection.handle == 'all' %}is-active{% endif %}">All</a>
+          {%- for link in linklists.main-menu.links -%}
+            {%- if link.url contains '/collections/' -%}
+              <a href="{{ link.url }}" class="collection-mobile-filters__link {% if link.active %}is-active{% endif %}">
+                {{ link.title }}
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      {%- if collection.products.size > 0 -%}
+        <div class="collection-products__grid">
+          {%- paginate collection.products by section.settings.products_per_page -%}
+            {%- for product in collection.products -%}
+              {% render 'product-card', product: product, show_vendor: true, show_rating: true %}
             {%- endfor -%}
-          </select>
+
+            {%- if paginate.pages > 1 -%}
+              <nav class="collection-pagination">
+                {%- if paginate.previous -%}
+                  <a href="{{ paginate.previous.url }}" class="collection-pagination__link" aria-label="Previous page">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                  </a>
+                {%- else -%}
+                  <span class="collection-pagination__link is-disabled">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                  </span>
+                {%- endif -%}
+
+                {%- for part in paginate.parts -%}
+                  {%- if part.is_link -%}
+                    <a href="{{ part.url }}" class="collection-pagination__link">{{ part.title }}</a>
+                  {%- else -%}
+                    {%- if part.title == paginate.current_page -%}
+                      <span class="collection-pagination__link is-current">{{ part.title }}</span>
+                    {%- else -%}
+                      <span class="collection-pagination__link">{{ part.title }}</span>
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- endfor -%}
+
+                {%- if paginate.next -%}
+                  <a href="{{ paginate.next.url }}" class="collection-pagination__link" aria-label="Next page">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                  </a>
+                {%- else -%}
+                  <span class="collection-pagination__link is-disabled">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                  </span>
+                {%- endif -%}
+              </nav>
+            {%- endif -%}
+          {%- endpaginate -%}
+        </div>
+      {%- else -%}
+        <div class="collection-products__empty">
+          <h2>No products found</h2>
+          <p style="color: #666; margin: 16px 0 24px;">This collection doesn't have any products yet.</p>
+          <a href="/collections/all" class="button button--primary">Browse All Products</a>
         </div>
       {%- endif -%}
-    </header>
-
-    {%- if collection.products.size > 0 -%}
-      <div class="collection-main__grid">
-        {%- paginate collection.products by section.settings.products_per_page -%}
-          {%- for product in collection.products -%}
-            <div class="product-card" data-animate="fade-up" style="animation-delay: {{ forloop.index | times: 50 }}ms;">
-              <div class="product-card__media">
-                <a href="{{ product.url }}">
-                  {%- if product.featured_media -%}
-                    <img 
-                      src="{{ product.featured_media | image_url: width: 600 }}"
-                      srcset="{{ product.featured_media | image_url: width: 300 }} 300w,
-                              {{ product.featured_media | image_url: width: 600 }} 600w"
-                      sizes="(max-width: 640px) 50vw, 25vw"
-                      alt="{{ product.featured_media.alt | default: product.title | escape }}"
-                      class="product-card__image"
-                      loading="lazy"
-                    >
-                    {%- if product.media[1] and section.settings.show_secondary_image -%}
-                      <img 
-                        src="{{ product.media[1] | image_url: width: 600 }}"
-                        alt="{{ product.media[1].alt | default: product.title | escape }}"
-                        class="product-card__image product-card__image--secondary"
-                        loading="lazy"
-                      >
-                    {%- endif -%}
-                  {%- else -%}
-                    {{ 'product-1' | placeholder_svg_tag: 'product-card__image placeholder' }}
-                  {%- endif -%}
-                </a>
-
-                <div class="product-card__badges">
-                  {%- if product.compare_at_price > product.price -%}
-                    <span class="badge badge--sale">Sale</span>
-                  {%- endif -%}
-                  {%- if product.available == false -%}
-                    <span class="badge badge--soldout">Sold Out</span>
-                  {%- endif -%}
-                </div>
-
-                {%- if section.settings.enable_quick_add and product.available -%}
-                  {%- if product.variants.size == 1 -%}
-                    <product-form>
-                      <form action="/cart/add" method="post">
-                        <input type="hidden" name="id" value="{{ product.variants.first.id }}">
-                        <input type="hidden" name="quantity" value="1">
-                        <button type="submit" class="button button--primary button--quick-view">
-                          Quick Add
-                        </button>
-                      </form>
-                    </product-form>
-                  {%- else -%}
-                    <a href="{{ product.url }}" class="button button--secondary button--quick-view">
-                      Select Options
-                    </a>
-                  {%- endif -%}
-                {%- endif -%}
-              </div>
-
-              <div class="product-card__content">
-                {%- if section.settings.show_vendor -%}
-                  <span class="product-card__vendor">{{ product.vendor }}</span>
-                {%- endif -%}
-
-                <h3 class="product-card__title">
-                  <a href="{{ product.url }}">{{ product.title }}</a>
-                </h3>
-
-                {%- if section.settings.show_rating -%}
-                  <div class="product-card__rating">
-                    {% render 'star-rating', rating: 5 %}
-                  </div>
-                {%- endif -%}
-
-                <div class="product-card__price price">
-                  {%- if product.compare_at_price > product.price -%}
-                    <span class="price__sale">{{ product.price | money }}</span>
-                    <span class="price__compare">{{ product.compare_at_price | money }}</span>
-                  {%- else -%}
-                    <span class="price__regular">{{ product.price | money }}</span>
-                  {%- endif -%}
-                </div>
-              </div>
-            </div>
-          {%- endfor -%}
-
-          {%- if paginate.pages > 1 -%}
-            <nav class="collection-pagination" style="grid-column: 1 / -1;">
-              {%- if paginate.previous -%}
-                <a href="{{ paginate.previous.url }}" class="collection-pagination__link" aria-label="Previous page">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                  </svg>
-                </a>
-              {%- else -%}
-                <span class="collection-pagination__link is-disabled">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                  </svg>
-                </span>
-              {%- endif -%}
-
-              {%- for part in paginate.parts -%}
-                {%- if part.is_link -%}
-                  <a href="{{ part.url }}" class="collection-pagination__link">{{ part.title }}</a>
-                {%- else -%}
-                  {%- if part.title == paginate.current_page -%}
-                    <span class="collection-pagination__link is-current">{{ part.title }}</span>
-                  {%- else -%}
-                    <span class="collection-pagination__link">{{ part.title }}</span>
-                  {%- endif -%}
-                {%- endif -%}
-              {%- endfor -%}
-
-              {%- if paginate.next -%}
-                <a href="{{ paginate.next.url }}" class="collection-pagination__link" aria-label="Next page">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                  </svg>
-                </a>
-              {%- else -%}
-                <span class="collection-pagination__link is-disabled">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                  </svg>
-                </span>
-              {%- endif -%}
-            </nav>
-          {%- endif -%}
-        {%- endpaginate -%}
-      </div>
-    {%- else -%}
-      <div class="collection-main__empty">
-        <h2 class="collection-main__empty-title">No products found</h2>
-        <p class="collection-main__empty-text">This collection doesn't have any products yet.</p>
-        <a href="/collections/all" class="button button--primary">Browse All Products</a>
-      </div>
-    {%- endif -%}
+    </div>
   </div>
 </section>
 
 <script>
-  // Sort functionality
-  document.querySelector('[data-sort-by]')?.addEventListener('change', function() {
-    const url = new URL(window.location.href);
-    url.searchParams.set('sort_by', this.value);
-    window.location.href = url.toString();
+  document.addEventListener('DOMContentLoaded', function() {
+    // Mobile filter toggle
+    const filterToggle = document.querySelector('[data-filter-toggle]');
+    const filterDropdown = document.querySelector('[data-filter-dropdown]');
+    
+    filterToggle?.addEventListener('click', function() {
+      this.classList.toggle('is-open');
+      filterDropdown?.classList.toggle('is-open');
+    });
   });
 </script>
 
@@ -315,69 +375,24 @@
     {
       "type": "range",
       "id": "products_per_page",
-      "min": 8,
+      "min": 6,
       "max": 24,
-      "step": 4,
-      "default": 12,
+      "step": 3,
+      "default": 9,
       "label": "Products Per Page"
-    },
-    {
-      "type": "range",
-      "id": "columns_desktop",
-      "min": 2,
-      "max": 5,
-      "step": 1,
-      "default": 4,
-      "label": "Columns (Desktop)"
-    },
-    {
-      "type": "select",
-      "id": "image_ratio",
-      "label": "Image Ratio",
-      "options": [
-        { "value": "adapt", "label": "Adapt to Image" },
-        { "value": "square", "label": "Square" },
-        { "value": "portrait", "label": "Portrait" }
-      ],
-      "default": "square"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_secondary_image",
-      "label": "Show Secondary Image on Hover",
-      "default": true
     },
     {
       "type": "checkbox",
       "id": "show_vendor",
       "label": "Show Vendor",
-      "default": false
+      "default": true
     },
     {
       "type": "checkbox",
       "id": "show_rating",
       "label": "Show Rating",
       "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_quick_add",
-      "label": "Enable Quick Add",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_filtering",
-      "label": "Enable Filtering",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_sorting",
-      "label": "Enable Sorting",
-      "default": true
     }
   ]
 }
 {% endschema %}
-

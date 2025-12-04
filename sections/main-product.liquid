@@ -335,27 +335,8 @@
     margin-bottom: var(--spacing-lg);
   }
 
-  /* Perfect For Tags */
-  .product-tags {
-    margin-bottom: var(--spacing-lg);
-  }
-
-  .product-tags__label {
-    font-size: 0.688rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: var(--color-text-light);
-    margin-bottom: var(--spacing-sm);
-  }
-
-  .product-tags__list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .product-tags__item {
+  /* Variant buttons */
+  .product-variant-btn {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
@@ -367,77 +348,13 @@
     font-weight: 600;
     color: var(--color-text);
     transition: all 0.2s ease;
+    cursor: pointer;
   }
 
-  .product-tags__item:hover {
+  .product-variant-btn:hover,
+  .product-variant-btn.is-selected {
     border-color: var(--color-gold);
     background: var(--color-gold-light);
-  }
-
-  .product-tags__item svg {
-    width: 14px;
-    height: 14px;
-    color: var(--color-gold);
-  }
-
-  /* Key Benefits - Premium Card */
-  .product-benefits {
-    background: linear-gradient(145deg, #faf9f7 0%, #f5f3f0 100%);
-    border-radius: 16px;
-    padding: var(--spacing-lg);
-    margin-bottom: var(--spacing-lg);
-  }
-
-  .product-benefits__title {
-    font-size: 0.688rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: var(--color-text-light);
-    margin-bottom: var(--spacing-md);
-  }
-
-  .product-benefits__grid {
-    display: grid;
-    gap: var(--spacing-sm);
-  }
-
-  .product-benefits__item {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--spacing-sm);
-    padding: 0.75rem;
-    background: white;
-    border-radius: 10px;
-    transition: all 0.2s ease;
-  }
-
-  .product-benefits__item:hover {
-    transform: translateX(4px);
-  }
-
-  .product-benefits__icon {
-    flex-shrink: 0;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #059669 0%, #047857 100%);
-    border-radius: 50%;
-  }
-
-  .product-benefits__icon svg {
-    width: 12px;
-    height: 12px;
-    color: white;
-  }
-
-  .product-benefits__text {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--color-text);
-    line-height: 1.5;
   }
 
   /* ========== ADD TO CART SECTION - Clean Style ========== */
@@ -988,89 +905,6 @@
           </p>
         {%- endif -%}
 
-        <!-- Perfect For Tags -->
-        {%- if section.settings.show_perfect_for -%}
-          <div class="product-tags">
-            <span class="product-tags__label">Perfect For</span>
-            <div class="product-tags__list">
-              {%- assign tags_list = section.settings.perfect_for_tags | split: ',' -%}
-              {%- for tag in tags_list -%}
-                <span class="product-tags__item">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  {{ tag | strip }}
-                </span>
-              {%- endfor -%}
-              {%- if tags_list.size == 0 -%}
-                <span class="product-tags__item">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  All Hair Types
-                </span>
-                <span class="product-tags__item">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  Damaged Hair
-                </span>
-                <span class="product-tags__item">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  Color-Treated
-                </span>
-              {%- endif -%}
-            </div>
-          </div>
-        {%- endif -%}
-
-        <!-- Key Benefits -->
-        {%- if section.settings.show_benefits -%}
-          <div class="product-benefits">
-            <span class="product-benefits__title">Key Benefits</span>
-            <div class="product-benefits__grid">
-              {%- assign benefits_list = section.settings.benefits | split: '|' -%}
-              {%- for benefit in benefits_list -%}
-                <div class="product-benefits__item">
-                  <div class="product-benefits__icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  </div>
-                  <span class="product-benefits__text">{{ benefit | strip }}</span>
-                </div>
-              {%- endfor -%}
-              {%- if benefits_list.size == 0 -%}
-                <div class="product-benefits__item">
-                  <div class="product-benefits__icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  </div>
-                  <span class="product-benefits__text">Strengthens and repairs damaged hair</span>
-                </div>
-                <div class="product-benefits__item">
-                  <div class="product-benefits__icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  </div>
-                  <span class="product-benefits__text">Deep hydration and nourishment</span>
-                </div>
-                <div class="product-benefits__item">
-                  <div class="product-benefits__icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  </div>
-                  <span class="product-benefits__text">Professional salon-quality results</span>
-                </div>
-              {%- endif -%}
-            </div>
-          </div>
-        {%- endif -%}
 
         <!-- ========== PURCHASE CARD ========== -->
         <div class="product-purchase">
@@ -1089,8 +923,7 @@
                         {%- for value in option.values -%}
                           <button 
                             type="button" 
-                            class="product-tags__item {% if option.selected_value == value %}is-selected{% endif %}"
-                            style="{% if option.selected_value == value %}border-color: var(--color-gold); background: var(--color-gold-light);{% endif %}"
+                            class="product-variant-btn {% if option.selected_value == value %}is-selected{% endif %}"
                             data-option="{{ option.name }}"
                             data-value="{{ value }}"
                           >
@@ -1457,40 +1290,6 @@ document.addEventListener('DOMContentLoaded', function() {
       "id": "show_short_description",
       "label": "Show short description",
       "default": true
-    },
-    {
-      "type": "header",
-      "content": "Perfect For Section"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_perfect_for",
-      "label": "Show 'Perfect For' tags",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "perfect_for_tags",
-      "label": "Tags (comma separated)",
-      "default": "All Hair Types, Damaged Hair, Color-Treated",
-      "info": "e.g., Dry Hair, Oily Scalp, Fine Hair"
-    },
-    {
-      "type": "header",
-      "content": "Key Benefits"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_benefits",
-      "label": "Show key benefits",
-      "default": true
-    },
-    {
-      "type": "textarea",
-      "id": "benefits",
-      "label": "Benefits (separate with |)",
-      "default": "Strengthens and repairs damaged hair|Provides deep hydration and nourishment|Leaves hair soft, shiny, and manageable|Professional salon-quality results at home",
-      "info": "Use | to separate benefits"
     },
     {
       "type": "header",
