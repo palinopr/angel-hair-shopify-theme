@@ -1,0 +1,77 @@
+{% comment %}
+  Angel Hair Theme - Related Product Card Snippet
+  Used in related products carousel
+{% endcomment %}
+
+<article class="related-product-card">
+  {%- if product.compare_at_price > product.price -%}
+    {%- assign savings = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -%}
+    <span class="related-product-card__badge related-product-card__badge--sale">{{ savings }}% Off</span>
+  {%- elsif product.available == false -%}
+    <span class="related-product-card__badge" style="background: #666;">Sold Out</span>
+  {%- endif -%}
+
+  <div class="related-product-card__image-wrap">
+    <a href="{{ product.url }}">
+      {%- if product.featured_image -%}
+        <img 
+          class="related-product-card__image"
+          src="{{ product.featured_image | image_url: width: 500 }}"
+          alt="{{ product.featured_image.alt | default: product.title | escape }}"
+          loading="lazy"
+          width="500"
+          height="500"
+        >
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'related-product-card__image' }}
+      {%- endif -%}
+    </a>
+
+    {%- if product.available -%}
+      <div class="related-product-card__quick-add">
+        {%- if product.variants.size == 1 -%}
+          <form action="/cart/add" method="post">
+            <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit" class="button button--primary">
+              Quick Add
+            </button>
+          </form>
+        {%- else -%}
+          <a href="{{ product.url }}" class="button button--primary">
+            Choose Option
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="related-product-card__content">
+    {%- if product.vendor != blank -%}
+      <span class="related-product-card__vendor">{{ product.vendor }}</span>
+    {%- endif -%}
+
+    <h3 class="related-product-card__title">
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h3>
+
+    <div class="related-product-card__rating">
+      <div class="related-product-card__rating-stars">
+        {%- for i in (1..5) -%}
+          <svg viewBox="0 0 24 24">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="currentColor"/>
+          </svg>
+        {%- endfor -%}
+      </div>
+      <span class="related-product-card__rating-count">({{ product.metafields.reviews.rating_count | default: 24 }})</span>
+    </div>
+
+    <div class="related-product-card__price">
+      <span class="related-product-card__price-current">{{ product.price | money }}</span>
+      {%- if product.compare_at_price > product.price -%}
+        <span class="related-product-card__price-compare">{{ product.compare_at_price | money }}</span>
+      {%- endif -%}
+    </div>
+  </div>
+</article>
+

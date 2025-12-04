@@ -1,36 +1,57 @@
 {% comment %}
-  Angel Hair Theme - Main Product Section
+  Angel Hair Theme - Premium Product Page
+  Inspired by: Glossier, Olaplex, OUAI
 {% endcomment %}
 
 <style>
-  .product-main {
-    padding: var(--spacing-xl) 0 var(--spacing-xxl);
+  .product-page {
+    padding: 0 0 var(--spacing-xxl);
   }
 
-  .product-main__container {
+  .product-page__container {
     max-width: var(--page-width);
     margin: 0 auto;
     padding: 0 var(--spacing-lg);
   }
 
-  .product-main__grid {
+  .product-page__breadcrumb {
+    padding: var(--spacing-md) 0;
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+  }
+
+  .product-page__breadcrumb a {
+    color: var(--color-text-light);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .product-page__breadcrumb a:hover {
+    color: var(--color-gold);
+  }
+
+  .product-page__breadcrumb span {
+    margin: 0 0.5rem;
+  }
+
+  .product-page__grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.2fr 1fr;
     gap: var(--spacing-xxl);
     align-items: start;
   }
 
   @media (max-width: 1024px) {
-    .product-main__grid {
+    .product-page__grid {
       grid-template-columns: 1fr;
       gap: var(--spacing-xl);
     }
   }
 
-  /* Media Gallery */
+  /* ========== GALLERY ========== */
   .product-gallery {
     position: sticky;
-    top: calc(var(--header-height) + var(--spacing-lg));
+    top: calc(var(--header-height, 80px) + var(--spacing-lg));
   }
 
   @media (max-width: 1024px) {
@@ -39,88 +60,216 @@
     }
   }
 
-  .product-gallery__main {
-    position: relative;
-    margin-bottom: var(--spacing-md);
-    border-radius: var(--radius-xl);
-    overflow: hidden;
-    background: var(--color-cream);
+  .product-gallery__badges {
+    position: absolute;
+    top: var(--spacing-md);
+    left: var(--spacing-md);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
   }
 
-  .product-gallery__image {
+  .product-gallery__badge {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: var(--radius-full);
+  }
+
+  .product-gallery__badge--bestseller {
+    background: var(--color-gold);
+    color: white;
+  }
+
+  .product-gallery__badge--sale {
+    background: #e53935;
+    color: white;
+  }
+
+  .product-gallery__badge--new {
+    background: #00897b;
+    color: white;
+  }
+
+  .product-gallery__main {
+    position: relative;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    background: linear-gradient(135deg, #faf9f7 0%, #f5f3f0 100%);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .product-gallery__main .swiper {
+    width: 100%;
+  }
+
+  .product-gallery__main .swiper-slide {
+    cursor: zoom-in;
+  }
+
+  .product-gallery__main .swiper-slide img {
     width: 100%;
     aspect-ratio: 1;
     object-fit: cover;
+    transition: transform 0.3s ease;
   }
 
-  .product-gallery__thumbnails {
+  .product-gallery__main .swiper-slide:hover img {
+    transform: scale(1.05);
+  }
+
+  .product-gallery__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    cursor: pointer;
+    z-index: 10;
     display: flex;
-    gap: var(--spacing-sm);
-    overflow-x: auto;
-    padding-bottom: var(--spacing-xs);
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
   }
 
-  .product-gallery__thumbnail {
-    flex: 0 0 80px;
-    width: 80px;
+  .product-gallery__nav:hover {
+    background: var(--color-gold);
+    color: white;
+  }
+
+  .product-gallery__nav--prev {
+    left: var(--spacing-md);
+  }
+
+  .product-gallery__nav--next {
+    right: var(--spacing-md);
+  }
+
+  .product-gallery__nav svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .product-gallery__thumbs {
+    padding: 0 var(--spacing-xs);
+  }
+
+  .product-gallery__thumbs .swiper-slide {
+    width: 80px !important;
     height: 80px;
     border-radius: var(--radius-md);
     overflow: hidden;
     border: 2px solid transparent;
     cursor: pointer;
-    transition: border-color var(--transition-fast);
+    transition: all var(--transition-fast);
+    opacity: 0.6;
   }
 
-  .product-gallery__thumbnail.is-active,
-  .product-gallery__thumbnail:hover {
+  .product-gallery__thumbs .swiper-slide-thumb-active {
     border-color: var(--color-gold);
+    opacity: 1;
   }
 
-  .product-gallery__thumbnail img {
+  .product-gallery__thumbs .swiper-slide:hover {
+    opacity: 1;
+  }
+
+  .product-gallery__thumbs .swiper-slide img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  /* Product Info */
+  /* ========== PRODUCT INFO ========== */
   .product-info {
-    padding: var(--spacing-md) 0;
+    padding: var(--spacing-lg) 0;
   }
 
   .product-info__vendor {
-    font-size: 0.875rem;
-    font-weight: 600;
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
     color: var(--color-gold);
     margin-bottom: var(--spacing-sm);
+    padding: 0.25rem 0.75rem;
+    background: var(--color-gold-light);
+    border-radius: var(--radius-full);
+  }
+
+  .product-info__tagline {
+    font-size: 1rem;
+    color: var(--color-text-light);
+    margin-bottom: var(--spacing-xs);
+    font-style: italic;
   }
 
   .product-info__title {
-    font-size: 2rem;
-    margin-bottom: var(--spacing-sm);
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: var(--spacing-md);
+    color: var(--color-text);
+  }
+
+  @media (max-width: 640px) {
+    .product-info__title {
+      font-size: 1.75rem;
+    }
   }
 
   .product-info__rating {
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-md);
-  }
-
-  .product-info__price {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
     margin-bottom: var(--spacing-lg);
     padding-bottom: var(--spacing-lg);
     border-bottom: 1px solid var(--color-border);
   }
 
+  .product-info__rating-stars {
+    display: flex;
+    gap: 2px;
+  }
+
+  .product-info__rating-stars svg {
+    width: 18px;
+    height: 18px;
+    fill: var(--color-gold);
+  }
+
+  .product-info__rating-count {
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .product-info__rating-count:hover {
+    color: var(--color-gold);
+  }
+
+  /* Price */
+  .product-info__price {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+  }
+
   .product-info__price-current {
     font-family: var(--font-heading-family);
     font-size: 2rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--color-text);
   }
 
@@ -131,19 +280,99 @@
   }
 
   .product-info__price-badge {
-    padding: 0.25rem 0.75rem;
-    background: var(--color-error);
+    padding: 0.375rem 0.875rem;
+    background: linear-gradient(135deg, #e53935, #c62828);
     color: white;
     font-size: 0.75rem;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
     border-radius: var(--radius-full);
   }
 
-  .product-info__description {
+  /* Short Description */
+  .product-info__short-desc {
+    font-size: 1rem;
+    line-height: 1.7;
     color: var(--color-text-light);
-    line-height: 1.8;
     margin-bottom: var(--spacing-lg);
+  }
+
+  /* Perfect For Tags */
+  .product-perfect-for {
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-md);
+    background: linear-gradient(135deg, #faf9f7 0%, #f5f3f0 100%);
+    border-radius: var(--radius-lg);
+  }
+
+  .product-perfect-for__title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-light);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .product-perfect-for__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+  }
+
+  .product-perfect-for__tag {
+    padding: 0.5rem 1rem;
+    background: white;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    font-size: 0.813rem;
+    font-weight: 600;
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .product-perfect-for__tag svg {
+    width: 14px;
+    height: 14px;
+    color: var(--color-gold);
+  }
+
+  /* Key Benefits */
+  .product-benefits {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .product-benefits__title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--spacing-md);
+    color: var(--color-text);
+  }
+
+  .product-benefits__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .product-benefits__item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    font-size: 0.938rem;
+    color: var(--color-text);
+  }
+
+  .product-benefits__item svg {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    color: #00897b;
+    margin-top: 2px;
   }
 
   /* Variants */
@@ -156,9 +385,17 @@
   }
 
   .product-variant__label {
-    display: block;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
     font-weight: 600;
     margin-bottom: var(--spacing-sm);
+  }
+
+  .product-variant__selected {
+    font-weight: 400;
+    color: var(--color-text-light);
   }
 
   .product-variant__options {
@@ -168,7 +405,7 @@
   }
 
   .product-variant__option {
-    padding: 0.75rem 1.25rem;
+    padding: 0.875rem 1.5rem;
     border: 2px solid var(--color-border);
     border-radius: var(--radius-md);
     background: white;
@@ -176,12 +413,17 @@
     transition: all var(--transition-fast);
     font-family: inherit;
     font-size: 0.875rem;
+    font-weight: 500;
   }
 
-  .product-variant__option:hover,
+  .product-variant__option:hover {
+    border-color: var(--color-gold);
+  }
+
   .product-variant__option.is-selected {
     border-color: var(--color-gold);
     background: var(--color-gold-light);
+    font-weight: 600;
   }
 
   .product-variant__option.is-unavailable {
@@ -194,7 +436,7 @@
   .product-actions {
     display: flex;
     gap: var(--spacing-md);
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
   }
 
   @media (max-width: 640px) {
@@ -207,116 +449,378 @@
     flex-shrink: 0;
   }
 
+  .product-actions__quantity .quantity-selector {
+    height: 56px;
+  }
+
   .product-actions__add {
     flex: 1;
   }
 
   .product-actions__add .button {
     width: 100%;
-    min-height: 54px;
+    height: 56px;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
-  /* Buy Now */
+  .product-actions__add .button svg {
+    width: 20px;
+    height: 20px;
+    margin-right: var(--spacing-sm);
+  }
+
+  /* Dynamic Checkout */
   .product-buy-now {
     margin-bottom: var(--spacing-lg);
   }
 
+  .product-buy-now .shopify-payment-button {
+    margin-top: 0;
+  }
+
+  .product-buy-now .shopify-payment-button__button {
+    border-radius: var(--radius-md) !important;
+    min-height: 50px !important;
+  }
+
   /* Trust Badges */
   .product-trust {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-md);
-    padding: var(--spacing-md);
-    background: var(--color-cream);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-sm);
+    padding: var(--spacing-lg);
+    background: linear-gradient(135deg, #faf9f7 0%, #f5f3f0 100%);
     border-radius: var(--radius-lg);
     margin-bottom: var(--spacing-lg);
   }
 
-  .product-trust__item {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    font-size: 0.875rem;
-    color: var(--color-text-light);
+  @media (max-width: 640px) {
+    .product-trust {
+      grid-template-columns: 1fr;
+    }
   }
 
-  .product-trust__item svg {
+  .product-trust__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm);
+  }
+
+  .product-trust__icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  .product-trust__icon svg {
     width: 20px;
     height: 20px;
     color: var(--color-gold);
   }
 
-  /* Share */
+  .product-trust__text {
+    font-size: 0.813rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  /* ========== ACCORDIONS ========== */
+  .product-accordions {
+    border-top: 1px solid var(--color-border);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .product-accordion {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .product-accordion__trigger {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-lg) 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.938rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text);
+    transition: color var(--transition-fast);
+  }
+
+  .product-accordion__trigger:hover {
+    color: var(--color-gold);
+  }
+
+  .product-accordion__trigger svg {
+    width: 20px;
+    height: 20px;
+    transition: transform var(--transition-fast);
+  }
+
+  .product-accordion.is-open .product-accordion__trigger svg {
+    transform: rotate(180deg);
+  }
+
+  .product-accordion__content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .product-accordion.is-open .product-accordion__content {
+    max-height: 1000px;
+  }
+
+  .product-accordion__inner {
+    padding-bottom: var(--spacing-lg);
+    font-size: 0.938rem;
+    line-height: 1.8;
+    color: var(--color-text-light);
+  }
+
+  .product-accordion__inner ul {
+    padding-left: 1.25rem;
+    margin: var(--spacing-sm) 0;
+  }
+
+  .product-accordion__inner li {
+    margin-bottom: var(--spacing-xs);
+  }
+
+  /* ========== SHARE ========== */
   .product-share {
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-md);
     padding-top: var(--spacing-lg);
     border-top: 1px solid var(--color-border);
   }
 
   .product-share__label {
-    font-weight: 600;
     font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text);
   }
 
   .product-share__buttons {
     display: flex;
     gap: var(--spacing-xs);
   }
+
+  .product-share__btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-cream);
+    border-radius: 50%;
+    color: var(--color-text);
+    transition: all var(--transition-fast);
+  }
+
+  .product-share__btn:hover {
+    background: var(--color-gold);
+    color: white;
+  }
+
+  .product-share__btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* ========== STICKY MOBILE CTA ========== */
+  .product-sticky-cta {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    padding: var(--spacing-md);
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+    z-index: 999;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+  }
+
+  .product-sticky-cta.is-visible {
+    transform: translateY(0);
+  }
+
+  @media (max-width: 1024px) {
+    .product-sticky-cta {
+      display: block;
+    }
+  }
+
+  .product-sticky-cta__inner {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    max-width: var(--page-width);
+    margin: 0 auto;
+  }
+
+  .product-sticky-cta__info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .product-sticky-cta__title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .product-sticky-cta__price {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-gold);
+  }
+
+  .product-sticky-cta__btn {
+    flex-shrink: 0;
+  }
+
+  .product-sticky-cta__btn .button {
+    padding: 0.875rem 2rem;
+    white-space: nowrap;
+  }
 </style>
 
-<section class="product-main" data-section-id="{{ section.id }}">
-  <div class="product-main__container">
-    <div class="product-main__grid">
-      <!-- Media Gallery -->
+<section class="product-page" data-section-id="{{ section.id }}">
+  <div class="product-page__container">
+    <!-- Breadcrumb -->
+    <nav class="product-page__breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span>/</span>
+      {%- if product.collections.first -%}
+        <a href="{{ product.collections.first.url }}">{{ product.collections.first.title }}</a>
+        <span>/</span>
+      {%- endif -%}
+      <span>{{ product.title }}</span>
+    </nav>
+
+    <div class="product-page__grid">
+      <!-- ========== GALLERY ========== -->
       <div class="product-gallery">
         <div class="product-gallery__main">
-          {%- if product.featured_media -%}
-            <img 
-              id="ProductMainImage"
-              src="{{ product.featured_media | image_url: width: 800 }}"
-              alt="{{ product.featured_media.alt | default: product.title | escape }}"
-              class="product-gallery__image"
-              loading="eager"
-            >
-          {%- else -%}
-            {{ 'product-1' | placeholder_svg_tag: 'product-gallery__image placeholder' }}
+          <!-- Badges -->
+          <div class="product-gallery__badges">
+            {%- if product.metafields.custom.bestseller -%}
+              <span class="product-gallery__badge product-gallery__badge--bestseller">Bestseller</span>
+            {%- endif -%}
+            {%- if product.compare_at_price > product.price -%}
+              {%- assign savings = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -%}
+              <span class="product-gallery__badge product-gallery__badge--sale">{{ savings }}% Off</span>
+            {%- endif -%}
+            {%- assign product_created = product.created_at | date: '%s' | plus: 0 -%}
+            {%- assign thirty_days_ago = 'now' | date: '%s' | minus: 2592000 -%}
+            {%- if product_created > thirty_days_ago -%}
+              <span class="product-gallery__badge product-gallery__badge--new">New</span>
+            {%- endif -%}
+          </div>
+
+          <!-- Main Swiper -->
+          <div class="swiper product-gallery-main-swiper">
+            <div class="swiper-wrapper">
+              {%- for media in product.media -%}
+                <div class="swiper-slide">
+                  <img 
+                    src="{{ media | image_url: width: 900 }}"
+                    alt="{{ media.alt | default: product.title | escape }}"
+                    loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                  >
+                </div>
+              {%- else -%}
+                <div class="swiper-slide">
+                  {{ 'product-1' | placeholder_svg_tag }}
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+
+          <!-- Navigation -->
+          {%- if product.media.size > 1 -%}
+            <button class="product-gallery__nav product-gallery__nav--prev" aria-label="Previous image">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <button class="product-gallery__nav product-gallery__nav--next" aria-label="Next image">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
           {%- endif -%}
         </div>
 
+        <!-- Thumbnails -->
         {%- if product.media.size > 1 -%}
-          <div class="product-gallery__thumbnails">
-            {%- for media in product.media -%}
-              <button 
-                class="product-gallery__thumbnail {% if forloop.first %}is-active{% endif %}"
-                data-thumbnail
-                data-image="{{ media | image_url: width: 800 }}"
-                aria-label="View image {{ forloop.index }}"
-              >
-                <img 
-                  src="{{ media | image_url: width: 160 }}"
-                  alt="{{ media.alt | default: product.title | escape }}"
-                  loading="lazy"
-                >
-              </button>
-            {%- endfor -%}
+          <div class="product-gallery__thumbs">
+            <div class="swiper product-gallery-thumbs-swiper">
+              <div class="swiper-wrapper">
+                {%- for media in product.media -%}
+                  <div class="swiper-slide">
+                    <img 
+                      src="{{ media | image_url: width: 160 }}"
+                      alt="{{ media.alt | default: product.title | escape }}"
+                      loading="lazy"
+                    >
+                  </div>
+                {%- endfor -%}
+              </div>
+            </div>
           </div>
         {%- endif -%}
       </div>
 
-      <!-- Product Info -->
+      <!-- ========== PRODUCT INFO ========== -->
       <div class="product-info">
         {%- if product.vendor != blank -%}
           <span class="product-info__vendor">{{ product.vendor }}</span>
         {%- endif -%}
 
+        {%- if section.settings.show_tagline and product.metafields.custom.tagline -%}
+          <p class="product-info__tagline">{{ product.metafields.custom.tagline }}</p>
+        {%- endif -%}
+
         <h1 class="product-info__title">{{ product.title }}</h1>
 
+        <!-- Rating -->
         <div class="product-info__rating">
-          {% render 'star-rating', rating: 5, count: 12 %}
+          <div class="product-info__rating-stars">
+            {%- for i in (1..5) -%}
+              <svg viewBox="0 0 24 24">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="currentColor"/>
+              </svg>
+            {%- endfor -%}
+          </div>
+          <span class="product-info__rating-count" data-scroll-to="reviews">
+            4.8 ({{ product.metafields.reviews.rating_count | default: 47 }} reviews)
+          </span>
         </div>
 
+        <!-- Price -->
         <div class="product-info__price">
           {%- if product.compare_at_price > product.price -%}
             <span class="product-info__price-current">{{ product.price | money }}</span>
@@ -328,12 +832,90 @@
           {%- endif -%}
         </div>
 
-        {%- if product.description != blank -%}
-          <div class="product-info__description rte">
-            {{ product.description }}
+        <!-- Short Description -->
+        {%- if section.settings.show_short_description -%}
+          <p class="product-info__short-desc">
+            {{ product.description | strip_html | truncatewords: 30 }}
+          </p>
+        {%- endif -%}
+
+        <!-- Perfect For -->
+        {%- if section.settings.show_perfect_for -%}
+          <div class="product-perfect-for">
+            <span class="product-perfect-for__title">Perfect For</span>
+            <div class="product-perfect-for__tags">
+              {%- assign tags_list = section.settings.perfect_for_tags | split: ',' -%}
+              {%- for tag in tags_list -%}
+                <span class="product-perfect-for__tag">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  {{ tag | strip }}
+                </span>
+              {%- endfor -%}
+              {%- if tags_list.size == 0 -%}
+                <span class="product-perfect-for__tag">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  All Hair Types
+                </span>
+                <span class="product-perfect-for__tag">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Damaged Hair
+                </span>
+                <span class="product-perfect-for__tag">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Color-Treated
+                </span>
+              {%- endif -%}
+            </div>
           </div>
         {%- endif -%}
 
+        <!-- Key Benefits -->
+        {%- if section.settings.show_benefits -%}
+          <div class="product-benefits">
+            <h3 class="product-benefits__title">Key Benefits</h3>
+            <div class="product-benefits__list">
+              {%- assign benefits_list = section.settings.benefits | split: '|' -%}
+              {%- for benefit in benefits_list -%}
+                <div class="product-benefits__item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span>{{ benefit | strip }}</span>
+                </div>
+              {%- endfor -%}
+              {%- if benefits_list.size == 0 -%}
+                <div class="product-benefits__item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span>Strengthens and repairs damaged hair</span>
+                </div>
+                <div class="product-benefits__item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span>Provides deep hydration and nourishment</span>
+                </div>
+                <div class="product-benefits__item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span>Leaves hair soft, shiny, and manageable</span>
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        <!-- Product Form -->
         <product-form>
           {%- form 'product', product, id: 'ProductForm', data-type: 'add-to-cart-form' -%}
             <!-- Variants -->
@@ -341,7 +923,10 @@
               <div class="product-variants">
                 {%- for option in product.options_with_values -%}
                   <div class="product-variant">
-                    <label class="product-variant__label">{{ option.name }}</label>
+                    <label class="product-variant__label">
+                      {{ option.name }}
+                      <span class="product-variant__selected">{{ option.selected_value }}</span>
+                    </label>
                     <div class="product-variant__options">
                       {%- for value in option.values -%}
                         <button 
@@ -373,16 +958,16 @@
               
               <div class="product-actions__add">
                 {%- if product.available -%}
-                  <button type="submit" class="button button--primary button--large button--add-to-cart">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <button type="submit" class="button button--primary button--add-to-cart">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
                       <path d="M3 6h18"></path>
                       <path d="M16 10a4 4 0 0 1-8 0"></path>
                     </svg>
-                    Add to Cart
+                    Add to Cart — {{ product.price | money }}
                   </button>
                 {%- else -%}
-                  <button type="button" class="button button--sold-out button--large" disabled>
+                  <button type="button" class="button button--sold-out" disabled>
                     Sold Out
                   </button>
                 {%- endif -%}
@@ -400,26 +985,128 @@
         <!-- Trust Badges -->
         <div class="product-trust">
           <div class="product-trust__item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="1" y="3" width="15" height="13"></rect>
-              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-              <circle cx="5.5" cy="18.5" r="2.5"></circle>
-              <circle cx="18.5" cy="18.5" r="2.5"></circle>
-            </svg>
-            Free Shipping
+            <div class="product-trust__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="1" y="3" width="15" height="13"></rect>
+                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                <circle cx="18.5" cy="18.5" r="2.5"></circle>
+              </svg>
+            </div>
+            <span class="product-trust__text">Free Shipping $50+</span>
           </div>
           <div class="product-trust__item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-            </svg>
-            Secure Payment
+            <div class="product-trust__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                <polyline points="9 12 11 14 15 10"></polyline>
+              </svg>
+            </div>
+            <span class="product-trust__text">Secure Checkout</span>
           </div>
           <div class="product-trust__item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="23 4 23 10 17 10"></polyline>
-              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
-            </svg>
-            30-Day Returns
+            <div class="product-trust__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+              </svg>
+            </div>
+            <span class="product-trust__text">30-Day Returns</span>
+          </div>
+        </div>
+
+        <!-- Accordions -->
+        <div class="product-accordions">
+          <!-- How to Use -->
+          <div class="product-accordion" data-accordion>
+            <button class="product-accordion__trigger" type="button" aria-expanded="false">
+              <span>How to Use</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="product-accordion__content">
+              <div class="product-accordion__inner">
+                {%- if product.metafields.custom.how_to_use -%}
+                  {{ product.metafields.custom.how_to_use }}
+                {%- else -%}
+                  <ol>
+                    <li>Apply a generous amount to wet hair.</li>
+                    <li>Massage gently into scalp and through hair.</li>
+                    <li>Leave on for 2-3 minutes for best results.</li>
+                    <li>Rinse thoroughly with warm water.</li>
+                    <li>For optimal results, use 2-3 times per week.</li>
+                  </ol>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+
+          <!-- Ingredients -->
+          <div class="product-accordion" data-accordion>
+            <button class="product-accordion__trigger" type="button" aria-expanded="false">
+              <span>Ingredients</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="product-accordion__content">
+              <div class="product-accordion__inner">
+                {%- if product.metafields.custom.ingredients -%}
+                  {{ product.metafields.custom.ingredients }}
+                {%- else -%}
+                  <p><strong>Key Ingredients:</strong></p>
+                  <ul>
+                    <li><strong>Amino Acids</strong> — Strengthen and repair damaged hair bonds</li>
+                    <li><strong>Keratin</strong> — Restores hair's natural protein structure</li>
+                    <li><strong>Argan Oil</strong> — Deep hydration and shine</li>
+                    <li><strong>Vitamin E</strong> — Protects against environmental damage</li>
+                  </ul>
+                  <p><em>Free from sulfates, parabens, and artificial colors.</em></p>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+
+          <!-- Full Description -->
+          <div class="product-accordion is-open" data-accordion>
+            <button class="product-accordion__trigger" type="button" aria-expanded="true">
+              <span>Product Details</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="product-accordion__content">
+              <div class="product-accordion__inner rte">
+                {{ product.description }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Shipping & Returns -->
+          <div class="product-accordion" data-accordion>
+            <button class="product-accordion__trigger" type="button" aria-expanded="false">
+              <span>Shipping & Returns</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="product-accordion__content">
+              <div class="product-accordion__inner">
+                <p><strong>Shipping:</strong></p>
+                <ul>
+                  <li>Free standard shipping on orders over $50</li>
+                  <li>Express shipping available at checkout</li>
+                  <li>Orders ship within 1-2 business days</li>
+                </ul>
+                <p><strong>Returns:</strong></p>
+                <ul>
+                  <li>30-day hassle-free returns</li>
+                  <li>Products must be unused and in original packaging</li>
+                  <li>Contact us at hello@angelhair.us for returns</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -427,17 +1114,22 @@
         <div class="product-share">
           <span class="product-share__label">Share:</span>
           <div class="product-share__buttons">
-            <a href="https://www.facebook.com/sharer.php?u={{ shop.url }}{{ product.url }}" target="_blank" class="button--social" aria-label="Share on Facebook">
+            <a href="https://www.facebook.com/sharer.php?u={{ shop.url }}{{ product.url }}" target="_blank" rel="noopener" class="product-share__btn" aria-label="Share on Facebook">
               <svg viewBox="0 0 24 24" fill="currentColor">
                 <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
               </svg>
             </a>
-            <a href="https://twitter.com/intent/tweet?url={{ shop.url }}{{ product.url }}&text={{ product.title | url_encode }}" target="_blank" class="button--social" aria-label="Share on Twitter">
+            <a href="https://twitter.com/intent/tweet?url={{ shop.url }}{{ product.url }}&text={{ product.title | url_encode }}" target="_blank" rel="noopener" class="product-share__btn" aria-label="Share on Twitter">
               <svg viewBox="0 0 24 24" fill="currentColor">
                 <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
               </svg>
             </a>
-            <a href="https://wa.me/?text={{ product.title | url_encode }}%20{{ shop.url }}{{ product.url }}" target="_blank" class="button--social" aria-label="Share on WhatsApp">
+            <a href="https://pinterest.com/pin/create/button/?url={{ shop.url }}{{ product.url }}&media={{ product.featured_image | image_url: width: 1000 }}&description={{ product.title | url_encode }}" target="_blank" rel="noopener" class="product-share__btn" aria-label="Share on Pinterest">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738.098.119.112.224.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z"/>
+              </svg>
+            </a>
+            <a href="https://wa.me/?text={{ product.title | url_encode }}%20{{ shop.url }}{{ product.url }}" target="_blank" rel="noopener" class="product-share__btn" aria-label="Share on WhatsApp">
               <svg viewBox="0 0 24 24" fill="currentColor">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
               </svg>
@@ -449,161 +1141,176 @@
   </div>
 </section>
 
+<!-- Sticky Mobile CTA -->
+<div class="product-sticky-cta" id="StickyAddToCart">
+  <div class="product-sticky-cta__inner">
+    <div class="product-sticky-cta__info">
+      <div class="product-sticky-cta__title">{{ product.title }}</div>
+      <div class="product-sticky-cta__price">{{ product.price | money }}</div>
+    </div>
+    <div class="product-sticky-cta__btn">
+      {%- if product.available -%}
+        <button type="button" class="button button--primary" data-sticky-add-to-cart>
+          Add to Cart
+        </button>
+      {%- else -%}
+        <button type="button" class="button button--sold-out" disabled>
+          Sold Out
+        </button>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
 <!-- Product JSON for Meta Pixel -->
 <script type="application/json" data-product-json>
   {{ product | json }}
 </script>
 
 <script>
-  // Thumbnail gallery functionality
-  document.querySelectorAll('[data-thumbnail]').forEach(thumb => {
-    thumb.addEventListener('click', function() {
-      const mainImage = document.getElementById('ProductMainImage');
-      const newSrc = this.dataset.image;
-      
-      if (mainImage && newSrc) {
-        mainImage.src = newSrc;
-        document.querySelectorAll('[data-thumbnail]').forEach(t => t.classList.remove('is-active'));
-        this.classList.add('is-active');
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize Swiper for gallery
+  if (typeof Swiper !== 'undefined') {
+    const thumbsSwiper = new Swiper('.product-gallery-thumbs-swiper', {
+      spaceBetween: 10,
+      slidesPerView: 'auto',
+      freeMode: true,
+      watchSlidesProgress: true,
+    });
+
+    const mainSwiper = new Swiper('.product-gallery-main-swiper', {
+      spaceBetween: 0,
+      navigation: {
+        nextEl: '.product-gallery__nav--next',
+        prevEl: '.product-gallery__nav--prev',
+      },
+      thumbs: {
+        swiper: thumbsSwiper,
+      },
+    });
+  }
+
+  // Accordion functionality
+  document.querySelectorAll('[data-accordion]').forEach(accordion => {
+    const trigger = accordion.querySelector('.product-accordion__trigger');
+    trigger.addEventListener('click', function() {
+      const isOpen = accordion.classList.contains('is-open');
+      accordion.classList.toggle('is-open');
+      this.setAttribute('aria-expanded', !isOpen);
+    });
+  });
+
+  // Sticky Add to Cart visibility
+  const stickyCart = document.getElementById('StickyAddToCart');
+  const productActions = document.querySelector('.product-actions');
+  
+  if (stickyCart && productActions) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          stickyCart.classList.remove('is-visible');
+        } else {
+          stickyCart.classList.add('is-visible');
+        }
+      });
+    }, { threshold: 0 });
+
+    observer.observe(productActions);
+  }
+
+  // Sticky Add to Cart button
+  const stickyBtn = document.querySelector('[data-sticky-add-to-cart]');
+  if (stickyBtn) {
+    stickyBtn.addEventListener('click', function() {
+      const mainAddBtn = document.querySelector('.button--add-to-cart');
+      if (mainAddBtn) mainAddBtn.click();
+    });
+  }
+
+  // Scroll to reviews
+  document.querySelectorAll('[data-scroll-to="reviews"]').forEach(el => {
+    el.addEventListener('click', function() {
+      const reviews = document.getElementById('reviews');
+      if (reviews) {
+        reviews.scrollIntoView({ behavior: 'smooth' });
       }
     });
   });
+});
 </script>
 
 {% schema %}
 {
-  "name": "Product Information",
+  "name": "Product Page",
   "tag": "section",
-  "class": "section-product",
+  "class": "section-product-page",
   "settings": [
     {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
       "type": "checkbox",
-      "id": "enable_sticky_info",
-      "label": "Enable Sticky Product Info",
+      "id": "show_tagline",
+      "label": "Show product tagline",
+      "default": true,
+      "info": "Uses metafield: custom.tagline"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_short_description",
+      "label": "Show short description",
       "default": true
     },
     {
-      "type": "select",
-      "id": "gallery_layout",
-      "label": "Gallery Layout",
-      "options": [
-        { "value": "thumbnail_slider", "label": "Thumbnails Below" },
-        { "value": "stacked", "label": "Stacked" }
-      ],
-      "default": "thumbnail_slider"
+      "type": "header",
+      "content": "Perfect For Section"
     },
     {
-      "type": "select",
-      "id": "media_size",
-      "label": "Media Size",
-      "options": [
-        { "value": "small", "label": "Small" },
-        { "value": "medium", "label": "Medium" },
-        { "value": "large", "label": "Large" }
-      ],
-      "default": "large"
+      "type": "checkbox",
+      "id": "show_perfect_for",
+      "label": "Show 'Perfect For' tags",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "perfect_for_tags",
+      "label": "Tags (comma separated)",
+      "default": "All Hair Types, Damaged Hair, Color-Treated",
+      "info": "e.g., Dry Hair, Oily Scalp, Fine Hair"
+    },
+    {
+      "type": "header",
+      "content": "Key Benefits"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_benefits",
+      "label": "Show key benefits",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "benefits",
+      "label": "Benefits (separate with |)",
+      "default": "Strengthens and repairs damaged hair|Provides deep hydration and nourishment|Leaves hair soft, shiny, and manageable",
+      "info": "Use | to separate benefits"
+    },
+    {
+      "type": "header",
+      "content": "Checkout"
     },
     {
       "type": "checkbox",
       "id": "show_dynamic_checkout",
-      "label": "Show Dynamic Checkout Button",
+      "label": "Show dynamic checkout buttons",
       "default": true
     }
   ],
   "blocks": [
     {
       "type": "@app"
-    },
-    {
-      "type": "text",
-      "name": "Text",
-      "settings": [
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Text"
-        },
-        {
-          "type": "select",
-          "id": "text_style",
-          "label": "Text Style",
-          "options": [
-            { "value": "body", "label": "Body" },
-            { "value": "uppercase", "label": "Uppercase" }
-          ],
-          "default": "body"
-        }
-      ]
-    },
-    {
-      "type": "title",
-      "name": "Title",
-      "limit": 1
-    },
-    {
-      "type": "price",
-      "name": "Price",
-      "limit": 1
-    },
-    {
-      "type": "rating",
-      "name": "Rating",
-      "limit": 1
-    },
-    {
-      "type": "variant_picker",
-      "name": "Variant Picker",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "select",
-          "id": "picker_type",
-          "label": "Type",
-          "options": [
-            { "value": "dropdown", "label": "Dropdown" },
-            { "value": "button", "label": "Buttons" }
-          ],
-          "default": "button"
-        }
-      ]
-    },
-    {
-      "type": "quantity_selector",
-      "name": "Quantity Selector",
-      "limit": 1
-    },
-    {
-      "type": "buy_buttons",
-      "name": "Buy Buttons",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "checkbox",
-          "id": "show_dynamic_checkout",
-          "label": "Show Dynamic Checkout",
-          "default": true
-        }
-      ]
-    },
-    {
-      "type": "description",
-      "name": "Description",
-      "limit": 1
-    },
-    {
-      "type": "share",
-      "name": "Share",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "share_label",
-          "label": "Label",
-          "default": "Share"
-        }
-      ]
     }
   ]
 }
 {% endschema %}
-
