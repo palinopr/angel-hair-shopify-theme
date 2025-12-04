@@ -188,7 +188,11 @@
     <div class="footer__grid">
       <div class="footer__brand">
         <div class="footer__logo">
-          <img src="{{ 'logo.svg' | asset_url }}" alt="{{ shop.name }}" loading="lazy" style="max-height: 60px; width: auto;">
+          {%- if settings.logo != blank -%}
+            <img src="{{ settings.logo | image_url: width: 200 }}" alt="{{ shop.name }}" loading="lazy" style="max-height: 60px; width: auto;">
+          {%- else -%}
+            <span class="footer__logo-text" style="font-family: var(--font-heading-family); font-size: 1.5rem; font-weight: 600; color: var(--color-primary);">Angel Hair</span>
+          {%- endif -%}
         </div>
         <p class="footer__description">
           {{ section.settings.description | default: 'Premium hair care products with amino acids and natural extracts. Transform your hair with Angel Hair.' }}
