@@ -1,0 +1,171 @@
+{%- style -%}
+  .order-section {
+    padding: 60px 0;
+    min-height: 60vh;
+  }
+
+  .order-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .order-header {
+    margin-bottom: 40px;
+  }
+
+  .order-header__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-text-light);
+    text-decoration: none;
+    font-size: 0.875rem;
+    margin-bottom: 16px;
+  }
+
+  .order-header__back:hover {
+    color: var(--color-gold);
+  }
+
+  .order-header__title {
+    font-family: var(--font-heading-family);
+    font-size: 2rem;
+    font-weight: 400;
+    margin: 0 0 8px;
+  }
+
+  .order-header__date {
+    color: var(--color-text-light);
+  }
+
+  .order-items {
+    margin-bottom: 40px;
+  }
+
+  .order-item {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--color-border);
+    align-items: center;
+  }
+
+  .order-item__image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+  }
+
+  .order-item__title {
+    font-weight: 500;
+    margin: 0 0 4px;
+  }
+
+  .order-item__variant {
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+  }
+
+  .order-item__price {
+    text-align: right;
+  }
+
+  .order-totals {
+    background: var(--color-cream);
+    padding: 24px;
+    border-radius: var(--radius-md);
+  }
+
+  .order-totals__row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+  }
+
+  .order-totals__row--total {
+    border-top: 1px solid var(--color-border);
+    margin-top: 8px;
+    padding-top: 16px;
+    font-weight: 600;
+    font-size: 1.125rem;
+  }
+{%- endstyle -%}
+
+<section class="order-section">
+  <div class="order-container" data-animate>
+    <header class="order-header">
+      <a href="{{ routes.account_url }}" class="order-header__back">
+        ← Back to Account
+      </a>
+      <h1 class="order-header__title">{{ order.name }}</h1>
+      <p class="order-header__date">
+        Placed on {{ order.created_at | date: format: 'date' }}
+      </p>
+    </header>
+
+    <div class="order-items">
+      {%- for line_item in order.line_items -%}
+        <div class="order-item">
+          {%- if line_item.image -%}
+            <img 
+              src="{{ line_item.image | image_url: width: 160 }}" 
+              alt="{{ line_item.title | escape }}"
+              class="order-item__image"
+            >
+          {%- else -%}
+            <div class="order-item__image" style="background: var(--color-cream);"></div>
+          {%- endif -%}
+
+          <div>
+            <h3 class="order-item__title">{{ line_item.title }}</h3>
+            {%- if line_item.variant_title != 'Default Title' -%}
+              <p class="order-item__variant">{{ line_item.variant_title }}</p>
+            {%- endif -%}
+            <p class="order-item__variant">Qty: {{ line_item.quantity }}</p>
+          </div>
+
+          <div class="order-item__price">
+            {{ line_item.final_line_price | money }}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <div class="order-totals">
+      <div class="order-totals__row">
+        <span>Subtotal</span>
+        <span>{{ order.subtotal_price | money }}</span>
+      </div>
+
+      {%- for shipping_method in order.shipping_methods -%}
+        <div class="order-totals__row">
+          <span>Shipping ({{ shipping_method.title }})</span>
+          <span>{{ shipping_method.price | money }}</span>
+        </div>
+      {%- endfor -%}
+
+      {%- for tax_line in order.tax_lines -%}
+        <div class="order-totals__row">
+          <span>Tax ({{ tax_line.title }} {{ tax_line.rate | times: 100 }}%)</span>
+          <span>{{ tax_line.price | money }}</span>
+        </div>
+      {%- endfor -%}
+
+      <div class="order-totals__row order-totals__row--total">
+        <span>Total</span>
+        <span>{{ order.total_price | money }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Customer Order",
+  "settings": []
+}
+{% endschema %}
+

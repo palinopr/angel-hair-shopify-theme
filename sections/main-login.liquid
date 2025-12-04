@@ -1,0 +1,155 @@
+{%- style -%}
+  .customer-section {
+    padding: 80px 0;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-cream);
+  }
+
+  .customer-form {
+    width: 100%;
+    max-width: 440px;
+    padding: 48px;
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .customer-form__title {
+    font-family: var(--font-heading-family);
+    font-size: 2rem;
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 32px;
+    color: var(--color-text);
+  }
+
+  .customer-form__field {
+    margin-bottom: 20px;
+  }
+
+  .customer-form__label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--color-text);
+  }
+
+  .customer-form__input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color var(--transition-fast);
+  }
+
+  .customer-form__input:focus {
+    outline: none;
+    border-color: var(--color-gold);
+  }
+
+  .customer-form__submit {
+    width: 100%;
+    padding: 16px;
+    margin-top: 8px;
+  }
+
+  .customer-form__footer {
+    text-align: center;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .customer-form__footer a {
+    color: var(--color-gold);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .customer-form__footer a:hover {
+    text-decoration: underline;
+  }
+
+  .customer-form__errors {
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    background: #fef2f2;
+    border: 1px solid #fee2e2;
+    border-radius: var(--radius-md);
+    color: #dc2626;
+    font-size: 0.875rem;
+  }
+{%- endstyle -%}
+
+<section class="customer-section">
+  <div class="customer-form" data-animate>
+    <h1 class="customer-form__title">{{ 'customer.login.title' | t }}</h1>
+
+    {%- form 'customer_login', novalidate: 'novalidate' -%}
+      {%- if form.errors -%}
+        <div class="customer-form__errors">
+          {{ form.errors | default_errors }}
+        </div>
+      {%- endif -%}
+
+      <div class="customer-form__field">
+        <label class="customer-form__label" for="CustomerEmail">
+          {{ 'customer.login.email' | t }}
+        </label>
+        <input
+          type="email"
+          name="customer[email]"
+          id="CustomerEmail"
+          class="customer-form__input"
+          autocomplete="email"
+          autocorrect="off"
+          autocapitalize="off"
+          required
+        >
+      </div>
+
+      <div class="customer-form__field">
+        <label class="customer-form__label" for="CustomerPassword">
+          {{ 'customer.login.password' | t }}
+        </label>
+        <input
+          type="password"
+          name="customer[password]"
+          id="CustomerPassword"
+          class="customer-form__input"
+          autocomplete="current-password"
+          required
+        >
+      </div>
+
+      <button type="submit" class="btn btn--primary customer-form__submit">
+        {{ 'customer.login.sign_in' | t }}
+      </button>
+
+      <div class="customer-form__footer">
+        <a href="{{ routes.account_recover_url }}">
+          {{ 'customer.login.forgot_password' | t }}
+        </a>
+      </div>
+
+      <div class="customer-form__footer">
+        <span>{{ 'customer.login.create_account' | t }}</span>
+        <a href="{{ routes.account_register_url }}">Register</a>
+      </div>
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Customer Login",
+  "settings": []
+}
+{% endschema %}
+

@@ -1,0 +1,147 @@
+{
+  "general": {
+    "skip_to_content": "Saltar al contenido",
+    "continue_shopping": "Continuar comprando",
+    "view_all": "Ver todo",
+    "read_more": "Leer más",
+    "search": "Buscar",
+    "close": "Cerrar",
+    "loading": "Cargando..."
+  },
+  "accessibility": {
+    "skip_to_content": "Saltar al contenido",
+    "refresh_page": "Al elegir una selección, la página se actualiza completamente.",
+    "close": "Cerrar",
+    "unit_price_separator": "por"
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Agregar al carrito",
+      "added_to_cart": "Agregado al carrito",
+      "sold_out": "Agotado",
+      "unavailable": "No disponible",
+      "quantity": "Cantidad",
+      "increase_quantity": "Aumentar cantidad",
+      "decrease_quantity": "Disminuir cantidad",
+      "price": "Precio",
+      "sale_price": "Precio de oferta",
+      "compare_at_price": "Precio anterior",
+      "vendor": "Proveedor",
+      "sku": "SKU",
+      "description": "Descripción",
+      "view_full_details": "Ver detalles completos",
+      "share": "Compartir",
+      "include_taxes": "Impuesto incluido.",
+      "shipping_policy_html": "<a href=\"{{ link }}\">Envío</a> calculado al finalizar la compra."
+    }
+  },
+  "collections": {
+    "general": {
+      "all_products": "Todos los productos",
+      "no_matches": "No se encontraron productos",
+      "product_count": {
+        "one": "{{ count }} producto",
+        "other": "{{ count }} productos"
+      }
+    },
+    "sorting": {
+      "title": "Ordenar por",
+      "featured": "Destacados",
+      "best_selling": "Más vendidos",
+      "title_ascending": "Alfabéticamente, A-Z",
+      "title_descending": "Alfabéticamente, Z-A",
+      "price_ascending": "Precio, menor a mayor",
+      "price_descending": "Precio, mayor a menor",
+      "date_descending": "Fecha, nuevo a antiguo",
+      "date_ascending": "Fecha, antiguo a nuevo"
+    }
+  },
+  "sections": {
+    "header": {
+      "menu": "Menú",
+      "cart_count": {
+        "one": "{{ count }} artículo",
+        "other": "{{ count }} artículos"
+      }
+    },
+    "footer": {
+      "payment": "Métodos de pago"
+    },
+    "cart": {
+      "title": "Tu carrito",
+      "empty": "Tu carrito está vacío",
+      "continue_shopping": "Continuar comprando",
+      "subtotal": "Subtotal",
+      "taxes_and_shipping": "Impuestos y envío calculados al finalizar la compra",
+      "checkout": "Finalizar compra",
+      "update": "Actualizar",
+      "remove": "Eliminar",
+      "cart_error": "Hubo un error al actualizar tu carrito. Por favor, intenta de nuevo.",
+      "cart_quantity_error_html": "Solo puedes agregar {{ quantity }} de este artículo a tu carrito."
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "Cuenta",
+      "details": "Detalles de la cuenta",
+      "orders": "Historial de pedidos",
+      "logout": "Cerrar sesión"
+    },
+    "login": {
+      "title": "Iniciar sesión",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "forgot_password": "¿Olvidaste tu contraseña?",
+      "sign_in": "Iniciar sesión",
+      "create_account": "Crear cuenta"
+    },
+    "register": {
+      "title": "Crear cuenta",
+      "first_name": "Nombre",
+      "last_name": "Apellido",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "submit": "Crear"
+    },
+    "addresses": {
+      "title": "Direcciones",
+      "add_new": "Agregar nueva dirección",
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "set_default": "Establecer como predeterminada",
+      "default": "Predeterminada"
+    },
+    "orders": {
+      "title": "Historial de pedidos",
+      "order_number": "Pedido",
+      "date": "Fecha",
+      "payment_status": "Estado del pago",
+      "fulfillment_status": "Estado del envío",
+      "total": "Total",
+      "none": "Aún no has realizado ningún pedido."
+    }
+  },
+  "contact": {
+    "form": {
+      "name": "Nombre",
+      "email": "Correo electrónico",
+      "phone": "Número de teléfono",
+      "message": "Mensaje",
+      "send": "Enviar",
+      "post_success": "Gracias por tu mensaje. Te responderemos pronto."
+    }
+  },
+  "newsletter": {
+    "label": "Correo electrónico",
+    "placeholder": "Ingresa tu correo",
+    "subscribe": "Suscribirse",
+    "success": "¡Gracias por suscribirte!"
+  },
+  "search": {
+    "title": "Buscar",
+    "placeholder": "Buscar en nuestra tienda",
+    "submit": "Buscar",
+    "no_results": "No se encontraron resultados para \"{{ terms }}\". Verifica la ortografía o usa una palabra o frase diferente."
+  }
+}
+

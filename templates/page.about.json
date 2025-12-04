@@ -1,0 +1,85 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-banner",
+      "settings": {
+        "layout": "full",
+        "height": 60,
+        "content_width": 70,
+        "overlay_opacity": 40,
+        "subtitle": "Our Story",
+        "title": "About Angel Hair",
+        "description": "Discover the passion and science behind our premium hair care products.",
+        "text_align": "center",
+        "text_color": "#FFFFFF",
+        "show_scroll_indicator": false
+      }
+    },
+    "values": {
+      "type": "values-grid",
+      "settings": {
+        "subtitle": "What We Stand For",
+        "title": "Our Values",
+        "background_color": "#FEFEFE"
+      },
+      "blocks": {
+        "value-1": {
+          "type": "value",
+          "settings": {
+            "icon": "quality",
+            "title": "Quality",
+            "description": "We use only the finest ingredients in our formulations, ensuring every product meets the highest standards of excellence."
+          }
+        },
+        "value-2": {
+          "type": "value",
+          "settings": {
+            "icon": "sustainability",
+            "title": "Sustainability",
+            "description": "We're committed to eco-friendly practices, from our packaging to our cruelty-free testing methods."
+          }
+        },
+        "value-3": {
+          "type": "value",
+          "settings": {
+            "icon": "innovation",
+            "title": "Innovation",
+            "description": "Our team constantly researches and develops new formulas to bring you the latest in hair care science."
+          }
+        },
+        "value-4": {
+          "type": "value",
+          "settings": {
+            "icon": "care",
+            "title": "Personalized Attention",
+            "description": "We believe every hair type deserves special care. Our products are designed to meet diverse hair needs."
+          }
+        }
+      },
+      "block_order": ["value-1", "value-2", "value-3", "value-4"]
+    },
+    "mission": {
+      "type": "mission-vision",
+      "settings": {
+        "mission_title": "Our Mission",
+        "mission_text": "To provide professional-grade hair care products that transform and nourish hair, making salon-quality results accessible to everyone.",
+        "vision_title": "Our Vision",
+        "vision_text": "To become the leading name in hair care, recognized worldwide for our commitment to quality, innovation, and customer satisfaction.",
+        "background_color": "#FDF8F3"
+      }
+    },
+    "contact": {
+      "type": "contact-form",
+      "settings": {
+        "subtitle": "Get in Touch",
+        "title": "Contact Us",
+        "description": "Have questions? We'd love to hear from you!",
+        "email": "angelhair2220@gmail.com",
+        "phone": "+1 (954) 853-6724",
+        "background_color": "#FEFEFE"
+      }
+    }
+  },
+  "order": ["hero", "values", "mission", "contact"]
+}
+

@@ -1,0 +1,343 @@
+/* ============================================
+   Angel Hair Theme - Button Components
+   ============================================ */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  padding: 0.875rem 2rem;
+  font-family: var(--font-body-family);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.button:disabled,
+.button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Primary Button - Gold filled */
+.button--primary {
+  background: var(--color-gold);
+  color: white;
+  border-color: var(--color-gold);
+}
+
+.button--primary:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.button--primary:active {
+  transform: translateY(0);
+}
+
+/* Secondary Button - Outlined */
+.button--secondary {
+  background: transparent;
+  color: var(--color-text);
+  border-color: var(--color-text);
+}
+
+.button--secondary:hover {
+  background: var(--color-text);
+  color: white;
+}
+
+/* Gold Outlined Button */
+.button--outline-gold {
+  background: transparent;
+  color: var(--color-gold);
+  border-color: var(--color-gold);
+}
+
+.button--outline-gold:hover {
+  background: var(--color-gold);
+  color: white;
+}
+
+/* White Button */
+.button--white {
+  background: white;
+  color: var(--color-text);
+  border-color: white;
+}
+
+.button--white:hover {
+  background: var(--color-cream);
+  border-color: var(--color-cream);
+}
+
+/* Ghost Button */
+.button--ghost {
+  background: transparent;
+  color: var(--color-text);
+  border-color: transparent;
+  padding: 0.5rem 1rem;
+}
+
+.button--ghost:hover {
+  background: var(--color-cream);
+}
+
+/* Full Width Button */
+.button--full {
+  width: 100%;
+}
+
+/* Small Button */
+.button--small {
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+}
+
+/* Large Button */
+.button--large {
+  padding: 1rem 2.5rem;
+  font-size: 1rem;
+}
+
+/* Icon Button */
+.button--icon {
+  padding: 0.75rem;
+  border-radius: var(--radius-full);
+}
+
+.button--icon svg,
+.button--icon img {
+  width: 20px;
+  height: 20px;
+}
+
+/* Button with Icon */
+.button__icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* Loading State */
+.button--loading {
+  color: transparent !important;
+  pointer-events: none;
+}
+
+.button--loading::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: button-spin 0.6s linear infinite;
+}
+
+@keyframes button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Ripple Effect */
+.button--ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.button--ripple::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.button--ripple:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Button Group */
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.button-group--center {
+  justify-content: center;
+}
+
+/* Link Button (text only) */
+.button-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.button-link:hover {
+  color: var(--color-text);
+}
+
+.button-link__icon {
+  width: 16px;
+  height: 16px;
+  transition: transform var(--transition-fast);
+}
+
+.button-link:hover .button-link__icon {
+  transform: translateX(4px);
+}
+
+/* Add to Cart Button - Special styling */
+.button--add-to-cart {
+  background: var(--color-gold);
+  color: white;
+  border-color: var(--color-gold);
+  min-width: 180px;
+}
+
+.button--add-to-cart:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.button--add-to-cart.is-added {
+  background: var(--color-success);
+  border-color: var(--color-success);
+}
+
+.button--add-to-cart.is-added::before {
+  content: '✓ ';
+}
+
+/* Sold Out Button */
+.button--sold-out {
+  background: var(--color-text-light);
+  color: white;
+  border-color: var(--color-text-light);
+  cursor: not-allowed;
+}
+
+/* Quick View Button */
+.button--quick-view {
+  position: absolute;
+  bottom: var(--spacing-md);
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  opacity: 0;
+  background: white;
+  color: var(--color-text);
+  border-color: white;
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-base);
+  white-space: nowrap;
+}
+
+.product-card:hover .button--quick-view {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Social Button */
+.button--social {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: var(--radius-full);
+  background: var(--color-cream);
+  color: var(--color-text);
+  border: none;
+}
+
+.button--social:hover {
+  background: var(--color-gold);
+  color: white;
+}
+
+.button--social svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Close Button */
+.button--close {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.button--close:hover {
+  background: var(--color-cream);
+}
+
+.button--close svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .button {
+    padding: 0.75rem 1.5rem;
+  }
+  
+  .button--large {
+    padding: 0.875rem 2rem;
+  }
+  
+  .button-group {
+    flex-direction: column;
+  }
+  
+  .button-group .button {
+    width: 100%;
+  }
+}
+

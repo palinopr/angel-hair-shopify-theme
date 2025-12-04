@@ -1,0 +1,201 @@
+{%- style -%}
+  .main-search {
+    padding: 60px 0;
+    min-height: 60vh;
+  }
+
+  .main-search__container {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .main-search__header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .main-search__title {
+    font-family: var(--font-heading-family);
+    font-size: 2rem;
+    font-weight: 400;
+    margin-bottom: 24px;
+  }
+
+  .main-search__form {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .search-form {
+    display: flex;
+    gap: 12px;
+  }
+
+  .search-form__input {
+    flex: 1;
+    padding: 14px 20px;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-full);
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color var(--transition-fast);
+  }
+
+  .search-form__input:focus {
+    border-color: var(--color-gold);
+  }
+
+  .search-form__button {
+    padding: 14px 28px;
+    background: var(--color-gold);
+    color: white;
+    border: none;
+    border-radius: var(--radius-full);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background var(--transition-fast);
+  }
+
+  .search-form__button:hover {
+    background: var(--color-primary);
+  }
+
+  .search-results {
+    margin-top: 40px;
+  }
+
+  .search-results__count {
+    text-align: center;
+    margin-bottom: 32px;
+    color: var(--color-text-light);
+  }
+
+  .search-results__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  .search-empty {
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .search-empty__icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 24px;
+    opacity: 0.5;
+  }
+
+  .search-empty__text {
+    font-size: 1.25rem;
+    color: var(--color-text-light);
+    margin-bottom: 24px;
+  }
+{%- endstyle -%}
+
+<section class="main-search">
+  <div class="main-search__container">
+    <header class="main-search__header" data-animate>
+      <h1 class="main-search__title">
+        {%- if search.performed -%}
+          {{ 'search.title' | t }}: "{{ search.terms }}"
+        {%- else -%}
+          {{ 'search.title' | t }}
+        {%- endif -%}
+      </h1>
+
+      <div class="main-search__form">
+        <form action="{{ routes.search_url }}" method="get" class="search-form">
+          <input 
+            type="search" 
+            name="q" 
+            value="{{ search.terms | escape }}"
+            placeholder="{{ 'search.placeholder' | t }}"
+            class="search-form__input"
+          >
+          <button type="submit" class="search-form__button">
+            {{ 'search.submit' | t }}
+          </button>
+        </form>
+      </div>
+    </header>
+
+    {%- if search.performed -%}
+      {%- if search.results_count > 0 -%}
+        <div class="search-results">
+          <p class="search-results__count">
+            {{ 'search.results_count' | t: count: search.results_count }}
+          </p>
+          
+          <div class="search-results__grid" data-animate-stagger>
+            {%- for item in search.results -%}
+              {%- if item.object_type == 'product' -%}
+                <div class="product-card hover-lift">
+                  <div class="product-card__media">
+                    <a href="{{ item.url }}">
+                      {%- if item.featured_media -%}
+                        <img 
+                          src="{{ item.featured_media | image_url: width: 600 }}"
+                          alt="{{ item.featured_media.alt | default: item.title | escape }}"
+                          class="product-card__image"
+                          loading="lazy"
+                          width="600"
+                          height="{{ 600 | divided_by: item.featured_media.aspect_ratio | round }}"
+                        >
+                      {%- else -%}
+                        {{ 'product-1' | placeholder_svg_tag: 'product-card__image placeholder' }}
+                      {%- endif -%}
+                    </a>
+                  </div>
+                  <div class="product-card__content">
+                    <h3 class="product-card__title">
+                      <a href="{{ item.url }}">{{ item.title }}</a>
+                    </h3>
+                    <div class="product-card__price price">
+                      <span class="price__regular">{{ item.price | money }}</span>
+                    </div>
+                  </div>
+                </div>
+              {%- else -%}
+                <article class="article-card">
+                  <h3><a href="{{ item.url }}">{{ item.title }}</a></h3>
+                  <p>{{ item.content | strip_html | truncatewords: 20 }}</p>
+                </article>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+
+          {%- if paginate.pages > 1 -%}
+            {% render 'pagination', paginate: paginate %}
+          {%- endif -%}
+        </div>
+      {%- else -%}
+        <div class="search-empty">
+          <svg class="search-empty__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="M21 21l-4.35-4.35"/>
+          </svg>
+          <p class="search-empty__text">
+            {{ 'search.no_results' | t: terms: search.terms }}
+          </p>
+          <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary">
+            Browse All Products
+          </a>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Search Results",
+  "settings": []
+}
+{% endschema %}
+

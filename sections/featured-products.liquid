@@ -1,0 +1,365 @@
+{% comment %}
+  Angel Hair Theme - Featured Products Section
+{% endcomment %}
+
+<style>
+  .featured-products {
+    padding: var(--spacing-xxl) 0;
+    background: {{ section.settings.background_color }};
+  }
+
+  .featured-products__container {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+  }
+
+  .featured-products__header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .featured-products__subtitle {
+    display: inline-block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-gold);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .featured-products__title {
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .featured-products__description {
+    color: var(--color-text-light);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .featured-products__grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    gap: var(--spacing-lg);
+  }
+
+  @media (max-width: 1024px) {
+    .featured-products__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .featured-products__grid {
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
+      gap: var(--spacing-md);
+    }
+  }
+
+  .featured-products__footer {
+    text-align: center;
+    margin-top: var(--spacing-xl);
+  }
+
+  /* Product Card Override for this section */
+  .featured-products .product-card {
+    background: white;
+  }
+</style>
+
+<section class="featured-products section" data-section-id="{{ section.id }}">
+  <div class="featured-products__container">
+    <header class="featured-products__header" data-animate="fade-up">
+      {%- if section.settings.subtitle != blank -%}
+        <span class="featured-products__subtitle">{{ section.settings.subtitle }}</span>
+      {%- endif -%}
+      
+      {%- if section.settings.title != blank -%}
+        <h2 class="featured-products__title">{{ section.settings.title }}</h2>
+        <div class="divider"></div>
+      {%- endif -%}
+      
+      {%- if section.settings.description != blank -%}
+        <p class="featured-products__description">{{ section.settings.description }}</p>
+      {%- endif -%}
+    </header>
+
+    <div class="featured-products__grid">
+      {%- for product in section.settings.collection.products limit: section.settings.products_to_show -%}
+        <div class="product-card" data-animate="fade-up" style="animation-delay: {{ forloop.index | times: 100 }}ms;">
+          <div class="product-card__media">
+            <a href="{{ product.url }}">
+              {%- if product.featured_media -%}
+                <img 
+                  src="{{ product.featured_media | image_url: width: 600 }}"
+                  srcset="{{ product.featured_media | image_url: width: 300 }} 300w,
+                          {{ product.featured_media | image_url: width: 600 }} 600w"
+                  sizes="(max-width: 640px) 50vw, 25vw"
+                  alt="{{ product.featured_media.alt | default: product.title | escape }}"
+                  class="product-card__image"
+                  loading="lazy"
+                  width="600"
+                  height="{{ 600 | divided_by: product.featured_media.aspect_ratio | round }}"
+                >
+                {%- if product.media[1] and section.settings.show_secondary_image -%}
+                  <img 
+                    src="{{ product.media[1] | image_url: width: 600 }}"
+                    alt="{{ product.media[1].alt | default: product.title | escape }}"
+                    class="product-card__image product-card__image--secondary"
+                    loading="lazy"
+                  >
+                {%- endif -%}
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'product-card__image placeholder' }}
+              {%- endif -%}
+            </a>
+
+            <div class="product-card__badges">
+              {%- if product.compare_at_price > product.price -%}
+                {%- assign savings = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -%}
+                <span class="badge badge--sale">-{{ savings }}%</span>
+              {%- endif -%}
+              
+              {%- if product.available == false -%}
+                <span class="badge badge--soldout">Sold Out</span>
+              {%- elsif product.created_at > 'now' | date: '%s' | minus: 2592000 | date: '%Y-%m-%d' -%}
+                <span class="badge badge--new">New</span>
+              {%- endif -%}
+            </div>
+
+            {%- if section.settings.show_quick_actions -%}
+              <div class="product-card__actions">
+                <button class="product-card__action" aria-label="Quick view" data-quick-view="{{ product.handle }}">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </button>
+                <button class="product-card__action" aria-label="Add to wishlist">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                  </svg>
+                </button>
+              </div>
+            {%- endif -%}
+          </div>
+
+          <div class="product-card__content">
+            {%- if section.settings.show_vendor -%}
+              <span class="product-card__vendor">{{ product.vendor }}</span>
+            {%- endif -%}
+
+            <h3 class="product-card__title">
+              <a href="{{ product.url }}">{{ product.title }}</a>
+            </h3>
+
+            {%- if section.settings.show_rating -%}
+              <div class="product-card__rating">
+                {% render 'star-rating', rating: 5 %}
+              </div>
+            {%- endif -%}
+
+            <div class="product-card__price price">
+              {%- if product.compare_at_price > product.price -%}
+                <span class="price__sale">{{ product.price | money }}</span>
+                <span class="price__compare">{{ product.compare_at_price | money }}</span>
+              {%- else -%}
+                <span class="price__regular">{{ product.price | money }}</span>
+              {%- endif -%}
+            </div>
+
+            {%- if section.settings.show_add_to_cart -%}
+              {%- if product.available -%}
+                {%- if product.variants.size == 1 -%}
+                  <product-form>
+                    <form action="/cart/add" method="post">
+                      <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                      <input type="hidden" name="quantity" value="1">
+                      <button type="submit" class="button button--primary button--full product-card__add-to-cart">
+                        Add to Cart
+                      </button>
+                    </form>
+                  </product-form>
+                {%- else -%}
+                  <a href="{{ product.url }}" class="button button--secondary button--full product-card__add-to-cart">
+                    Select Options
+                  </a>
+                {%- endif -%}
+              {%- else -%}
+                <button class="button button--sold-out button--full product-card__add-to-cart" disabled>
+                  Sold Out
+                </button>
+              {%- endif -%}
+            {%- endif -%}
+          </div>
+        </div>
+      {%- else -%}
+        {%- for i in (1..section.settings.products_to_show) -%}
+          <div class="product-card product-card--placeholder">
+            <div class="product-card__media">
+              {{ 'product-' | append: forloop.index | placeholder_svg_tag: 'product-card__image placeholder' }}
+            </div>
+            <div class="product-card__content">
+              <h3 class="product-card__title">Product Title</h3>
+              <div class="product-card__price price">
+                <span class="price__regular">$29.99</span>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.show_view_all and section.settings.collection != blank -%}
+      <footer class="featured-products__footer">
+        <a href="{{ section.settings.collection.url }}" class="button button--outline-gold">
+          {{ section.settings.view_all_text | default: 'View All Products' }}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </footer>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "tag": "section",
+  "class": "section-featured-products",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Our Collection"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Featured Products"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Discover our bestselling hair care products"
+    },
+    {
+      "type": "header",
+      "content": "Products"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4,
+      "label": "Products to Show"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "label": "Columns (Desktop)"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns (Mobile)",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "header",
+      "content": "Product Card"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "label": "Show Secondary Image on Hover",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show Vendor",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show Rating",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_add_to_cart",
+      "label": "Show Add to Cart Button",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_actions",
+      "label": "Show Quick Actions (View, Wishlist)",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "View All"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show View All Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View All Text",
+      "default": "View All Products"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FEFEFE"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Products",
+      "settings": {
+        "title": "Featured Products",
+        "subtitle": "Our Collection"
+      }
+    }
+  ]
+}
+{% endschema %}
+

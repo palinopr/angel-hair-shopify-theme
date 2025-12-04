@@ -1,0 +1,351 @@
+{% comment %}
+  Angel Hair Theme - FAQ Accordion Section
+{% endcomment %}
+
+<style>
+  .faq {
+    padding: var(--spacing-xxl) 0;
+    background: {{ section.settings.background_color }};
+  }
+
+  .faq__container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+  }
+
+  .faq__header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .faq__subtitle {
+    display: inline-block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-gold);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .faq__title {
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .faq__description {
+    color: var(--color-text-light);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .faq__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .faq__item {
+    background: white;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--transition-base);
+  }
+
+  .faq__item:hover {
+    box-shadow: var(--shadow-md);
+  }
+
+  .faq__item.is-open {
+    box-shadow: var(--shadow-md);
+  }
+
+  .faq__trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text);
+    transition: color var(--transition-fast);
+  }
+
+  .faq__trigger:hover {
+    color: var(--color-gold);
+  }
+
+  .faq__item.is-open .faq__trigger {
+    color: var(--color-gold);
+  }
+
+  .faq__icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-full);
+    background: var(--color-cream);
+    color: var(--color-gold);
+    transition: transform var(--transition-base), background var(--transition-base);
+  }
+
+  .faq__item.is-open .faq__icon {
+    transform: rotate(180deg);
+    background: var(--color-gold);
+    color: white;
+  }
+
+  .faq__icon svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .faq__content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--transition-base);
+  }
+
+  .faq__answer {
+    padding: 0 var(--spacing-lg) var(--spacing-lg);
+    color: var(--color-text-light);
+    line-height: 1.7;
+  }
+
+  .faq__answer p {
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .faq__answer p:last-child {
+    margin-bottom: 0;
+  }
+
+  .faq__answer ul {
+    padding-left: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .faq__answer li {
+    list-style: disc;
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .faq__footer {
+    text-align: center;
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .faq__footer-text {
+    color: var(--color-text-light);
+    margin-bottom: var(--spacing-md);
+  }
+
+  /* Animation for content */
+  .faq__item.is-open .faq__answer {
+    animation: fadeIn 0.3s ease;
+  }
+
+  @media (max-width: 640px) {
+    .faq__trigger {
+      padding: var(--spacing-md);
+      font-size: 0.9375rem;
+    }
+
+    .faq__answer {
+      padding: 0 var(--spacing-md) var(--spacing-md);
+    }
+  }
+</style>
+
+<section class="faq section" data-section-id="{{ section.id }}">
+  <div class="faq__container">
+    <header class="faq__header" data-animate="fade-up">
+      {%- if section.settings.subtitle != blank -%}
+        <span class="faq__subtitle">{{ section.settings.subtitle }}</span>
+      {%- endif -%}
+      
+      {%- if section.settings.title != blank -%}
+        <h2 class="faq__title">{{ section.settings.title }}</h2>
+        <div class="divider"></div>
+      {%- endif -%}
+      
+      {%- if section.settings.description != blank -%}
+        <p class="faq__description">{{ section.settings.description }}</p>
+      {%- endif -%}
+    </header>
+
+    <faq-accordion class="faq__list" data-animate="fade-up">
+      {%- for block in section.blocks -%}
+        <div class="faq__item" data-accordion-item {{ block.shopify_attributes }}>
+          <button class="faq__trigger" data-accordion-trigger aria-expanded="false">
+            <span>{{ block.settings.question }}</span>
+            <span class="faq__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </span>
+          </button>
+          <div class="faq__content" data-accordion-content>
+            <div class="faq__answer">
+              {{ block.settings.answer }}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </faq-accordion>
+
+    {%- if section.settings.show_contact -%}
+      <footer class="faq__footer">
+        <p class="faq__footer-text">{{ section.settings.contact_text | default: "Can't find what you're looking for?" }}</p>
+        <a href="{{ section.settings.contact_link | default: '/pages/contact' }}" class="button button--primary">
+          {{ section.settings.contact_button | default: 'Contact Us' }}
+        </a>
+      </footer>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ Accordion",
+  "tag": "section",
+  "class": "section-faq",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Got Questions?"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Find answers to common questions about our products"
+    },
+    {
+      "type": "header",
+      "content": "Contact Section"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_contact",
+      "label": "Show Contact Section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "contact_text",
+      "label": "Contact Text",
+      "default": "Can't find what you're looking for?"
+    },
+    {
+      "type": "text",
+      "id": "contact_button",
+      "label": "Contact Button Text",
+      "default": "Contact Us"
+    },
+    {
+      "type": "url",
+      "id": "contact_link",
+      "label": "Contact Link"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FDF8F3"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "What makes your products different?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Our products are formulated with premium amino acids and natural extracts that nourish your hair from root to tip.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Accordion",
+      "blocks": [
+        {
+          "type": "question",
+          "settings": {
+            "question": "What are the main ingredients in your products?",
+            "answer": "<p>Our products contain a unique blend of amino acids, keratin, natural plant extracts, and essential vitamins that work together to strengthen and beautify your hair.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "How often should I use the treatment?",
+            "answer": "<p>For best results, we recommend using our treatment products 2-3 times per week. However, our daily care products can be used with every wash.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Are your products safe for colored hair?",
+            "answer": "<p>Yes! All our products are color-safe and actually help protect and extend the life of your hair color.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer international shipping?",
+            "answer": "<p>Yes, we ship worldwide. Shipping times and costs vary by location. Check our shipping page for more details.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "<p>We offer a 30-day satisfaction guarantee. If you're not happy with your purchase, contact us for a full refund.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

@@ -1,0 +1,67 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-banner",
+      "settings": {
+        "layout": "full",
+        "height": 50,
+        "content_width": 70,
+        "overlay_opacity": 40,
+        "subtitle": "Get in Touch",
+        "title": "Contact Us",
+        "description": "We're here to help with any questions about our products or your order.",
+        "text_align": "center",
+        "text_color": "#FFFFFF",
+        "show_scroll_indicator": false
+      }
+    },
+    "contact": {
+      "type": "contact-form",
+      "settings": {
+        "subtitle": "Reach Out",
+        "title": "Send us a Message",
+        "description": "Have questions about our products or need assistance? We're here to help! Our team typically responds within 24 hours.",
+        "email": "angelhair2220@gmail.com",
+        "phone": "+1 (954) 853-6724",
+        "form_title": "Contact Form",
+        "background_color": "#FEFEFE"
+      }
+    },
+    "faq": {
+      "type": "faq-accordion",
+      "settings": {
+        "subtitle": "Quick Answers",
+        "title": "Common Questions",
+        "description": "Find answers to frequently asked questions",
+        "show_contact": false,
+        "background_color": "#FDF8F3"
+      },
+      "blocks": {
+        "faq-1": {
+          "type": "question",
+          "settings": {
+            "question": "What are your business hours?",
+            "answer": "<p>We're available Monday through Friday, 9am to 6pm EST. For urgent inquiries, you can reach us via WhatsApp.</p>"
+          }
+        },
+        "faq-2": {
+          "type": "question",
+          "settings": {
+            "question": "How long does shipping take?",
+            "answer": "<p>Standard shipping takes 3-5 business days within the US. International shipping typically takes 7-14 business days depending on location.</p>"
+          }
+        },
+        "faq-3": {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer wholesale pricing?",
+            "answer": "<p>Yes! We offer special pricing for salons and retailers. Please contact us with your business details for more information.</p>"
+          }
+        }
+      },
+      "block_order": ["faq-1", "faq-2", "faq-3"]
+    }
+  },
+  "order": ["hero", "contact", "faq"]
+}
+

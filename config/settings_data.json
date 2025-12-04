@@ -1,0 +1,34 @@
+{
+  "current": {
+    "color_primary": "#C9A962",
+    "color_secondary": "#2C2C2C",
+    "color_accent": "#E8D5A3",
+    "color_background": "#FEFEFE",
+    "color_text": "#2C2C2C",
+    "color_border": "#E5E5E5",
+    "type_header_font": "playfair_display_n4",
+    "type_body_font": "lato_n4",
+    "type_body_font_size": 16,
+    "logo_width": 150,
+    "social_instagram": "https://www.instagram.com/angel_hair.1/",
+    "social_tiktok": "https://www.tiktok.com/@angelhair2220gmail.com",
+    "whatsapp_enabled": true,
+    "whatsapp_number": "19548536724",
+    "whatsapp_message": "Hi! I'm interested in Angel Hair products.",
+    "cart_type": "drawer",
+    "show_vendor": false,
+    "predictive_search_enabled": true,
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {}
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {}
+      }
+    },
+    "content_for_index": []
+  }
+}
+

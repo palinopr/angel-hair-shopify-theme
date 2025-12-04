@@ -1,0 +1,73 @@
+{%- style -%}
+  .section-404 {
+    padding: 80px 0;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: var(--color-cream);
+  }
+
+  .error-404 {
+    max-width: 600px;
+    padding: 40px;
+  }
+
+  .error-404__number {
+    font-family: var(--font-heading-family);
+    font-size: clamp(6rem, 15vw, 12rem);
+    font-weight: 300;
+    line-height: 1;
+    color: var(--color-gold);
+    margin-bottom: 24px;
+  }
+
+  .error-404__title {
+    font-family: var(--font-heading-family);
+    font-size: 2rem;
+    margin-bottom: 16px;
+    color: var(--color-text);
+  }
+
+  .error-404__text {
+    font-size: 1.125rem;
+    color: var(--color-text-light);
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+
+  .error-404__actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+{%- endstyle -%}
+
+<section class="section-404">
+  <div class="error-404" data-animate>
+    <div class="error-404__number">404</div>
+    <h1 class="error-404__title">Page Not Found</h1>
+    <p class="error-404__text">
+      Oops! The page you're looking for doesn't exist or has been moved. 
+      Let's get you back on track.
+    </p>
+    <div class="error-404__actions">
+      <a href="{{ routes.root_url }}" class="btn btn--primary">
+        Go Home
+      </a>
+      <a href="{{ routes.all_products_collection_url }}" class="btn btn--outline">
+        Shop Products
+      </a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "404 Page",
+  "settings": []
+}
+{% endschema %}
+

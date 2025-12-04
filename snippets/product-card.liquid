@@ -1,0 +1,95 @@
+{% comment %}
+  Angel Hair Theme - Product Card Snippet
+  
+  Usage:
+  {% render 'product-card', product: product, show_vendor: false, show_rating: true %}
+{% endcomment %}
+
+{%- liquid
+  assign show_vendor = show_vendor | default: false
+  assign show_rating = show_rating | default: true
+  assign show_quick_add = show_quick_add | default: true
+  assign lazy_load = lazy_load | default: true
+-%}
+
+<div class="product-card hover-lift">
+  <div class="product-card__media image-zoom">
+    <a href="{{ product.url }}" aria-label="{{ product.title }}">
+      {%- if product.featured_media -%}
+        <img 
+          src="{{ product.featured_media | image_url: width: 600 }}"
+          alt="{{ product.featured_media.alt | default: product.title | escape }}"
+          class="product-card__image"
+          {% if lazy_load %}loading="lazy"{% endif %}
+          width="600"
+          height="{{ 600 | divided_by: product.featured_media.aspect_ratio | round }}"
+        >
+        {%- if product.media[1] -%}
+          <img 
+            src="{{ product.media[1] | image_url: width: 600 }}"
+            alt="{{ product.media[1].alt | default: product.title | escape }}"
+            class="product-card__image product-card__image--hover"
+            loading="lazy"
+            width="600"
+            height="{{ 600 | divided_by: product.media[1].aspect_ratio | round }}"
+          >
+        {%- endif -%}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'product-card__image placeholder' }}
+      {%- endif -%}
+    </a>
+
+    <div class="product-card__badges">
+      {%- if product.compare_at_price > product.price -%}
+        {%- assign savings = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+        <span class="badge badge--sale">-{{ savings }}%</span>
+      {%- endif -%}
+      {%- if product.available == false -%}
+        <span class="badge badge--sold-out">{{ 'products.product.sold_out' | t }}</span>
+      {%- endif -%}
+    </div>
+
+    {%- if show_quick_add and product.available -%}
+      <div class="product-card__quick-add">
+        {%- if product.variants.size == 1 -%}
+          <form action="{{ routes.cart_add_url }}" method="post" class="quick-add-form">
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+            <button type="submit" class="btn btn--primary btn--small btn--full">
+              {{ 'products.product.add_to_cart' | t }}
+            </button>
+          </form>
+        {%- else -%}
+          <a href="{{ product.url }}" class="btn btn--primary btn--small btn--full">
+            {{ 'products.product.view_full_details' | t }}
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="product-card__content">
+    {%- if show_vendor and product.vendor -%}
+      <p class="product-card__vendor">{{ product.vendor }}</p>
+    {%- endif -%}
+
+    <h3 class="product-card__title">
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h3>
+
+    {%- if show_rating -%}
+      <div class="product-card__rating">
+        {% render 'star-rating', rating: 5 %}
+      </div>
+    {%- endif -%}
+
+    <div class="product-card__price price">
+      {%- if product.compare_at_price > product.price -%}
+        <span class="price__sale">{{ product.price | money }}</span>
+        <span class="price__compare">{{ product.compare_at_price | money }}</span>
+      {%- else -%}
+        <span class="price__regular">{{ product.price | money }}</span>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,174 @@
+{%- style -%}
+  .account-section {
+    padding: 60px 0;
+    min-height: 60vh;
+  }
+
+  .account-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .account-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .account-header__title {
+    font-family: var(--font-heading-family);
+    font-size: 2rem;
+    font-weight: 400;
+    margin: 0;
+  }
+
+  .account-header__logout {
+    color: var(--color-text-light);
+    text-decoration: none;
+    font-size: 0.875rem;
+  }
+
+  .account-header__logout:hover {
+    color: var(--color-gold);
+  }
+
+  .account-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+
+  @media (max-width: 768px) {
+    .account-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .account-section__title {
+    font-family: var(--font-heading-family);
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-bottom: 16px;
+    color: var(--color-text);
+  }
+
+  .account-info p {
+    margin: 8px 0;
+    color: var(--color-text-light);
+  }
+
+  .account-info a {
+    color: var(--color-gold);
+    text-decoration: none;
+  }
+
+  .account-info a:hover {
+    text-decoration: underline;
+  }
+
+  .orders-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .orders-table th,
+  .orders-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .orders-table th {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-light);
+  }
+
+  .orders-table a {
+    color: var(--color-gold);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .orders-table a:hover {
+    text-decoration: underline;
+  }
+
+  .no-orders {
+    text-align: center;
+    padding: 40px;
+    color: var(--color-text-light);
+  }
+{%- endstyle -%}
+
+<section class="account-section">
+  <div class="account-container" data-animate>
+    <header class="account-header">
+      <h1 class="account-header__title">{{ 'customer.account.title' | t }}</h1>
+      <a href="{{ routes.account_logout_url }}" class="account-header__logout">
+        {{ 'customer.account.logout' | t }}
+      </a>
+    </header>
+
+    <div class="account-grid">
+      <div class="account-orders">
+        <h2 class="account-section__title">{{ 'customer.orders.title' | t }}</h2>
+
+        {%- if customer.orders.size > 0 -%}
+          <table class="orders-table">
+            <thead>
+              <tr>
+                <th>{{ 'customer.orders.order_number' | t }}</th>
+                <th>{{ 'customer.orders.date' | t }}</th>
+                <th>{{ 'customer.orders.total' | t }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- for order in customer.orders -%}
+                <tr>
+                  <td>
+                    <a href="{{ order.customer_url }}">{{ order.name }}</a>
+                  </td>
+                  <td>{{ order.created_at | date: format: 'abbreviated_date' }}</td>
+                  <td>{{ order.total_price | money }}</td>
+                </tr>
+              {%- endfor -%}
+            </tbody>
+          </table>
+        {%- else -%}
+          <p class="no-orders">{{ 'customer.orders.none' | t }}</p>
+        {%- endif -%}
+      </div>
+
+      <div class="account-info">
+        <h2 class="account-section__title">{{ 'customer.account.details' | t }}</h2>
+        <p><strong>{{ customer.name }}</strong></p>
+        <p>{{ customer.email }}</p>
+        
+        {%- if customer.default_address -%}
+          <p>{{ customer.default_address | format_address }}</p>
+        {%- endif -%}
+
+        <p>
+          <a href="{{ routes.account_addresses_url }}">
+            {{ 'customer.addresses.title' | t }}
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Customer Account",
+  "settings": []
+}
+{% endschema %}
+

@@ -1,0 +1,115 @@
+{% comment %}
+  Angel Hair Theme - Meta Pixel Event Helpers
+  
+  Include this snippet where needed for tracking dynamic events.
+  
+  Usage in JavaScript:
+  - Call window.MetaPixel.trackAddToCart(productData)
+  - Call window.MetaPixel.trackInitiateCheckout(cartData)
+{% endcomment %}
+
+{%- if settings.meta_pixel_id != blank -%}
+<script>
+  window.MetaPixel = {
+    // Track Add to Cart event
+    trackAddToCart: function(data) {
+      if (typeof fbq === 'undefined') return;
+      
+      fbq('track', 'AddToCart', {
+        content_ids: [data.id || data.variant_id],
+        content_name: data.title || data.product_title,
+        content_type: 'product',
+        value: (data.price / 100).toFixed(2),
+        currency: '{{ shop.currency }}'
+      });
+    },
+
+    // Track Initiate Checkout event
+    trackInitiateCheckout: function(cart) {
+      if (typeof fbq === 'undefined') return;
+      
+      const contentIds = cart.items.map(item => item.variant_id.toString());
+      const contents = cart.items.map(item => ({
+        id: item.variant_id.toString(),
+        quantity: item.quantity,
+        item_price: (item.price / 100).toFixed(2)
+      }));
+      
+      fbq('track', 'InitiateCheckout', {
+        content_ids: contentIds,
+        contents: contents,
+        content_type: 'product',
+        num_items: cart.item_count,
+        value: (cart.total_price / 100).toFixed(2),
+        currency: '{{ shop.currency }}'
+      });
+    },
+
+    // Track Lead event (for contact form submissions)
+    trackLead: function(data) {
+      if (typeof fbq === 'undefined') return;
+      
+      fbq('track', 'Lead', {
+        content_name: data.content_name || 'Contact Form',
+        content_category: data.content_category || 'Contact'
+      });
+    },
+
+    // Track Contact event (for WhatsApp clicks)
+    trackContact: function(method) {
+      if (typeof fbq === 'undefined') return;
+      
+      fbq('track', 'Contact', {
+        content_name: method || 'WhatsApp'
+      });
+    },
+
+    // Track custom events
+    trackCustomEvent: function(eventName, params) {
+      if (typeof fbq === 'undefined') return;
+      
+      fbq('trackCustom', eventName, params || {});
+    }
+  };
+
+  // Auto-track Add to Cart events from product forms
+  document.addEventListener('cart:item-added', function(event) {
+    if (event.detail && event.detail.variant_id) {
+      window.MetaPixel.trackAddToCart(event.detail);
+    }
+  });
+
+  // Auto-track checkout button clicks
+  document.addEventListener('click', function(e) {
+    const checkoutBtn = e.target.closest('[name="checkout"], [href*="/checkout"]');
+    if (checkoutBtn) {
+      // Fetch cart and track initiate checkout
+      fetch('/cart.js')
+        .then(res => res.json())
+        .then(cart => {
+          window.MetaPixel.trackInitiateCheckout(cart);
+        })
+        .catch(err => console.error('Error tracking checkout:', err));
+    }
+  });
+
+  // Track WhatsApp clicks
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('[data-whatsapp]')) {
+      window.MetaPixel.trackContact('WhatsApp');
+    }
+  });
+
+  // Track contact form submissions
+  document.addEventListener('submit', function(e) {
+    const form = e.target;
+    if (form.matches('form[action*="/contact"]') || form.matches('.contact-form')) {
+      window.MetaPixel.trackLead({
+        content_name: 'Contact Form',
+        content_category: 'Contact'
+      });
+    }
+  });
+</script>
+{%- endif -%}
+

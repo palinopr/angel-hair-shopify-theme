@@ -1,0 +1,368 @@
+{% comment %}
+  Angel Hair Theme - Product Carousel Section
+{% endcomment %}
+
+<style>
+  .product-carousel {
+    padding: var(--spacing-xxl) 0;
+    background: {{ section.settings.background_color }};
+    overflow: hidden;
+  }
+
+  .product-carousel__container {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+  }
+
+  .product-carousel__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+    flex-wrap: wrap;
+  }
+
+  .product-carousel__title-wrapper {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .product-carousel__subtitle {
+    display: inline-block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-gold);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .product-carousel__title {
+    margin: 0;
+  }
+
+  .product-carousel__nav {
+    display: flex;
+    gap: var(--spacing-xs);
+  }
+
+  .product-carousel__nav-button {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all var(--transition-base);
+  }
+
+  .product-carousel__nav-button:hover:not(:disabled) {
+    background: var(--color-gold);
+    border-color: var(--color-gold);
+    color: white;
+  }
+
+  .product-carousel__nav-button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .product-carousel__nav-button svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .product-carousel__wrapper {
+    position: relative;
+    overflow: hidden;
+    margin: 0 -var(--spacing-sm);
+    padding: 0 var(--spacing-sm);
+  }
+
+  .product-carousel__track {
+    display: flex;
+    gap: var(--spacing-lg);
+    transition: transform var(--transition-slow);
+  }
+
+  .product-carousel__slide {
+    flex: 0 0 calc(25% - var(--spacing-lg) * 3 / 4);
+    min-width: 0;
+  }
+
+  @media (max-width: 1024px) {
+    .product-carousel__slide {
+      flex: 0 0 calc(33.333% - var(--spacing-lg) * 2 / 3);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .product-carousel__slide {
+      flex: 0 0 calc(50% - var(--spacing-lg) / 2);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .product-carousel__slide {
+      flex: 0 0 100%;
+    }
+  }
+
+  .product-carousel__dots {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    margin-top: var(--spacing-lg);
+  }
+
+  .carousel__dot {
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-full);
+    background: var(--color-border);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .carousel__dot:hover,
+  .carousel__dot.is-active {
+    background: var(--color-gold);
+    transform: scale(1.2);
+  }
+
+  .product-carousel__footer {
+    text-align: center;
+    margin-top: var(--spacing-xl);
+  }
+</style>
+
+<section class="product-carousel section" data-section-id="{{ section.id }}">
+  <div class="product-carousel__container">
+    <header class="product-carousel__header">
+      <div class="product-carousel__title-wrapper">
+        {%- if section.settings.subtitle != blank -%}
+          <span class="product-carousel__subtitle">{{ section.settings.subtitle }}</span>
+        {%- endif -%}
+        {%- if section.settings.title != blank -%}
+          <h2 class="product-carousel__title">{{ section.settings.title }}</h2>
+        {%- endif -%}
+      </div>
+
+      <nav class="product-carousel__nav">
+        <button class="product-carousel__nav-button" data-carousel-prev aria-label="Previous">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <button class="product-carousel__nav-button" data-carousel-next aria-label="Next">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </nav>
+    </header>
+
+    <product-carousel 
+      class="product-carousel__wrapper"
+      data-slides-per-view="{{ section.settings.slides_per_view }}"
+      data-autoplay="{{ section.settings.autoplay }}"
+      data-autoplay-speed="{{ section.settings.autoplay_speed }}"
+    >
+      <div class="product-carousel__track" data-carousel-track>
+        {%- for product in section.settings.collection.products limit: section.settings.products_to_show -%}
+          <div class="product-carousel__slide" data-carousel-slide>
+            <div class="product-card">
+              <div class="product-card__media">
+                <a href="{{ product.url }}">
+                  {%- if product.featured_media -%}
+                    <img 
+                      src="{{ product.featured_media | image_url: width: 600 }}"
+                      alt="{{ product.featured_media.alt | default: product.title | escape }}"
+                      class="product-card__image"
+                      loading="lazy"
+                      width="600"
+                      height="{{ 600 | divided_by: product.featured_media.aspect_ratio | round }}"
+                    >
+                  {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag: 'product-card__image placeholder' }}
+                  {%- endif -%}
+                </a>
+
+                <div class="product-card__badges">
+                  {%- if product.compare_at_price > product.price -%}
+                    <span class="badge badge--sale">Sale</span>
+                  {%- endif -%}
+                </div>
+              </div>
+
+              <div class="product-card__content">
+                <h3 class="product-card__title">
+                  <a href="{{ product.url }}">{{ product.title }}</a>
+                </h3>
+
+                <div class="product-card__rating">
+                  {% render 'star-rating', rating: 5 %}
+                </div>
+
+                <div class="product-card__price price">
+                  {%- if product.compare_at_price > product.price -%}
+                    <span class="price__sale">{{ product.price | money }}</span>
+                    <span class="price__compare">{{ product.compare_at_price | money }}</span>
+                  {%- else -%}
+                    <span class="price__regular">{{ product.price | money }}</span>
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- else -%}
+          {%- for i in (1..8) -%}
+            <div class="product-carousel__slide" data-carousel-slide>
+              <div class="product-card product-card--placeholder">
+                <div class="product-card__media">
+                  {{ 'product-' | append: forloop.index | placeholder_svg_tag: 'product-card__image placeholder' }}
+                </div>
+                <div class="product-card__content">
+                  <h3 class="product-card__title">Product Title</h3>
+                  <div class="product-card__price price">
+                    <span class="price__regular">$29.99</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+
+      {%- if section.settings.show_dots -%}
+        <div class="product-carousel__dots" data-carousel-dots></div>
+      {%- endif -%}
+    </product-carousel>
+
+    {%- if section.settings.show_view_all and section.settings.collection != blank -%}
+      <footer class="product-carousel__footer">
+        <a href="{{ section.settings.collection.url }}" class="button button--outline-gold">
+          {{ section.settings.view_all_text | default: 'View Collection' }}
+        </a>
+      </footer>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product Carousel",
+  "tag": "section",
+  "class": "section-product-carousel",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Bestsellers"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Most Popular"
+    },
+    {
+      "type": "header",
+      "content": "Products"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 4,
+      "max": 16,
+      "step": 1,
+      "default": 8,
+      "label": "Products to Show"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "label": "Slides Per View (Desktop)"
+    },
+    {
+      "type": "header",
+      "content": "Carousel Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Auto-play",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 2000,
+      "max": 10000,
+      "step": 500,
+      "default": 5000,
+      "unit": "ms",
+      "label": "Auto-play Speed"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Show Dots",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "View All"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show View All Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View All Text",
+      "default": "View Collection"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FDF8F3"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Carousel"
+    }
+  ]
+}
+{% endschema %}
+

@@ -1,0 +1,112 @@
+{%- style -%}
+  .announcement-bar {
+    background: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    padding: 10px 16px;
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .announcement-bar__container {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .announcement-bar a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .announcement-bar a:hover {
+    opacity: 0.8;
+  }
+
+  .announcement-bar__icon {
+    font-size: 1rem;
+  }
+
+  /* Scrolling animation for long text */
+  @media (max-width: 768px) {
+    .announcement-bar__text {
+      animation: announcement-scroll 15s linear infinite;
+    }
+
+    @keyframes announcement-scroll {
+      0%, 20% { transform: translateX(0); }
+      80%, 100% { transform: translateX(-100%); }
+    }
+  }
+{%- endstyle -%}
+
+{%- if section.settings.show_announcement -%}
+  <div class="announcement-bar" role="region" aria-label="Announcement">
+    <div class="announcement-bar__container">
+      {%- if section.settings.icon != blank -%}
+        <span class="announcement-bar__icon">{{ section.settings.icon }}</span>
+      {%- endif -%}
+      
+      {%- if section.settings.link != blank -%}
+        <a href="{{ section.settings.link }}" class="announcement-bar__text">
+          {{ section.settings.text }}
+        </a>
+      {%- else -%}
+        <span class="announcement-bar__text">{{ section.settings.text }}</span>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Show announcement",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "🌟 Free shipping on orders over $50! 🌟"
+    },
+    {
+      "type": "text",
+      "id": "icon",
+      "label": "Icon (emoji)",
+      "default": ""
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#C9A962"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#FFFFFF"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Announcement bar"
+    }
+  ]
+}
+{% endschema %}
+

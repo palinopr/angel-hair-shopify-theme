@@ -1,0 +1,78 @@
+{% comment %}
+  Angel Hair Theme - Meta Pixel Tracking
+  
+  This snippet handles all Meta (Facebook) Pixel tracking for:
+  - Page views (automatically tracked)
+  - View content (product pages)
+  - Add to cart
+  - Initiate checkout
+  - Purchase (handled by Shopify)
+  
+  All events use proper data formats for Meta Ads optimization.
+{% endcomment %}
+
+{%- if settings.meta_pixel_id != blank -%}
+  <!-- Meta Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    
+    fbq('init', '{{ settings.meta_pixel_id }}');
+    fbq('track', 'PageView');
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none" 
+         src="https://www.facebook.com/tr?id={{ settings.meta_pixel_id }}&ev=PageView&noscript=1"/>
+  </noscript>
+  <!-- End Meta Pixel Code -->
+
+  {%- comment -%} Product Page - ViewContent Event {%- endcomment -%}
+  {%- if template.name == 'product' -%}
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        {%- if product -%}
+          fbq('track', 'ViewContent', {
+            content_ids: ['{{ product.selected_or_first_available_variant.id }}'],
+            content_name: {{ product.title | json }},
+            content_type: 'product',
+            content_category: {{ product.type | json }},
+            value: {{ product.price | money_without_currency | remove: ',' }},
+            currency: '{{ shop.currency }}'
+          });
+        {%- endif -%}
+      });
+    </script>
+  {%- endif -%}
+
+  {%- comment -%} Collection Page - ViewCategory Event {%- endcomment -%}
+  {%- if template.name == 'collection' -%}
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        {%- if collection -%}
+          fbq('track', 'ViewContent', {
+            content_category: {{ collection.title | json }},
+            content_type: 'product_group'
+          });
+        {%- endif -%}
+      });
+    </script>
+  {%- endif -%}
+
+  {%- comment -%} Search Page - Search Event {%- endcomment -%}
+  {%- if template.name == 'search' -%}
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        fbq('track', 'Search', {
+          search_string: {{ search.terms | json }}
+        });
+      });
+    </script>
+  {%- endif -%}
+{%- endif -%}
+

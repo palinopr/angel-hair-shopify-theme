@@ -1,0 +1,180 @@
+{% comment %}
+  Angel Hair Theme - Mission & Vision Section
+{% endcomment %}
+
+<style>
+  .mission-vision {
+    padding: var(--spacing-xxl) 0;
+    background: {{ section.settings.background_color }};
+  }
+
+  .mission-vision__container {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+  }
+
+  .mission-vision__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xxl);
+  }
+
+  @media (max-width: 768px) {
+    .mission-vision__grid {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-xl);
+    }
+  }
+
+  .mission-vision__item {
+    position: relative;
+    padding: var(--spacing-xl);
+    background: white;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+  }
+
+  .mission-vision__item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--color-gold);
+    border-radius: var(--radius-xl) 0 0 var(--radius-xl);
+  }
+
+  .mission-vision__icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-gold-light);
+    border-radius: var(--radius-lg);
+    color: var(--color-gold);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .mission-vision__icon svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .mission-vision__title {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-md);
+    color: var(--color-text);
+  }
+
+  .mission-vision__text {
+    color: var(--color-text-light);
+    line-height: 1.8;
+    font-size: 1.0625rem;
+  }
+
+  /* Decorative quote marks */
+  .mission-vision__item--with-quote {
+    padding-top: var(--spacing-xxl);
+  }
+
+  .mission-vision__item--with-quote::after {
+    content: '"';
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-lg);
+    font-family: var(--font-heading-family);
+    font-size: 5rem;
+    line-height: 1;
+    color: var(--color-gold-light);
+    opacity: 0.5;
+  }
+</style>
+
+<section class="mission-vision section" data-section-id="{{ section.id }}">
+  <div class="mission-vision__container">
+    <div class="mission-vision__grid">
+      <div class="mission-vision__item" data-animate="fade-right">
+        <div class="mission-vision__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 8v8M8 12h8"/>
+          </svg>
+        </div>
+        <h3 class="mission-vision__title">{{ section.settings.mission_title | default: 'Our Mission' }}</h3>
+        <p class="mission-vision__text">{{ section.settings.mission_text }}</p>
+      </div>
+
+      <div class="mission-vision__item" data-animate="fade-left">
+        <div class="mission-vision__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </div>
+        <h3 class="mission-vision__title">{{ section.settings.vision_title | default: 'Our Vision' }}</h3>
+        <p class="mission-vision__text">{{ section.settings.vision_text }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Mission & Vision",
+  "tag": "section",
+  "class": "section-mission-vision",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Mission"
+    },
+    {
+      "type": "text",
+      "id": "mission_title",
+      "label": "Mission Title",
+      "default": "Our Mission"
+    },
+    {
+      "type": "textarea",
+      "id": "mission_text",
+      "label": "Mission Text",
+      "default": "To provide professional-grade hair care products that transform and nourish hair, making salon-quality results accessible to everyone."
+    },
+    {
+      "type": "header",
+      "content": "Vision"
+    },
+    {
+      "type": "text",
+      "id": "vision_title",
+      "label": "Vision Title",
+      "default": "Our Vision"
+    },
+    {
+      "type": "textarea",
+      "id": "vision_text",
+      "label": "Vision Text",
+      "default": "To become the leading name in hair care, recognized worldwide for our commitment to quality, innovation, and customer satisfaction."
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FDF8F3"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Mission & Vision"
+    }
+  ]
+}
+{% endschema %}
+
