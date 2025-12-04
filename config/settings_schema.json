@@ -18,22 +18,22 @@
         "type": "color",
         "id": "color_primary",
         "label": "Primary Color",
-        "default": "#C9A962",
-        "info": "Main brand color (gold)"
+        "default": "#1a1a1a",
+        "info": "Main brand color (black)"
       },
       {
         "type": "color",
         "id": "color_secondary",
         "label": "Secondary Color",
-        "default": "#2C2C2C",
+        "default": "#333333",
         "info": "Secondary brand color"
       },
       {
         "type": "color",
         "id": "color_accent",
         "label": "Accent Color",
-        "default": "#E8D5A3",
-        "info": "Accent highlights"
+        "default": "#f5f5f5",
+        "info": "Accent highlights (light gray)"
       },
       {
         "type": "header",

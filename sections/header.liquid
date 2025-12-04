@@ -234,7 +234,7 @@
           {%- if section.settings.logo != blank -%}
             <img src="{{ section.settings.logo | image_url: width: 150 }}" alt="{{ shop.name }}" style="max-height: 40px; width: auto;">
           {%- else -%}
-            <span class="header__logo-text" style="font-family: var(--font-heading-family); font-size: 1.25rem; font-weight: 600; color: var(--color-primary);">Angel Hair</span>
+            <span class="header__logo-text" style="font-family: var(--font-heading-family); font-size: 1.25rem; font-weight: 600; color: #1a1a1a;">Angel Hair</span>
           {%- endif -%}
           <button class="button--close" data-menu-close aria-label="Close menu">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -277,7 +277,7 @@
              loading="eager"
              style="max-height: {{ section.settings.logo_height }}px; width: auto;">
       {%- else -%}
-        <span class="header__logo-text" style="font-family: var(--font-heading-family); font-size: 1.5rem; font-weight: 600; color: var(--color-primary);">Angel Hair</span>
+        <span class="header__logo-text" style="font-family: var(--font-heading-family); font-size: 1.5rem; font-weight: 600; color: #1a1a1a;">Angel Hair</span>
       {%- endif -%}
     </a>
 
