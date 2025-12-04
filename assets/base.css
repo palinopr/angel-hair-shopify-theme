@@ -199,7 +199,7 @@ ul, ol {
 }
 
 .text-gold {
-  color: var(--color-gold);
+  color: #2C2C2C;
 }
 
 .text-light {
@@ -288,7 +288,7 @@ ul, ol {
 
 /* Selection */
 ::selection {
-  background: var(--color-gold-light);
+  background: #e0e0e0;
   color: var(--color-text);
 }
 
@@ -302,12 +302,12 @@ ul, ol {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-gold);
+  background: #888;
   border-radius: var(--radius-full);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary);
+  background: #666;
 }
 
 /* Animations */
@@ -454,7 +454,7 @@ ul, ol {
 }
 
 .badge--new {
-  background: var(--color-gold);
+  background: #2C2C2C;
   color: white;
 }
 
@@ -499,7 +499,7 @@ ul, ol {
 .star-rating__star {
   width: 16px;
   height: 16px;
-  fill: var(--color-gold);
+  fill: #D4AF37;
 }
 
 .star-rating__star--empty {
@@ -560,8 +560,8 @@ ul, ol {
 /* Divider */
 .divider {
   width: 60px;
-  height: 3px;
-  background: var(--color-gold);
+  height: 2px;
+  background: #2C2C2C;
   margin: var(--spacing-md) auto;
 }
 

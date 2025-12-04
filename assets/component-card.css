@@ -90,7 +90,7 @@
 }
 
 .product-card__action:hover {
-  background: var(--color-gold);
+  background: #2C2C2C;
   color: white;
 }
 
@@ -110,7 +110,7 @@
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--color-gold);
+  color: #888;
   margin-bottom: var(--spacing-xs);
 }
 
@@ -133,7 +133,7 @@
 }
 
 .product-card:hover .product-card__title {
-  color: var(--color-gold);
+  color: #888;
 }
 
 .product-card__rating {
@@ -319,7 +319,7 @@
 }
 
 .article-card:hover .article-card__title {
-  color: var(--color-gold);
+  color: #888;
 }
 
 .article-card__excerpt {
@@ -384,7 +384,7 @@
   width: 64px;
   height: 64px;
   margin: 0 auto var(--spacing-md);
-  color: var(--color-gold);
+  color: #2C2C2C;
 }
 
 .value-card__title {
@@ -415,9 +415,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-gold-light);
+  background: #f5f5f5;
   border-radius: var(--radius-md);
-  color: var(--color-gold);
+  color: #2C2C2C;
 }
 
 .feature-card__content {
