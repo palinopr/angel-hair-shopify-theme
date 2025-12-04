@@ -1,0 +1,173 @@
+{% comment %}
+  Angel Hair Theme - Simple Welcome Section
+{% endcomment %}
+
+<style>
+  .welcome {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--color-cream) 0%, var(--color-soft-white) 100%);
+    padding: var(--spacing-xxl) var(--spacing-md);
+    text-align: center;
+  }
+
+  .welcome__container {
+    max-width: 800px;
+  }
+
+  .welcome__subtitle {
+    display: inline-block;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-gold);
+    margin-bottom: var(--spacing-sm);
+    font-weight: 600;
+  }
+
+  .welcome__title {
+    font-family: var(--font-heading-family);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+    color: var(--color-text);
+    line-height: 1.2;
+  }
+
+  .welcome__description {
+    font-size: 1.125rem;
+    color: var(--color-text-light);
+    margin-bottom: var(--spacing-lg);
+    line-height: 1.7;
+  }
+
+  .welcome__buttons {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+  }
+
+  .welcome__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: var(--radius-full);
+    transition: all var(--transition-base);
+    min-width: 160px;
+  }
+
+  .welcome__button--primary {
+    background: var(--color-primary);
+    color: white;
+  }
+
+  .welcome__button--primary:hover {
+    background: var(--color-secondary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .welcome__button--secondary {
+    background: transparent;
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+  }
+
+  .welcome__button--secondary:hover {
+    background: var(--color-primary);
+    color: white;
+  }
+</style>
+
+<section class="welcome">
+  <div class="welcome__container">
+    {%- if section.settings.subtitle != blank -%}
+      <span class="welcome__subtitle">{{ section.settings.subtitle }}</span>
+    {%- endif -%}
+    
+    <h1 class="welcome__title">{{ section.settings.title }}</h1>
+    
+    {%- if section.settings.description != blank -%}
+      <p class="welcome__description">{{ section.settings.description }}</p>
+    {%- endif -%}
+
+    <div class="welcome__buttons">
+      {%- if section.settings.button_1_label != blank -%}
+        <a href="{{ section.settings.button_1_link }}" class="welcome__button welcome__button--primary">
+          {{ section.settings.button_1_label }}
+        </a>
+      {%- endif -%}
+
+      {%- if section.settings.button_2_label != blank -%}
+        <a href="{{ section.settings.button_2_link }}" class="welcome__button welcome__button--secondary">
+          {{ section.settings.button_2_label }}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Welcome",
+  "tag": "section",
+  "class": "section-welcome",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Premium Hair Care"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Welcome to Angel Hair"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Discover our professional-grade hair care products enriched with amino acids and natural extracts for healthier, more beautiful hair."
+    },
+    {
+      "type": "text",
+      "id": "button_1_label",
+      "label": "Button 1 Label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_1_link",
+      "label": "Button 1 Link",
+      "default": "/collections/all"
+    },
+    {
+      "type": "text",
+      "id": "button_2_label",
+      "label": "Button 2 Label",
+      "default": "About Us"
+    },
+    {
+      "type": "url",
+      "id": "button_2_link",
+      "label": "Button 2 Link",
+      "default": "/pages/about-us"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Welcome"
+    }
+  ]
+}
+{% endschema %}
+
