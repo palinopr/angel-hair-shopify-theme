@@ -660,11 +660,12 @@
     const overlay = document.getElementById('cart-drawer-overlay');
     const closeBtn = drawer.querySelector('.cart-drawer__close');
     
-    // Open cart drawer
+    // Open cart drawer and refresh content
     window.openCartDrawer = function() {
       drawer.classList.add('active');
       overlay.classList.add('active');
       document.body.style.overflow = 'hidden';
+      refreshCartDrawer();
     };
     
     // Close cart drawer
@@ -673,6 +674,220 @@
       overlay.classList.remove('active');
       document.body.style.overflow = '';
     };
+    
+    // Refresh cart drawer content dynamically
+    function refreshCartDrawer() {
+      fetch('/cart.js')
+        .then(res => res.json())
+        .then(cart => {
+          // Update cart count everywhere
+          document.querySelectorAll('.cart-count, [data-cart-count]').forEach(el => {
+            el.textContent = cart.item_count;
+          });
+          drawer.querySelector('.cart-drawer__count').textContent = `(${cart.item_count})`;
+          
+          // Render cart content
+          renderCartContent(cart);
+        });
+    }
+    
+    // Render cart items dynamically
+    function renderCartContent(cart) {
+      const itemsContainer = drawer.querySelector('.cart-drawer__items');
+      const emptyContainer = drawer.querySelector('.cart-drawer__empty');
+      const footerContainer = drawer.querySelector('.cart-drawer__footer');
+      const shippingContainer = drawer.querySelector('.cart-drawer__shipping');
+      const upsellContainer = drawer.querySelector('.cart-drawer__upsell');
+      
+      if (cart.item_count === 0) {
+        // Show empty state
+        if (itemsContainer) itemsContainer.style.display = 'none';
+        if (footerContainer) footerContainer.style.display = 'none';
+        if (shippingContainer) shippingContainer.style.display = 'none';
+        if (upsellContainer) upsellContainer.style.display = 'none';
+        
+        if (!emptyContainer) {
+          // Create empty state if it doesn't exist
+          const empty = document.createElement('div');
+          empty.className = 'cart-drawer__empty';
+          empty.innerHTML = `
+            <div class="empty-cart-icon">
+              <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+              </svg>
+            </div>
+            <h3>Your cart is empty</h3>
+            <p>Looks like you haven't added any products yet.</p>
+            <a href="/collections/all" class="cart-drawer__shop-now">Start Shopping</a>
+          `;
+          drawer.querySelector('.cart-drawer__header').after(empty);
+        } else {
+          emptyContainer.style.display = 'flex';
+        }
+        return;
+      }
+      
+      // Hide empty state, show items
+      if (emptyContainer) emptyContainer.style.display = 'none';
+      if (shippingContainer) shippingContainer.style.display = 'block';
+      if (upsellContainer) upsellContainer.style.display = 'block';
+      if (footerContainer) footerContainer.style.display = 'block';
+      
+      // Create items container if needed
+      if (!itemsContainer) {
+        const items = document.createElement('div');
+        items.className = 'cart-drawer__items';
+        drawer.querySelector('.cart-drawer__shipping').after(items);
+      }
+      
+      const container = drawer.querySelector('.cart-drawer__items');
+      container.style.display = 'block';
+      
+      // Render items
+      container.innerHTML = cart.items.map((item, index) => `
+        <div class="cart-item" data-line="${index + 1}" data-key="${item.key}">
+          <a href="${item.url}" class="cart-item__image">
+            ${item.image ? `<img src="${item.image.replace(/(\.[^.]+)$/, '_200x$1')}" alt="${item.title}" loading="lazy">` : `
+              <div class="cart-item__no-image">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                  <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+              </div>
+            `}
+          </a>
+          <div class="cart-item__details">
+            <a href="${item.url}" class="cart-item__title">${item.product_title}</a>
+            ${item.variant_title && item.variant_title !== 'Default Title' ? `<p class="cart-item__variant">${item.variant_title}</p>` : ''}
+            <div class="cart-item__price">
+              ${item.original_price !== item.final_price ? `
+                <span class="cart-item__price--sale">${formatMoney(item.final_price)}</span>
+                <span class="cart-item__price--original">${formatMoney(item.original_price)}</span>
+              ` : `<span>${formatMoney(item.final_price)}</span>`}
+            </div>
+            <div class="cart-item__quantity">
+              <button class="quantity-btn minus" data-action="decrease" aria-label="Decrease quantity">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+              <input type="number" class="quantity-input" value="${item.quantity}" min="0" aria-label="Quantity">
+              <button class="quantity-btn plus" data-action="increase" aria-label="Increase quantity">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <button class="cart-item__remove" data-action="remove" aria-label="Remove item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+          </button>
+        </div>
+      `).join('');
+      
+      // Update shipping progress
+      if (shippingContainer) {
+        const freeShippingThreshold = 5000; // $50 in cents
+        const remaining = (freeShippingThreshold - cart.total_price) / 100;
+        const progress = Math.min(100, (cart.total_price / freeShippingThreshold) * 100);
+        
+        if (cart.total_price >= freeShippingThreshold) {
+          shippingContainer.innerHTML = `
+            <div class="shipping-message shipping-message--success">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+              </svg>
+              <span>You've unlocked <strong>FREE SHIPPING!</strong></span>
+            </div>
+            <div class="shipping-progress">
+              <div class="shipping-progress__bar" style="width: 100%"></div>
+            </div>
+          `;
+        } else {
+          shippingContainer.innerHTML = `
+            <div class="shipping-message">
+              <span>Add <strong>$${remaining.toFixed(2)}</strong> more for <strong>FREE SHIPPING</strong></span>
+            </div>
+            <div class="shipping-progress">
+              <div class="shipping-progress__bar" style="width: ${progress}%"></div>
+            </div>
+          `;
+        }
+      }
+      
+      // Update total
+      if (footerContainer) {
+        const totalEl = footerContainer.querySelector('.cart-drawer__total');
+        if (totalEl) totalEl.textContent = formatMoney(cart.total_price);
+      }
+      
+      // Re-bind event listeners
+      bindCartItemEvents();
+    }
+    
+    // Format money helper
+    function formatMoney(cents) {
+      return '$' + (cents / 100).toFixed(2);
+    }
+    
+    // Bind events to cart items
+    function bindCartItemEvents() {
+      // Quantity buttons
+      drawer.querySelectorAll('.quantity-btn').forEach(btn => {
+        btn.onclick = function() {
+          const item = this.closest('.cart-item');
+          const line = item.dataset.line;
+          const input = item.querySelector('.quantity-input');
+          let quantity = parseInt(input.value);
+          
+          if (this.dataset.action === 'increase') {
+            quantity++;
+          } else if (this.dataset.action === 'decrease') {
+            quantity = Math.max(0, quantity - 1);
+          }
+          
+          updateCartItem(line, quantity);
+        };
+      });
+      
+      // Remove buttons
+      drawer.querySelectorAll('[data-action="remove"]').forEach(btn => {
+        btn.onclick = function() {
+          const item = this.closest('.cart-item');
+          const line = item.dataset.line;
+          updateCartItem(line, 0);
+        };
+      });
+    }
+    
+    // Update cart item
+    function updateCartItem(line, quantity) {
+      // Show loading state
+      const item = drawer.querySelector(`[data-line="${line}"]`);
+      if (item) item.style.opacity = '0.5';
+      
+      fetch('/cart/change.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          line: parseInt(line),
+          quantity: quantity
+        })
+      })
+      .then(res => res.json())
+      .then(cart => {
+        refreshCartDrawer();
+      });
+    }
     
     // Event listeners
     closeBtn.addEventListener('click', closeCartDrawer);
@@ -687,69 +902,17 @@
     
     // Listen for add to cart events
     document.addEventListener('cart:add', function() {
-      // Refresh cart content and open drawer
-      fetch('/cart.js')
-        .then(res => res.json())
-        .then(cart => {
-          // Update cart count in header
-          document.querySelectorAll('.cart-count').forEach(el => {
-            el.textContent = cart.item_count;
-          });
-          // Open drawer (will show updated content on next page load for now)
-          openCartDrawer();
-        });
+      openCartDrawer();
     });
     
-    // Quantity buttons
-    drawer.querySelectorAll('.quantity-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-        const item = this.closest('.cart-item');
-        const line = item.dataset.line;
-        const input = item.querySelector('.quantity-input');
-        let quantity = parseInt(input.value);
-        
-        if (this.dataset.action === 'increase') {
-          quantity++;
-        } else if (this.dataset.action === 'decrease') {
-          quantity = Math.max(0, quantity - 1);
-        }
-        
-        updateCartItem(line, quantity);
-      });
-    });
-    
-    // Remove buttons
-    drawer.querySelectorAll('[data-action="remove"]').forEach(btn => {
-      btn.addEventListener('click', function() {
-        const item = this.closest('.cart-item');
-        const line = item.dataset.line;
-        updateCartItem(line, 0);
-      });
-    });
-    
-    // Update cart item
-    function updateCartItem(line, quantity) {
-      fetch('/cart/change.js', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          line: parseInt(line),
-          quantity: quantity
-        })
-      })
-      .then(res => res.json())
-      .then(cart => {
-        // Reload page to update cart drawer
-        location.reload();
-      });
-    }
+    // Initial binding
+    bindCartItemEvents();
     
     // Upsell add to cart
     drawer.querySelectorAll('.upsell-product__add').forEach(btn => {
       btn.addEventListener('click', function() {
         const variantId = this.dataset.productId;
+        this.disabled = true;
         
         fetch('/cart/add.js', {
           method: 'POST',
@@ -763,7 +926,8 @@
         })
         .then(res => res.json())
         .then(() => {
-          location.reload();
+          refreshCartDrawer();
+          this.disabled = false;
         });
       });
     });
