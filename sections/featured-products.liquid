@@ -124,8 +124,6 @@
               
               {%- if product.available == false -%}
                 <span class="badge badge--soldout">Sold Out</span>
-              {%- elsif product.created_at > 'now' | date: '%s' | minus: 2592000 | date: '%Y-%m-%d' -%}
-                <span class="badge badge--new">New</span>
               {%- endif -%}
             </div>
 
