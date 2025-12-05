@@ -1,0 +1,595 @@
+{% comment %}
+  Predictive Search Component
+  Provides real-time search suggestions as users type
+{% endcomment %}
+
+<style>
+  /* Search Modal Overlay */
+  .search-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .search-modal.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .search-modal__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+  }
+
+  .search-modal__container {
+    position: relative;
+    max-width: 720px;
+    margin: 80px auto 0;
+    padding: 0 20px;
+    transform: translateY(-20px);
+    opacity: 0;
+    transition: all 0.3s ease 0.1s;
+  }
+
+  .search-modal.is-open .search-modal__container {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .search-modal__inner {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+  }
+
+  /* Search Input Area */
+  .search-modal__header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .search-modal__icon {
+    width: 24px;
+    height: 24px;
+    color: #999;
+    flex-shrink: 0;
+  }
+
+  .search-modal__input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    font-family: inherit;
+    background: transparent;
+    padding: 0;
+  }
+
+  .search-modal__input::placeholder {
+    color: #bbb;
+  }
+
+  .search-modal__close {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #f5f5f5;
+    color: #666;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .search-modal__close:hover {
+    background: #e5e5e5;
+    color: #333;
+  }
+
+  .search-modal__close svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Loading State */
+  .search-modal__loading {
+    display: none;
+    padding: 40px;
+    text-align: center;
+    color: #999;
+  }
+
+  .search-modal__loading.is-visible {
+    display: block;
+  }
+
+  .search-modal__spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid #eee;
+    border-top-color: #d4a574;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 12px;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Results Area */
+  .search-modal__results {
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+
+  .search-modal__empty {
+    display: none;
+    padding: 60px 40px;
+    text-align: center;
+  }
+
+  .search-modal__empty.is-visible {
+    display: block;
+  }
+
+  .search-modal__empty-icon {
+    width: 64px;
+    height: 64px;
+    color: #ddd;
+    margin: 0 auto 16px;
+  }
+
+  .search-modal__empty-text {
+    font-size: 16px;
+    color: #999;
+    margin: 0;
+  }
+
+  /* Popular Searches (Initial State) */
+  .search-modal__popular {
+    padding: 24px;
+  }
+
+  .search-modal__popular-title {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #999;
+    margin: 0 0 16px;
+    font-weight: 600;
+  }
+
+  .search-modal__popular-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .search-modal__popular-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: #f8f8f8;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #666;
+    transition: all 0.2s ease;
+  }
+
+  .search-modal__popular-link:hover {
+    background: #d4a574;
+    color: #fff;
+  }
+
+  .search-modal__popular-link svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Product Results */
+  .search-modal__section {
+    padding: 16px 24px;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .search-modal__section-title {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #999;
+    margin: 0 0 16px;
+    font-weight: 600;
+  }
+
+  .search-product {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .search-product:hover {
+    background: #f8f8f8;
+  }
+
+  .search-product__image {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f5f5f5;
+    flex-shrink: 0;
+  }
+
+  .search-product__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .search-product__info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .search-product__title {
+    font-size: 15px;
+    font-weight: 500;
+    color: #333;
+    margin: 0 0 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .search-product__price {
+    font-size: 14px;
+    color: #d4a574;
+    font-weight: 600;
+  }
+
+  .search-product__price--sale {
+    color: #d4a574;
+  }
+
+  .search-product__price--compare {
+    color: #999;
+    text-decoration: line-through;
+    font-weight: 400;
+    margin-left: 8px;
+  }
+
+  /* View All Link */
+  .search-modal__view-all {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px;
+    background: #f8f8f8;
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .search-modal__view-all:hover {
+    background: #d4a574;
+    color: #fff;
+  }
+
+  .search-modal__view-all svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Keyboard Hint */
+  .search-modal__hint {
+    padding: 12px 24px;
+    background: #fafafa;
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    font-size: 12px;
+    color: #999;
+  }
+
+  .search-modal__hint kbd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    padding: 2px 6px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 11px;
+    margin-right: 4px;
+  }
+
+  @media (max-width: 640px) {
+    .search-modal__container {
+      margin-top: 0;
+      padding: 0;
+    }
+
+    .search-modal__inner {
+      border-radius: 0;
+      min-height: 100vh;
+    }
+
+    .search-modal__results {
+      max-height: calc(100vh - 80px);
+    }
+
+    .search-modal__hint {
+      display: none;
+    }
+  }
+</style>
+
+<div id="search-modal" class="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+  <div class="search-modal__overlay" data-search-close></div>
+  
+  <div class="search-modal__container">
+    <div class="search-modal__inner">
+      <form action="/search" method="get" class="search-modal__header">
+        <svg class="search-modal__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+        <input 
+          type="search" 
+          name="q" 
+          class="search-modal__input" 
+          id="predictive-search-input"
+          placeholder="Search products..."
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+        >
+        <input type="hidden" name="type" value="product">
+        <button type="button" class="search-modal__close" data-search-close aria-label="Close search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </form>
+
+      <div class="search-modal__loading" id="search-loading">
+        <div class="search-modal__spinner"></div>
+        <p>Searching...</p>
+      </div>
+
+      <div class="search-modal__results" id="search-results">
+        <!-- Popular Searches (shown initially) -->
+        <div class="search-modal__popular" id="search-popular">
+          <h4 class="search-modal__popular-title">Popular Searches</h4>
+          <div class="search-modal__popular-list">
+            <a href="/search?q=shampoo&type=product" class="search-modal__popular-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+              </svg>
+              Shampoo
+            </a>
+            <a href="/search?q=treatment&type=product" class="search-modal__popular-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+              </svg>
+              Treatment
+            </a>
+            <a href="/search?q=serum&type=product" class="search-modal__popular-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+              </svg>
+              Serum
+            </a>
+            <a href="/search?q=kit&type=product" class="search-modal__popular-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+              </svg>
+              Kits & Bundles
+            </a>
+          </div>
+        </div>
+
+        <!-- Product Results (populated via JS) -->
+        <div class="search-modal__section" id="search-products" style="display: none;">
+          <h4 class="search-modal__section-title">Products</h4>
+          <div id="search-products-list"></div>
+        </div>
+
+        <!-- View All Results Link -->
+        <a href="/search" class="search-modal__view-all" id="search-view-all" style="display: none;">
+          View all results
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+      </div>
+
+      <div class="search-modal__empty" id="search-empty">
+        <svg class="search-modal__empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+          <path d="M8 8l6 6"></path>
+          <path d="M14 8l-6 6"></path>
+        </svg>
+        <p class="search-modal__empty-text">No products found. Try a different search term.</p>
+      </div>
+
+      <div class="search-modal__hint">
+        <span><kbd>↵</kbd> to search</span>
+        <span><kbd>Esc</kbd> to close</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const searchModal = document.getElementById('search-modal');
+    const searchInput = document.getElementById('predictive-search-input');
+    const searchLoading = document.getElementById('search-loading');
+    const searchResults = document.getElementById('search-results');
+    const searchPopular = document.getElementById('search-popular');
+    const searchProducts = document.getElementById('search-products');
+    const searchProductsList = document.getElementById('search-products-list');
+    const searchEmpty = document.getElementById('search-empty');
+    const searchViewAll = document.getElementById('search-view-all');
+
+    let searchTimeout;
+    let currentQuery = '';
+
+    // Open search modal
+    window.openSearchModal = function() {
+      searchModal.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => searchInput.focus(), 100);
+    };
+
+    // Close search modal
+    function closeSearchModal() {
+      searchModal.classList.remove('is-open');
+      document.body.style.overflow = '';
+      searchInput.value = '';
+      resetSearch();
+    }
+
+    // Reset search state
+    function resetSearch() {
+      searchPopular.style.display = 'block';
+      searchProducts.style.display = 'none';
+      searchEmpty.classList.remove('is-visible');
+      searchLoading.classList.remove('is-visible');
+      searchViewAll.style.display = 'none';
+    }
+
+    // Perform search
+    function performSearch(query) {
+      if (query.length < 2) {
+        resetSearch();
+        return;
+      }
+
+      currentQuery = query;
+      searchPopular.style.display = 'none';
+      searchLoading.classList.add('is-visible');
+      searchEmpty.classList.remove('is-visible');
+      searchProducts.style.display = 'none';
+
+      fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product&resources[limit]=6`)
+        .then(response => response.json())
+        .then(data => {
+          if (query !== currentQuery) return; // Ignore stale results
+
+          searchLoading.classList.remove('is-visible');
+
+          const products = data.resources.results.products || [];
+          
+          if (products.length > 0) {
+            renderProducts(products);
+            searchProducts.style.display = 'block';
+            searchViewAll.href = `/search?q=${encodeURIComponent(query)}&type=product`;
+            searchViewAll.style.display = 'flex';
+          } else {
+            searchEmpty.classList.add('is-visible');
+          }
+        })
+        .catch(error => {
+          console.error('Search error:', error);
+          searchLoading.classList.remove('is-visible');
+          searchEmpty.classList.add('is-visible');
+        });
+    }
+
+    // Render product results
+    function renderProducts(products) {
+      searchProductsList.innerHTML = products.map(product => {
+        const hasComparePrice = product.compare_at_price_max > product.price;
+        const imageUrl = product.featured_image?.url || product.image;
+        
+        return `
+          <a href="${product.url}" class="search-product">
+            <div class="search-product__image">
+              ${imageUrl ? `<img src="${imageUrl.replace(/(\.[^.]+)$/, '_180x$1')}" alt="${product.title}">` : ''}
+            </div>
+            <div class="search-product__info">
+              <h4 class="search-product__title">${product.title}</h4>
+              <div class="search-product__price">
+                <span class="search-product__price--sale">${formatMoney(product.price)}</span>
+                ${hasComparePrice ? `<span class="search-product__price--compare">${formatMoney(product.compare_at_price_max)}</span>` : ''}
+              </div>
+            </div>
+          </a>
+        `;
+      }).join('');
+    }
+
+    // Format money helper
+    function formatMoney(cents) {
+      return '$' + (cents / 100).toFixed(2);
+    }
+
+    // Event listeners
+    searchInput.addEventListener('input', (e) => {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        performSearch(e.target.value.trim());
+      }, 300);
+    });
+
+    // Close handlers
+    document.querySelectorAll('[data-search-close]').forEach(el => {
+      el.addEventListener('click', closeSearchModal);
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      // ESC to close
+      if (e.key === 'Escape' && searchModal.classList.contains('is-open')) {
+        closeSearchModal();
+      }
+      // CMD/CTRL + K to open
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        if (searchModal.classList.contains('is-open')) {
+          closeSearchModal();
+        } else {
+          openSearchModal();
+        }
+      }
+    });
+
+    // Make search trigger elements work
+    document.querySelectorAll('[data-search-trigger]').forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        openSearchModal();
+      });
+    });
+  })();
+</script>
+

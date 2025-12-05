@@ -14,7 +14,12 @@
         fetchpriority="high"
       >
     {% else %}
-      <div class="hero-premium__gradient-bg"></div>
+      <div class="hero-premium__gradient-bg">
+        <div class="hero-premium__gradient-orb hero-premium__gradient-orb--1"></div>
+        <div class="hero-premium__gradient-orb hero-premium__gradient-orb--2"></div>
+        <div class="hero-premium__gradient-orb hero-premium__gradient-orb--3"></div>
+        <div class="hero-premium__gradient-pattern"></div>
+      </div>
     {% endif %}
     <div class="hero-premium__overlay"></div>
   </div>
@@ -134,11 +139,76 @@
   .hero-premium__gradient-bg {
     width: 100%;
     height: 100%;
-    background: linear-gradient(180deg, 
-      #f5f5f5 0%, 
-      #e8e8e8 50%, 
-      #d9d9d9 100%
+    background: linear-gradient(135deg, 
+      #1a1a1a 0%, 
+      #2d2828 25%,
+      #1a1a1a 50%,
+      #2a2525 75%,
+      #1a1a1a 100%
     );
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-premium__gradient-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.6;
+    animation: orbFloat 20s ease-in-out infinite;
+  }
+
+  .hero-premium__gradient-orb--1 {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, #d4a574 0%, transparent 70%);
+    top: -200px;
+    right: -100px;
+    animation-delay: 0s;
+  }
+
+  .hero-premium__gradient-orb--2 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, #c49660 0%, transparent 70%);
+    bottom: -150px;
+    left: -100px;
+    animation-delay: -7s;
+    animation-duration: 25s;
+  }
+
+  .hero-premium__gradient-orb--3 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, #b8864c 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation-delay: -14s;
+    animation-duration: 30s;
+    opacity: 0.3;
+  }
+
+  .hero-premium__gradient-pattern {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4a574' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 1;
+  }
+
+  @keyframes orbFloat {
+    0%, 100% {
+      transform: translate(0, 0) scale(1);
+    }
+    25% {
+      transform: translate(30px, -40px) scale(1.1);
+    }
+    50% {
+      transform: translate(-20px, 20px) scale(0.95);
+    }
+    75% {
+      transform: translate(40px, 30px) scale(1.05);
+    }
   }
   
   @keyframes gradientShift {

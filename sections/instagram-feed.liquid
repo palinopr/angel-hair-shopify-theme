@@ -1,0 +1,448 @@
+{% comment %}
+  Instagram Feed / Social Proof Section
+  Display user-generated content and encourage social engagement
+{% endcomment %}
+
+<style>
+  .instagram-feed {
+    padding: 80px 0;
+    background: {{ section.settings.background_color }};
+    overflow: hidden;
+  }
+
+  .instagram-feed__container {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+  }
+
+  .instagram-feed__header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .instagram-feed__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(212, 165, 116, 0.1);
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #d4a574;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .instagram-feed__badge svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .instagram-feed__title {
+    font-family: var(--font-heading-family);
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 400;
+    color: #1a1a1a;
+    margin: 0 0 12px;
+  }
+
+  .instagram-feed__subtitle {
+    font-size: 16px;
+    color: #666;
+    margin: 0 0 24px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .instagram-feed__handle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 30px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .instagram-feed__handle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(131, 58, 180, 0.3);
+  }
+
+  .instagram-feed__handle svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Grid */
+  .instagram-feed__grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+  }
+
+  @media (max-width: 1024px) {
+    .instagram-feed__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .instagram-feed__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* Grid Item */
+  .instagram-feed__item {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #f5f5f5;
+  }
+
+  .instagram-feed__item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .instagram-feed__item:hover img {
+    transform: scale(1.1);
+  }
+
+  .instagram-feed__item-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .instagram-feed__item:hover .instagram-feed__item-overlay {
+    opacity: 1;
+  }
+
+  .instagram-feed__item-icon {
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .instagram-feed__item-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Placeholder Items */
+  .instagram-feed__placeholder {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #f8f6f4 0%, #ebe7e3 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .instagram-feed__placeholder-icon {
+    width: 40px;
+    height: 40px;
+    color: #d4a574;
+    opacity: 0.5;
+  }
+
+  /* Stats Row */
+  .instagram-feed__stats {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid #eee;
+  }
+
+  @media (max-width: 640px) {
+    .instagram-feed__stats {
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+  }
+
+  .instagram-feed__stat {
+    text-align: center;
+  }
+
+  .instagram-feed__stat-value {
+    font-family: var(--font-heading-family);
+    font-size: 32px;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .instagram-feed__stat-label {
+    font-size: 13px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* CTA Section */
+  .instagram-feed__cta {
+    text-align: center;
+    margin-top: 40px;
+  }
+
+  .instagram-feed__cta-text {
+    font-size: 15px;
+    color: #666;
+    margin-bottom: 16px;
+  }
+
+  .instagram-feed__cta-hashtag {
+    font-size: 18px;
+    font-weight: 600;
+    color: #d4a574;
+  }
+
+  @media (max-width: 768px) {
+    .instagram-feed {
+      padding: 60px 0;
+    }
+  }
+</style>
+
+<section class="instagram-feed" id="instagram-{{ section.id }}">
+  <div class="instagram-feed__container">
+    <div class="instagram-feed__header">
+      <span class="instagram-feed__badge">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+        </svg>
+        {{ section.settings.badge | default: 'On Instagram' }}
+      </span>
+      
+      <h2 class="instagram-feed__title">{{ section.settings.title | default: 'Share Your Hair Journey' }}</h2>
+      <p class="instagram-feed__subtitle">{{ section.settings.subtitle | default: 'Tag us in your posts and share your Angel Hair transformation' }}</p>
+      
+      {%- if settings.social_instagram != blank -%}
+        <a href="{{ settings.social_instagram }}" class="instagram-feed__handle" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073z"/>
+            <circle cx="12" cy="12" r="3.5"/>
+          </svg>
+          @angel_hair.1
+        </a>
+      {%- endif -%}
+    </div>
+
+    <div class="instagram-feed__grid">
+      {%- for block in section.blocks -%}
+        {%- if block.settings.image != blank -%}
+          <a href="{{ block.settings.link | default: settings.social_instagram }}" class="instagram-feed__item" target="_blank" rel="noopener" {{ block.shopify_attributes }}>
+            <img 
+              src="{{ block.settings.image | image_url: width: 400 }}"
+              alt="{{ block.settings.alt | default: 'Instagram post' }}"
+              loading="lazy"
+              width="400"
+              height="400"
+            >
+            <div class="instagram-feed__item-overlay">
+              <span class="instagram-feed__item-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+                {{ block.settings.likes | default: '' }}
+              </span>
+            </div>
+          </a>
+        {%- else -%}
+          <div class="instagram-feed__placeholder" {{ block.shopify_attributes }}>
+            <svg class="instagram-feed__placeholder-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+            </svg>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+      
+      {%- if section.blocks.size == 0 -%}
+        {%- for i in (1..6) -%}
+          <div class="instagram-feed__placeholder">
+            <svg class="instagram-feed__placeholder-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+            </svg>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_stats -%}
+      <div class="instagram-feed__stats">
+        <div class="instagram-feed__stat">
+          <div class="instagram-feed__stat-value">{{ section.settings.stat_1_value | default: '10K+' }}</div>
+          <div class="instagram-feed__stat-label">{{ section.settings.stat_1_label | default: 'Followers' }}</div>
+        </div>
+        <div class="instagram-feed__stat">
+          <div class="instagram-feed__stat-value">{{ section.settings.stat_2_value | default: '5K+' }}</div>
+          <div class="instagram-feed__stat-label">{{ section.settings.stat_2_label | default: 'Happy Customers' }}</div>
+        </div>
+        <div class="instagram-feed__stat">
+          <div class="instagram-feed__stat-value">{{ section.settings.stat_3_value | default: '98%' }}</div>
+          <div class="instagram-feed__stat-label">{{ section.settings.stat_3_label | default: 'Would Recommend' }}</div>
+        </div>
+      </div>
+    {%- endif -%}
+
+    <div class="instagram-feed__cta">
+      <p class="instagram-feed__cta-text">Share your transformation with</p>
+      <span class="instagram-feed__cta-hashtag">{{ section.settings.hashtag | default: '#AngelHairGlow' }}</span>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Instagram Feed",
+  "class": "section-instagram",
+  "settings": [
+    {
+      "type": "text",
+      "id": "badge",
+      "label": "Badge Text",
+      "default": "On Instagram"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Share Your Hair Journey"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Tag us in your posts and share your Angel Hair transformation"
+    },
+    {
+      "type": "text",
+      "id": "hashtag",
+      "label": "Hashtag",
+      "default": "#AngelHairGlow"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#faf8f5"
+    },
+    {
+      "type": "header",
+      "content": "Stats"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stats",
+      "label": "Show Stats",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "stat_1_value",
+      "label": "Stat 1 Value",
+      "default": "10K+"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_label",
+      "label": "Stat 1 Label",
+      "default": "Followers"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_value",
+      "label": "Stat 2 Value",
+      "default": "5K+"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_label",
+      "label": "Stat 2 Label",
+      "default": "Happy Customers"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_value",
+      "label": "Stat 3 Value",
+      "default": "98%"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_label",
+      "label": "Stat 3 Label",
+      "default": "Would Recommend"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Instagram Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Alt Text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "likes",
+          "label": "Likes Count",
+          "info": "e.g., 234"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram Feed",
+      "blocks": [
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

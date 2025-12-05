@@ -28,6 +28,7 @@
     {% endif %}
 
     {% render 'meta-tags' %}
+    {% render 'json-ld-schema' %}
 
     <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
     {{ content_for_header }}
@@ -125,10 +126,6 @@
     {{ 'swiper.min.css' | asset_url | stylesheet_tag }}
     {{ 'component-notification.css' | asset_url | stylesheet_tag }}
 
-    {%- if settings.predictive_search_enabled -%}
-      <link rel="stylesheet" href="{{ 'component-search.css' | asset_url }}" media="print" onload="this.media='all'">
-    {%- endif -%}
-
     <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');</script>
   </head>
 
@@ -149,8 +146,15 @@
       {% render 'whatsapp-button' %}
     {%- endif -%}
 
+    {% render 'back-to-top' %}
+
     {% comment %} Cart Drawer - Always included {% endcomment %}
     {% render 'cart-drawer' %}
+
+    {% comment %} Predictive Search Modal {% endcomment %}
+    {%- if settings.predictive_search_enabled -%}
+      {% render 'predictive-search' %}
+    {%- endif -%}
     
     {% comment %} Email Popup - Shown to first-time visitors {% endcomment %}
     {%- if settings.enable_email_popup -%}
@@ -182,10 +186,6 @@
         unavailable: `{{ 'products.product.unavailable' | t }}`
       }
     </script>
-
-    {%- if settings.predictive_search_enabled -%}
-      <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
-    {%- endif -%}
 
     <script src="{{ 'swiper.min.js' | asset_url }}" defer="defer"></script>
 

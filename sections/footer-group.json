@@ -4,7 +4,16 @@
   "sections": {
     "footer": {
       "type": "footer",
-      "settings": {}
+      "settings": {
+        "show_newsletter": true,
+        "newsletter_title": "Join the Angel Hair Family",
+        "newsletter_text": "Get 10% off your first order plus exclusive tips and offers.",
+        "newsletter_placeholder": "Enter your email",
+        "newsletter_button": "Subscribe",
+        "description": "Professional-grade hair care with amino acid technology. Transform your hair from damaged to divine.",
+        "menu_1_title": "Shop",
+        "menu_2_title": "Company"
+      }
     }
   },
   "order": ["footer"]

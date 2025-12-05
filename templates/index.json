@@ -196,6 +196,19 @@
         "show_reviews_link": false
       }
     },
+    "instagram_feed": {
+      "type": "instagram-feed",
+      "settings": {
+        "title": "Follow Us on Instagram",
+        "subtitle": "@angel_hair.1",
+        "instagram_url": "https://www.instagram.com/angel_hair.1/",
+        "followers_count": "15k+",
+        "customers_count": "10k+",
+        "recommendations_count": "99%",
+        "hashtag": "#AngelHairBeauty",
+        "show_follow_button": true
+      }
+    },
     "faq": {
       "type": "faq-accordion",
       "blocks": {
@@ -236,6 +249,7 @@
     "featured_collection",
     "category_grid",
     "testimonials",
+    "instagram_feed",
     "faq"
   ]
 }
