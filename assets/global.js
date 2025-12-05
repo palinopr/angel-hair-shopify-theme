@@ -244,9 +244,6 @@ class ProductForm extends AngelHairElement {
     // Update cart count
     this.updateCartCount();
     
-    // Show success notification
-    this.showNotification('✓ Added to cart!', 'success');
-    
     // Trigger Meta Pixel event
     if (typeof fbq !== 'undefined') {
       try {
@@ -264,9 +261,12 @@ class ProductForm extends AngelHairElement {
     // Add success state to button temporarily
     if (this.submitButton) {
       this.submitButton.classList.add('is-added');
+      const originalText = this.submitButton.innerHTML;
+      this.submitButton.innerHTML = '✓ Added!';
       setTimeout(() => {
         this.submitButton.classList.remove('is-added');
-      }, 2000);
+        this.submitButton.innerHTML = originalText;
+      }, 1500);
     }
     
     // Open cart drawer - dispatch event for cart drawer to listen
