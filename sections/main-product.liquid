@@ -405,7 +405,7 @@
   }
 
   .quantity-selector-premium__input {
-    width: 50px;
+    width: 56px;
     height: 40px;
     text-align: center;
     border: none;
@@ -416,6 +416,9 @@
     font-size: 1rem;
     font-weight: 600;
     color: var(--color-text);
+    line-height: 40px;
+    padding: 0;
+    margin: 0;
     -moz-appearance: textfield;
   }
 
@@ -427,6 +430,21 @@
 
   .quantity-selector-premium__input:focus {
     outline: none;
+  }
+  
+  @media (max-width: 640px) {
+    .quantity-selector-premium__btn {
+      width: 44px;
+      height: 44px;
+      font-size: 1.5rem;
+    }
+    
+    .quantity-selector-premium__input {
+      width: 60px;
+      height: 44px;
+      line-height: 44px;
+      font-size: 1.125rem;
+    }
   }
 
   /* Add to Cart Button - Matching Original Site (Black) */

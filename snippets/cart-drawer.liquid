@@ -385,6 +385,7 @@
   .cart-item__quantity {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0;
     border: 1px solid #e0e0e0;
     border-radius: 6px;
@@ -393,8 +394,8 @@
   }
   
   .quantity-btn {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     border: none;
     background: #f5f5f5;
     cursor: pointer;
@@ -402,6 +403,7 @@
     align-items: center;
     justify-content: center;
     transition: background 0.2s;
+    flex-shrink: 0;
   }
   
   .quantity-btn:hover {
@@ -409,19 +411,44 @@
   }
   
   .quantity-input {
-    width: 40px;
-    height: 32px;
+    width: 44px;
+    height: 36px;
     border: none;
+    border-left: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
     text-align: center;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
+    line-height: 36px;
+    padding: 0;
+    margin: 0;
     -moz-appearance: textfield;
+    background: #fff;
   }
   
   .quantity-input::-webkit-outer-spin-button,
   .quantity-input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+  }
+  
+  .quantity-input:focus {
+    outline: none;
+  }
+  
+  /* Mobile adjustments */
+  @media (max-width: 480px) {
+    .quantity-btn {
+      width: 40px;
+      height: 40px;
+    }
+    
+    .quantity-input {
+      width: 50px;
+      height: 40px;
+      line-height: 40px;
+      font-size: 16px;
+    }
   }
   
   .cart-item__remove {
